@@ -97,7 +97,15 @@
                                     <li><a href="#"><i class="flaticon-list"></i>Task</a></li>
                                     <li><a href="#"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Message</a></li>
                                     <li><a href="#"><i class="flaticon-gear-loading"></i>Account Settings</a></li>
-                                    <li><a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a></li>
+                                    <li><a href="{{ route('logout') }} class="flaticon-turn-off"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </a>
+</li>
                                 </ul>
                             </div>
                         </div>
