@@ -20,15 +20,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/student', 'StudentController@student')->name('student');
-Route::get('/teacher', 'TeachersController@teacher')->name('teacher');
-Route::get('/parent', 'ParentsController@parent')->name('parent');
-Route::get('/add-teacher', 'AddTeacherController@addTeacher')->name('addteacher');
-Route::get('/admit-form', 'AdmissionFormController@addStudent')->name('addstudent');
-Route::get('/add-parent', 'AddParentController@addParent')->name('addparent');
-Route::get('/all-student', 'AllStudentsController@allStudent')->name('allstudent');
-Route::get('/all-teacher', 'AllTeachersController@allTeacher')->name('allteacher');
-Route::get('/all-parents', 'AllParentsController@allParent')->name('allparent');
+Route::get('/add-teacher', 'TeacherController@addTeacher')->name('addteacher');
+Route::get('/admit-form', 'StudentController@create')->name('create');
+Route::get('/add-parent', 'ParentsController@addParent')->name('addparent');
+Route::get('/all-student', 'StudentController@index')->name('allstudent');
+Route::get('/all-teacher', 'TeachersController@allTeacher')->name('allteacher');
+Route::get('/all-parents', 'ParentsController@allParent')->name('allparent');
 Route::get('/student-details', 'StudentDetailsController@studentDetails')->name('studentdetails');
 Route::get('/teacher-details', 'TeacherDetailsController@teacherDetails')->name('teacherdetails');
 Route::get('/parents-details', 'ParentsDetailsController@parentDetails')->name('parentdetails');

@@ -12,9 +12,9 @@ class TeachersController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function teacher()
+     public function allTeacher()
     {
-        return view('teacher.teachers');
+        return view('teacher.allteachers');
         
     }
     public function index()

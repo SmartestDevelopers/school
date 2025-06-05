@@ -12,7 +12,7 @@ class ParentsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function parent()
+    public function allParent()
     {
         return view('parent.parents');
     }

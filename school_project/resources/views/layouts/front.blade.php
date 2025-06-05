@@ -266,7 +266,7 @@
                                     <a href="{{ url('home')}}" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('student')}}" class="nav-link"><i
+                                    <a href="{{ url('all-student')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Students</a>
                                 </li>
                                 <li class="nav-item">
@@ -426,7 +426,7 @@
                             <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="{{ url ('notification-alart')}} class="nav-link"><i
+                                    <a href="{{ url('notification-alart')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Alart</a>
                                 </li>
                                 <li class="nav-item">
