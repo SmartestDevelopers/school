@@ -270,10 +270,10 @@
                                             class="fas fa-angle-right"></i>Students</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('parent')}}" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
+                                    <a href="{{ url('all-parents')}}" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('teacher')}}" class="nav-link"><i
+                                    <a href="{{ url('all-teacher')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Teachers</a>
                                 </li>
                             </ul>

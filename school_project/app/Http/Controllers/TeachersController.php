@@ -17,6 +17,11 @@ class TeachersController extends Controller
         return view('teacher.allteachers');
         
     }
+
+    public function teacherDetails()
+    {
+        return view('teacher.teacherdetails');
+    }
     public function index()
     {
         //
@@ -28,10 +33,14 @@ class TeachersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
+        {
+            return view('teacher.addteacher');
+        }
+    
+    public function teacherPayment()
     {
-        //
+        return view('teacher.teacherpayment');
     }
-
     /**
      * Store a newly created resource in storage.
      *

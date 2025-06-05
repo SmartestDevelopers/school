@@ -12,14 +12,24 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function student()
+    public function allstudent()
     {
-        return view('student.student');
+        return view('student.allstudents');
+    }
+
+    public function studentDetails()
+    {
+        return view('student.studentdetails');
+    }
+
+    public function studentPromotion()
+    {
+        return view('student.studentpromotion');
     }
 
     public function index()
     {
-        return view('student.allstudents');
+        //
     }
 
     /**
@@ -29,7 +39,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('student.create');
+        return view('student.admissionform');
     }
 
     /**

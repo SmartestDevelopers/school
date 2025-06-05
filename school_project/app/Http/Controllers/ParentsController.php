@@ -17,6 +17,11 @@ class ParentsController extends Controller
         return view('parent.parents');
     }
 
+    public function parentDetails()
+    {
+        return view('parent.parentsdetails');
+    }
+
     public function index()
     {
         //
@@ -29,7 +34,6 @@ class ParentsController extends Controller
      */
     public function create()
     {
-        //
         return view('parent.addparent');
     }
 
