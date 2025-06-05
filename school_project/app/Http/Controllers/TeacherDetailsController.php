@@ -15,6 +15,10 @@ class TeacherDetailsController extends Controller
     {
         //
     }
+    public function teacherDetails()
+    {
+        return view('teacher.teacherdetails');
+    }
 
     /**
      * Show the form for creating a new resource.

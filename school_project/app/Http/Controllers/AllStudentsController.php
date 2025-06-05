@@ -11,6 +11,11 @@ class AllStudentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function allStudent()
+    {
+        return view('student.allstudents');
+    }
+
     public function index()
     {
         //

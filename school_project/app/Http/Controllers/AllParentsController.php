@@ -11,7 +11,12 @@ class AllParentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function allParent()
+    {
+        return view('parent.allparent');
+    }
+
+     public function index()
     {
         //
     }

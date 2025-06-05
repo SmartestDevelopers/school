@@ -15,6 +15,10 @@ class ParentsDetailsController extends Controller
     {
         //
     }
+    public function parentDetails()
+    {
+        return view('parent.parentsdetails');
+    }
 
     /**
      * Show the form for creating a new resource.

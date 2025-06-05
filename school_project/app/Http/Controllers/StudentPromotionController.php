@@ -15,6 +15,10 @@ class StudentPromotionController extends Controller
     {
         //
     }
+    public function studentPromotion()
+    {
+        return view('student.studentpromotion');
+    }
 
     /**
      * Show the form for creating a new resource.

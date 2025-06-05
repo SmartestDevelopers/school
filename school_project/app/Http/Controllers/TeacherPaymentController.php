@@ -15,6 +15,10 @@ class TeacherPaymentController extends Controller
     {
         //
     }
+    public function teacherPayment()
+    {
+        return view('teacher.teacherpayment');
+    }
 
     /**
      * Show the form for creating a new resource.
