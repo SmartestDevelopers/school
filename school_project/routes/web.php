@@ -22,4 +22,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/student', 'HomeController@student')->name('student');
 Route::get('/teacher', 'TeachersController@teacher')->name('teacher');
-Route::get('/parent', 'ParentsController@admin')->name('parent');
+Route::get('/parent', 'ParentsController@parent')->name('parent');

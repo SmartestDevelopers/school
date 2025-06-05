@@ -263,17 +263,17 @@
                             <a href="#" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="index.html" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
+                                    <a href="{{ url('home')}}" class="nav-link"><i class="fas fa-angle-right"></i>Admin</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index3.html" class="nav-link"><i
+                                    <a href="{{ url('student')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Students</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index4.html" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
+                                    <a href="{{ url('parent')}}" class="nav-link"><i class="fas fa-angle-right"></i>Parents</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="index5.html" class="nav-link"><i
+                                    <a href="{{ url('teacher')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Teachers</a>
                                 </li>
                             </ul>

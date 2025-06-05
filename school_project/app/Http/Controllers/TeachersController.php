@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ParentsController extends Controller
+class TeachersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -12,11 +12,11 @@ class ParentsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function parent()
+     public function teacher()
     {
-        return view('parent.parents');
+        return view('teacher.teachers');
+        
     }
-
     public function index()
     {
         //
