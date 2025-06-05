@@ -22,13 +22,14 @@ class AddParentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource / record.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
         //
+        return view('parent.addparent');
     }
 
     /**

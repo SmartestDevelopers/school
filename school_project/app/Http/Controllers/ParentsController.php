@@ -30,6 +30,7 @@ class ParentsController extends Controller
     public function create()
     {
         //
+        return view('parent.addparent');
     }
 
     /**

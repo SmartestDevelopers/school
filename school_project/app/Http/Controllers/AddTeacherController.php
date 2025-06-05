@@ -13,7 +13,7 @@ class AddTeacherController extends Controller
      */
      public function addTeacher()
     {
-        return view('teacher.addteacher');
+        // return view('teacher.addteacher');
     }
 
     public function index()
@@ -29,6 +29,7 @@ class AddTeacherController extends Controller
     public function create()
     {
         //
+        // return view('teacher.addteacher');
     }
 
     /**
