@@ -282,19 +282,19 @@
                             <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-student.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{{ url('all-student')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Students</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="student-details.html" class="nav-link"><i
+                                    <a href="{{ url('student-details')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Student Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="admit-form.html" class="nav-link"><i
+                                    <a href="{{ url('admit-form')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Admission Form</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="student-promotion.html" class="nav-link"><i
+                                    <a href="{{ url('student-promotion')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Student Promotion</a>
                                 </li>
                             </ul>
@@ -304,19 +304,19 @@
                                     class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{{ url('all-teacher')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Teachers</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="teacher-details.html" class="nav-link"><i
+                                    <a href="{{ url('teacher-details')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Teacher Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-teacher.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    <a href="{{ url('add-teacher')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
                                         Teacher</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="teacher-payment.html" class="nav-link"><i
+                                    <a href="{{ url('teacher-payment')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Payment</a>
                                 </li>
                             </ul>
@@ -325,15 +325,15 @@
                             <a href="#" class="nav-link"><i class="flaticon-couple"></i><span>Parents</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{{ url('all-parents')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Parents</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="parents-details.html" class="nav-link"><i
+                                    <a href="{{ url('parents-details')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Parents Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-parents.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    <a href="{{ url('add-parent')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
                                         Parent</a>
                                 </li>
                             </ul>
@@ -342,11 +342,11 @@
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-book.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{{ url('all-book')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Book</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-book.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    <a href="{{ url('add-book')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                         Book</a>
                                 </li>
                             </ul>
@@ -355,15 +355,15 @@
                             <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-fees.html" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
+                                    <a href="{{ url('all-fees')}}" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
                                         Collection</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="all-expense.html" class="nav-link"><i
+                                    <a href="{{ url('all-expense')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Expenses</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-expense.html" class="nav-link"><i class="fas fa-angle-right"></i>Add
+                                    <a href="{{ url('add-expense')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
                                         Expenses</a>
                                 </li>
                             </ul>
@@ -373,53 +373,53 @@
                                     class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="all-class.html" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{{ url('all-class')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Classes</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="add-class.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New
+                                    <a href="{{ url('add-class')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add New
                                         Class</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="all-subject.html" class="nav-link"><i
+                            <a href="{{ url('all-subject')}}" class="nav-link"><i
                                     class="flaticon-open-book"></i><span>Subject</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="class-routine.html" class="nav-link"><i class="flaticon-calendar"></i><span>Class
+                            <a href="{{ url('class-routine')}}" class="nav-link"><i class="flaticon-calendar"></i><span>Class
                                     Routine</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="student-attendence.html" class="nav-link"><i
+                            <a href="{{ url('student-attendence')}}" class="nav-link"><i
                                     class="flaticon-checklist"></i><span>Attendence</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    <a href="{{ url('exam-schedule')}}" class="nav-link"><i class="fas fa-angle-right"></i>Exam
                                         Schedule</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="exam-grade.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam
+                                    <a href="{{ url('exam-grade')}}" class="nav-link"><i class="fas fa-angle-right"></i>Exam
                                         Grades</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="transport.html" class="nav-link"><i
+                            <a href="{{ url('transport')}}" class="nav-link"><i
                                     class="flaticon-bus-side-view"></i><span>Transport</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="hostel.html" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
+                            <a href="{{ url('hostel')}}" class="nav-link"><i class="flaticon-bed"></i><span>Hostel</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="notice-board.html" class="nav-link"><i
+                            <a href="{{ url('notice-board')}}" class="nav-link"><i
                                     class="flaticon-script"></i><span>Notice</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="messaging.html" class="nav-link"><i
+                            <a href="{{ url('messaging')}}" class="nav-link"><i
                                     class="flaticon-chat"></i><span>Messeage</span></a>
                         </li>
                         <li class="nav-item sidebar-nav-item">
@@ -430,33 +430,33 @@
                                             class="fas fa-angle-right"></i>Alart</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="button.html" class="nav-link"><i class="fas fa-angle-right"></i>Button</a>
+                                    <a href="{{ url('button')}}" class="nav-link"><i class="fas fa-angle-right"></i>Button</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="grid.html" class="nav-link"><i class="fas fa-angle-right"></i>Grid</a>
+                                    <a href="{{ url('grid')}}" class="nav-link"><i class="fas fa-angle-right"></i>Grid</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="modal.html" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
+                                    <a href="{{ url('modal')}}" class="nav-link"><i class="fas fa-angle-right"></i>Modal</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="progress-bar.html" class="nav-link"><i
+                                    <a href="{{ url('progress-bar')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Progress Bar</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="ui-tab.html" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
+                                    <a href="{{ url('ui-tab')}}" class="nav-link"><i class="fas fa-angle-right"></i>Tab</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="ui-widget.html" class="nav-link"><i
+                                    <a href="{{ url('ui-widget')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Widget</a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="map.html" class="nav-link"><i
+                            <a href="{{ url('map')}}" class="nav-link"><i
                                     class="flaticon-planet-earth"></i><span>Map</span></a>
                         </li>
                         <li class="nav-item">
-                            <a href="account-settings.html" class="nav-link"><i
+                            <a href="{{ url('account-settings')}}" class="nav-link"><i
                                     class="flaticon-settings"></i><span>Account</span></a>
                         </li>
                     </ul>

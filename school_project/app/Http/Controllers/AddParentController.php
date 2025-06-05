@@ -11,6 +11,11 @@ class AddParentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function addParent()
+    {
+        return view('parent.addparent');
+    }
+
     public function index()
     {
         //

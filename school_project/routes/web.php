@@ -23,3 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/student', 'StudentController@student')->name('student');
 Route::get('/teacher', 'TeachersController@teacher')->name('teacher');
 Route::get('/parent', 'ParentsController@parent')->name('parent');
+Route::get('/add-teacher', 'AddTeacherController@addteacher')->name('addteacher');
+Route::get('/admit-form', 'AdmissionFormController@addstudent')->name('addstudent');
+Route::get('/add-parent', 'AddParentController@addparent')->name('addparent');

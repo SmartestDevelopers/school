@@ -11,6 +11,11 @@ class AddTeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function addTeacher()
+    {
+        return view('teacher.addteacher');
+    }
+
     public function index()
     {
         //

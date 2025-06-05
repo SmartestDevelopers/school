@@ -11,6 +11,11 @@ class AdmissionFormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function addStudent()
+    {
+        return view('student.admissionform');
+    }
+
     public function index()
     {
         //
