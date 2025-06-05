@@ -426,7 +426,7 @@
                             <a href="#" class="nav-link"><i class="flaticon-menu-1"></i><span>UI Elements</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="notification-alart.html" class="nav-link"><i
+                                    <a href="{{ url ('notification-alart')}} class="nav-link"><i
                                             class="fas fa-angle-right"></i>Alart</a>
                                 </li>
                                 <li class="nav-item">
