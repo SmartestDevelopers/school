@@ -48,11 +48,57 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
-    {
-        //
+{
+    // Validate input
+    $request->validate([
+        'first_name' => 'required',
+        'last_name' => 'required',
+        'gender' => 'required',
+        'dob' => 'required|date',
+        'roll' => 'nullable',
+        'blood_group' => 'required',
+        'religion' => 'required',
+        'email' => 'nullable|email',
+        'class' => 'required',
+        'section' => 'required',
+        'admission_id' => 'nullable',
+        'phone' => 'nullable',
+        'bio' => 'nullable',
+        'photo' => 'nullable|image|max:2048',
+    ]);
+
+    // Handle file upload
+    $photoPath = null;
+    if ($request->hasFile('photo')) {
+        $photoPath = $request->file('photo')->store('student_photos', 'public');
     }
 
+    // Insert into database using DB query
+    DB::table('students')->insert([
+        'first_name'    => $request->first_name,
+        'last_name'     => $request->last_name,
+        'gender'        => $request->gender,
+        'dob'           => $request->dob,
+        'roll'          => $request->roll,
+        'blood_group'   => $request->blood_group,
+        'religion'      => $request->religion,
+        'email'         => $request->email,
+        'class'         => $request->class,
+        'section'       => $request->section,
+        'admission_id'  => $request->admission_id,
+        'phone'         => $request->phone,
+        'bio'           => $request->bio,
+        'photo'         => $photoPath,
+        'created_at'    => now(),
+        'updated_at'    => now(),
+    ]);
+
+    return redirect()->back()->with('success', 'Student data saved using query builder.');
+}
+
+    
     /**
      * Display the specified resource.
      *

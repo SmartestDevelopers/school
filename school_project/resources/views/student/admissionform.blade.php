@@ -34,19 +34,20 @@
                                 </div>
                             </div>
                         </div>
-                        <form class="new-added-form">
+                        <form class="new-added-form" method="post" action="">
+                            @csrf
                             <div class="row">
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>First Name *</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                    <input type="text" name="first_name" placeholder="" class="form-control">
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Last Name *</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                    <input type="text" name="last_name" placeholder="" class="form-control">
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Gender *</label>
-                                    <select class="select2">
+                                    <select class="select2" name="gender">
                                         <option value="">Please Select Gender *</option>
                                         <option value="1">Male</option>
                                         <option value="2">Female</option>
@@ -55,17 +56,17 @@
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Date Of Birth *</label>
-                                    <input type="text" placeholder="dd/mm/yyyy" class="form-control air-datepicker"
+                                    <input type="text" name="dob" placeholder="dd/mm/yyyy" class="form-control air-datepicker"
                                         data-position='bottom right'>
                                     <i class="far fa-calendar-alt"></i>
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Roll</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                    <input type="text" name="roll" placeholder="" class="form-control">
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Blood Group *</label>
-                                    <select class="select2">
+                                    <select class="select2" name="blood_group">
                                         <option value="">Please Select Group *</option>
                                         <option value="1">A+</option>
                                         <option value="2">A-</option>
@@ -77,7 +78,7 @@
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Religion *</label>
-                                    <select class="select2">
+                                    <select class="select2" name="religion">
                                         <option value="">Please Select Religion *</option>
                                         <option value="1">Islam</option>
                                         <option value="2">Hindu</option>
@@ -88,11 +89,11 @@
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>E-Mail</label>
-                                    <input type="email" placeholder="" class="form-control">
+                                    <input type="email" name="email" placeholder="" class="form-control">
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Class *</label>
-                                    <select class="select2">
+                                    <select class="select2" name="class">
                                         <option value="">Please Select Class *</option>
                                         <option value="1">Play</option>
                                         <option value="2">Nursery</option>
@@ -105,7 +106,7 @@
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Section *</label>
-                                    <select class="select2">
+                                    <select class="select2" name="section">
                                         <option value="">Please Select Section *</option>
                                         <option value="1">Pink</option>
                                         <option value="2">Blue</option>
@@ -116,20 +117,20 @@
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Admission ID</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                    <input type="text" name="admission_id" placeholder="" class="form-control">
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Phone</label>
-                                    <input type="text" placeholder="" class="form-control">
+                                    <input type="text" name="phone" placeholder="" class="form-control">
                                 </div>
                                 <div class="col-lg-6 col-12 form-group">
                                     <label>Short BIO</label>
-                                    <textarea class="textarea form-control" name="message" id="form-message" cols="10"
+                                    <textarea class="textarea form-control" name="bio" id="form-message" cols="10"
                                         rows="9"></textarea>
                                 </div>
                                 <div class="col-lg-6 col-12 form-group mg-t-30">
                                     <label class="text-dark-medium">Upload Student Photo (150px X 150px)</label>
-                                    <input type="file" class="form-control-file">
+                                    <input type="file" class="form-control-file" name="photo">
                                 </div>
                                 <div class="col-12 form-group mg-t-8">
                                     <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
