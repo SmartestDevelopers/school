@@ -8,7 +8,7 @@
             <ul>
                 <li>
                     <a href="index.html">Home</a>
-                </li>S
+                </li>
                 <li>Student Admit Form</li>
             </ul>
         </div>

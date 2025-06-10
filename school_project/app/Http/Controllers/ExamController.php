@@ -18,7 +18,7 @@ class ExamController extends Controller
 
     public function examSchedule()
     {
-        return view ('exam.schedule');
+        return view ('exam.examschedule');
     }
 
 

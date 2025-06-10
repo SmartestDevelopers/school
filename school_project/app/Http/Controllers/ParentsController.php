@@ -43,9 +43,51 @@ class ParentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+        public function store(Request $request)
+{
+    // Validate incoming request
+    $request->validate([
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'gender' => 'required|string',
+        'blood_group' => 'required|string',
+        'religion' => 'required|string',
+        'email' => 'nullable|email',
+        'address' => 'nullable|string',
+        'phone' => 'nullable|string',
+        'occupation' => 'nullable|string',
+        'id_no' => 'nullable|string',
+        'bio' => 'nullable|string',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    // Handle file upload
+    $photoPath = null;
+    if ($request->hasFile('photo')) {
+        $photoPath = $request->file('photo')->store('photos', 'public');
+    }
+
+    // Insert data into database
+    DB::table('parents')->insert([
+        'first_name'   => $request->first_name,
+        'last_name'    => $request->last_name,
+        'gender'       => $request->gender,
+        'blood_group'  => $request->blood_group,
+        'religion'     => $request->religion,
+        'email'        => $request->email,
+        'address'      => $request->address,
+        'phone'        => $request->phone,
+        'occupation'   => $request->occupation,
+        'id_no'        => $request->id_no,
+        'bio'          => $request->bio,
+        'photo'        => $photoPath,
+        'created_at'   => now(),
+        'updated_at'   => now(),
+    ]);
+
+    return redirect()->back()->with('success', 'Parent data inserted successfully.');
+}
+
     }
 
     /**

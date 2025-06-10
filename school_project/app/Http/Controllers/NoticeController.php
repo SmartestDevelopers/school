@@ -11,11 +11,12 @@ class NoticeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function messaging()
-    {
-        return view ('message.messaging');
-    }
     
+    
+    public function noticeBoard()
+    {
+        return view ('notice.noticeboard');
+    }
      public function index()
     {
         //

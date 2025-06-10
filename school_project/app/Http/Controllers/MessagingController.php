@@ -11,9 +11,9 @@ class MessagingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function noticeBoard()
+    public function messaging()
     {
-        return view ('notice.noticeboard');
+        return view ('message.messaging');
     }
     
      public function index()
