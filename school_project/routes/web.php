@@ -22,6 +22,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/add-teacher', 'TeachersController@create')->name('addteacher');
 Route::get('/admit-form', 'StudentController@create')->name('admitform');
+Route::post('/admit-form', 'StudentController@store')->name('admitform.store');
 Route::get('/add-parent', 'ParentsController@create')->name('addparent');
 Route::get('/all-student', 'StudentController@allStudent')->name('allstudent');
 Route::get('/all-teacher', 'TeachersController@allTeacher')->name('allteacher');

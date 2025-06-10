@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 class StudentController extends Controller
 {
@@ -76,7 +77,7 @@ class StudentController extends Controller
     }
 
     // Insert into database using DB query
-    DB::table('students')->insert([
+    DB::table('student_admission_forms')->insert([
         'first_name'    => $request->first_name,
         'last_name'     => $request->last_name,
         'gender'        => $request->gender,
