@@ -8,7 +8,7 @@
             <ul>
                 <li>
                     <a href="index.html">Home</a>
-                </li>
+                </li>S
                 <li>Student Admit Form</li>
             </ul>
         </div>
@@ -32,9 +32,14 @@
                     </div>
                 </div>
                 <!-- Success message -->
-                @if(session('success'))
-                    <div class="alert alert-success">
+                @if (session('success'))
+                    <div class="alert alert-success mt-2">
                         {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger mt-2">
+                        {{ session('error') }}
                     </div>
                 @endif
                 <form class="new-added-form" method="post" action="{{ route('admitform.store') }}"
@@ -78,6 +83,8 @@
                                 <option value="4">B-</option>
                                 <option value="5">O+</option>
                                 <option value="6">O-</option>
+                                <option value="7">AB+</option>
+                                <option value="8">AB-</option>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
