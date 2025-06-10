@@ -40,6 +40,7 @@ Route::get('/all-expense', 'AccountController@allExpense')->name('allexpense');
 Route::get('/account-settings', 'AccountController@accountSettings')->name('accountsettings');
 Route::get('/all-class', 'ClassController@allClass')->name('allclass');
 Route::get('/add-class', 'ClassController@create')->name('addclass');
+Route::get('/add-class', 'ClassController@store')->name('addclass.store');
 Route::get('/class-routine', 'ClassController@classRoutine')->name('classroutine');
 Route::get('/all-subject', 'SubjectController@allSubject')->name('allsubject');
 Route::get('/student-attendence', 'AttendenceController@studentAttendence')->name('studentattendence');

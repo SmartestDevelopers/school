@@ -57,7 +57,7 @@ class StudentController extends Controller
         'first_name' => 'required',
         'last_name' => 'required',
         'gender' => 'required',
-        'dob' => 'required|date',
+        'dob' => 'required',
         'roll' => 'nullable',
         'blood_group' => 'required',
         'religion' => 'required',
@@ -77,7 +77,7 @@ class StudentController extends Controller
     }
 
     // Insert into database using DB query
-    DB::table('student_admission_forms')->insert([
+    DB::table('admission_forms')->insert([
         'first_name'    => $request->first_name,
         'last_name'     => $request->last_name,
         'gender'        => $request->gender,
