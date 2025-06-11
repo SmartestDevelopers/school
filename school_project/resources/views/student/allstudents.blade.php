@@ -97,9 +97,9 @@
                                         <td>{{$row->section}}</td>
                                         <td>Jack Sparrow </td>
                                         <td>TA-107 Newyork</td>
-                                        <td>02/05/2001</td>
-                                        <td>+ 123 9988568</td>
-                                        <td>kazifahim93@gmail.com</td>
+                                        <td>{{$row->dob}}</td>
+                                        <td>{{$row->phone}}</td>
+                                        <td>{{$row->email}}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
@@ -107,12 +107,12 @@
                                                     <span class="flaticon-more-button-of-three-dots"></span>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#"><i
-                                                            class="fas fa-times text-orange-red"></i>Close</a>
-                                                    <a class="dropdown-item" href="#"><i
+                                                    <a class="dropdown-item" href="{{url('delete-student/'.$row->id)}}"><i
+                                                            class="fas fa-times text-orange-red"></i>Delete</a>
+                                                    <a class="dropdown-item" href="{{url('edit-student/'.$row->id)}}"><i
                                                             class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                                    <a class="dropdown-item" href="#"><i
-                                                            class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                                    <a class="dropdown-item" href="{{url('view-student/'.$row->id)}}"><i
+                                                            class="fas fa-redo-alt text-orange-peel"></i>View</a>
                                                 </div>
                                             </div>
                                         </td>

@@ -22,7 +22,7 @@ class StudentController extends Controller
         
         
        
-        return view('student.allstudents', compact('admission_forms_array')   );
+        return view('student.allstudents', compact('admission_forms_array'));
     }
 
     public function studentDetails()
@@ -153,5 +153,26 @@ class StudentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function viewStudent($id)
+    {
+        $getStudentByID = DB::table('admission_forms')->where('id', $id)->first();    
+        // print_r($getStudentByID);
+        return view('student.viewAdmissionform', compact('getStudentByID'));
+
+    }
+
+    public function deleteStudent($id)
+    {
+        
+        DB::table('admission_forms')->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Student deleted successfully.');
+    }
+
+     public function editStudent($id)
+    {
+        $getStudentByID = DB::table('admission_forms')->where('id', $id)->first();    
+        print_r($getStudentByID);
     }
 }

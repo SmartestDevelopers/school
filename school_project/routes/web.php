@@ -23,6 +23,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/add-teacher', 'TeachersController@create')->name('addteacher');
 Route::post('/add-teacher', 'TeachersController@store')->name('addteacher.store');
 Route::get('/admit-form', 'StudentController@create')->name('admitform');
+
+
+
+Route::get('/view-student/{id}', 'StudentController@viewStudent');
+Route::get('/edit-student/{id}', 'StudentController@editStudent');
+Route::get('/delete-student/{id}', 'StudentController@deleteStudent');
+
 Route::post('/admit-form', 'StudentController@store')->name('admitform.store');
 Route::get('/add-parent', 'ParentsController@create')->name('addparent');
 Route::post('/add-parent', 'ParentsController@store')->name('addparent.store');
