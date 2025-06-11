@@ -62,7 +62,7 @@ Route::get('/transport', 'TransportController@transport')->name('transport');
 Route::post('/transport', 'TransportController@store')->name('transport.store');
 Route::get('/map', 'MapController@map')->name('map');
 Route::get('/notice-board', 'NoticeController@noticeBoard')->name('noticeboard');
-Route::post('/notice-board', 'NoticeController@store')->name('noticeboard.store');
+Route::post('/notice-board', 'NoticeController@store')->name('notice.store');
 Route::get('/messaging', 'MessagingController@messaging')->name('messaging');
 Route::post('/messaging', 'MessagingController@store')->name('messaging.store');
 Route::get('/hostel', 'HostelController@hostel')->name('hostel');

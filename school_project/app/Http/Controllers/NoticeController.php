@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use DB;
 class NoticeController extends Controller
 {
     /**
@@ -40,7 +40,23 @@ class NoticeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+        'title' => 'required|string|max:255',
+        'details' => 'required|string',
+        'posted_by' => 'required|string|max:255',
+        'date' => 'required',
+    ]);
+
+    DB::table('notices')->insert([
+        'title' => $request->input('title'),
+        'details' => $request->input('details'),
+        'posted_by' => $request->input('posted_by'),
+        'date' => $request->input('date'),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
+    return redirect()->back()->with('success', 'Notice added successfully!');
     }
 
     /**

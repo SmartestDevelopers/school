@@ -39,7 +39,23 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'subject_name' => 'required',
+            'subject_type' => 'required',
+            'class'        => 'required',
+            'code'         => 'required',
+        ]);
+
+        \Illuminate\Support\Facades\DB::table('subjects')->insert([
+            'subject_name' => $request->subject_name,
+            'subject_type' => $request->subject_type,
+            'class'        => $request->class,
+            'code'         => $request->code,
+            'created_at'   => now(),
+            'updated_at'   => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Subject added successfully!');
     }
 
     /**
