@@ -15,7 +15,14 @@ class StudentController extends Controller
 
     public function allstudent()
     {
-        return view('student.allstudents');
+        //echo "line 18";
+        //echo "<br>";
+        $admission_forms_array = DB::table('admission_forms')->get();
+       // print_r($admission_forms);
+        
+        
+       
+        return view('student.allstudents', compact('admission_forms_array')   );
     }
 
     public function studentDetails()
@@ -30,7 +37,9 @@ class StudentController extends Controller
 
     public function index()
     {
-        //
+        
+        // here we will add table where we can see record inserted record, stored record
+        
     }
 
     /**
@@ -40,6 +49,7 @@ class StudentController extends Controller
      */
     public function create()
     {
+        // here we add form so that from this form we can insert recrod
         return view('student.admissionform');
     }
 

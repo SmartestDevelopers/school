@@ -18,7 +18,7 @@ class CreateAdmissionFormsTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('gender');
-            $table->date('dob');
+            $table->string('dob');
             $table->string('roll')->nullable();
             $table->string('blood_group');
             $table->string('religion');
