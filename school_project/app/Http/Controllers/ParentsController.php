@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use DB;
 class ParentsController extends Controller
 {
     /**
@@ -86,7 +86,6 @@ class ParentsController extends Controller
     ]);
 
     return redirect()->back()->with('success', 'Parent data inserted successfully.');
-}
 
     }
 

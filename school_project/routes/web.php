@@ -59,6 +59,7 @@ Route::get('/grid', 'UielementsController@grid')->name('grid');
 Route::get('/ui-tab', 'UielementsController@uitab')->name('uitab');
 Route::get('/ui-widget', 'UielementsController@uiwidget')->name('uiwidget');
 Route::get('/transport', 'TransportController@transport')->name('transport');
+Route::post('/transport', 'TransportController@store')->name('transport.store');
 Route::get('/map', 'MapController@map')->name('map');
 Route::get('/notice-board', 'NoticeController@noticeBoard')->name('noticeboard');
 Route::post('/notice-board', 'NoticeController@store')->name('noticeboard.store');

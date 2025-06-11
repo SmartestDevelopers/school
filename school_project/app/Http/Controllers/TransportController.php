@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use DB;
 class TransportController extends Controller
 {
     /**
@@ -40,7 +40,25 @@ class TransportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'route_name' => 'required|string|max:255',
+            'vehicle_no' => 'required|string|max:255',
+            'driver_name' => 'required|string|max:255',
+            'license_no' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+        ]);
+
+        \Illuminate\Support\Facades\DB::table('transports')->insert([
+            'route_name'  => $request->route_name,
+            'vehicle_no'  => $request->vehicle_no,
+            'driver_name' => $request->driver_name,
+            'license_no'  => $request->license_no,
+            'phone'       => $request->phone,
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Transport added successfully!');
     }
 
     /**

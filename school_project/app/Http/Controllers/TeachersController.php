@@ -3,95 +3,102 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; // Correct placement
 
 class TeachersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-     public function allTeacher()
+    public function allTeacher()
     {
         return view('teacher.allteachers');
-        
     }
 
     public function teacherDetails()
     {
         return view('teacher.teacherdetails');
     }
+
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
-        {
-            return view('teacher.addteacher');
-        }
-    
+    {
+        return view('teacher.addteacher');
+    }
+
     public function teacherPayment()
     {
         return view('teacher.teacherpayment');
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        //
+        // Validate request
+        $validated = $request->validate([
+            'first_name'    => 'required|string|max:255',
+            'last_name'     => 'required|string|max:255',
+            'gender'        => 'required|string',
+            'dob'           => 'required',
+            'id_no'         => 'nullable|string|max:50',
+            'blood_group'   => 'required|string',
+            'religion'      => 'required|string',
+            'email'         => 'nullable|email|unique:teachers,email',
+            'class'         => 'required|string',
+            'section'       => 'required|string',
+            'address'       => 'nullable|string',
+            'phone'         => 'nullable|string|max:20',
+            'bio'           => 'nullable|string',
+            'photo'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // File upload
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/teachers'), $filename);
+            $photoPath = 'uploads/teachers/' . $filename;
+        }
+
+        // Insert into database
+        DB::table('teachers')->insert([
+            'first_name'  => $request->first_name,
+            'last_name'   => $request->last_name,
+            'gender'      => $request->gender,
+            'dob'         => $request->dob,
+            'id_no'       => $request->id_no,
+            'blood_group' => $request->blood_group,
+            'religion'    => $request->religion,
+            'email'       => $request->email,
+            'class'       => $request->class,
+            'section'     => $request->section,
+            'address'     => $request->address,
+            'phone'       => $request->phone,
+            'bio'         => $request->bio,
+            'photo'       => $photoPath,
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Teacher added successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
