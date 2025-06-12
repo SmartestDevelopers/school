@@ -66,7 +66,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Blood Group *</label>
-                        <select name="blood_group" class="select2" required>
+                        <select name="blood_group" class="form-control" required>
                             <option value="">Please Select Group *</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Religion *</label>
-                        <select name="religion" class="select2" required>
+                        <select name="religion" class="form-control" required>
                             <option value="">Please Select Religion *</option>
                             <option value="Islam">Islam</option>
                             <option value="Hindu">Hindu</option>
@@ -95,7 +95,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Class *</label>
-                        <select name="class" class="select2" required>
+                        <select name="class" class="form-control" required>
                             <option value="">Please Select Class *</option>
                             <option value="ECE">ECE</option>
                             <option value="Prep">Prep</option>
@@ -113,7 +113,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Section *</label>
-                        <select name="section" class="select2" required>
+                        <select name="section" class="form-control" required>
                             <option value="">Please Select Section *</option>
                             <option value="Pink">Pink</option>
                             <option value="Green">Green</option>

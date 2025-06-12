@@ -30,6 +30,10 @@ Route::get('/view-student/{id}', 'StudentController@viewStudent');
 Route::get('/edit-student/{id}', 'StudentController@editStudent');
 Route::get('/delete-student/{id}', 'StudentController@deleteStudent');
 
+Route::get('/view-teacher/{id}', 'TeachersController@viewTeacher');
+Route::get('/edit-teacher/{id}', 'TeachersController@editTeacher');
+Route::get('/delete-teacher/{id}', 'TeachersController@deleteTeacher');
+
 Route::post('/admit-form', 'StudentController@store')->name('admitform.store');
 Route::get('/add-parent', 'ParentsController@create')->name('addparent');
 Route::post('/add-parent', 'ParentsController@store')->name('addparent.store');
