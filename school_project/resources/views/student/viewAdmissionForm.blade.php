@@ -61,11 +61,8 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Gender *</label>
                             <select class="form-control" name="gender">
-                                <option value="">Please Select Gender *</option>
-                                <option value="{{$getStudentByID->id}}">Male</option>
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
-                                <option value="3">Others</option>
+                                <option value="{{$getStudentByID->gender}}">{{$getStudentByID->gender}}</option>
+
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -81,26 +78,14 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Blood Group *</label>
                             <select class="form-control" name="blood_group">
-                                <option value="{{$getStudentByID->blood_group}}">Please Select Group *</option>
-                                <option value="1">A+</option>
-                                <option value="2">A-</option>
-                                <option value="3">B+</option>
-                                <option value="4">B-</option>
-                                <option value="5">O+</option>
-                                <option value="6">O-</option>
-                                <option value="7">AB+</option>
-                                <option value="8">AB-</option>
-                            </select>
+                                <option value="{{$getStudentByID->blood_group}}">{{$getStudentByID->blood_group}}</option>
+                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Religion *</label>
                             <select class="form-control" name="religion">
-                                <option value="{{$getStudentByID->religion}}">Please Select Religion *</option>
-                                <option value="1">Islam</option>
-                                <option value="2">Hindu</option>
-                                <option value="3">Christian</option>
-                                <option value="4">Buddish</option>
-                                <option value="5">Others</option>
+                                <option value="{{$getStudentByID->religion}}">{{$getStudentByID->religion}}</option>
+
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -110,32 +95,13 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Class *</label>
                             <select class="form-control" name="class">
-                                <option value="{{$getStudentByID->class}}">Please Select Class *</option>
-                                <option value="1">ECE</option>
-                                <option value="2">Prep</option>
-                                <option value="3">One</option>
-                                <option value="4">Two</option>
-                                <option value="5">Three</option>
-                                <option value="6">Four</option>
-                                <option value="7">Five</option>
-                                <option value="8">Six</option>
-                                <option value="9">Seven</option>
-                                <option value="10">Eight</option>
-                                <option value="11">Nine</option>
-                                <option value="12">Ten</option>>
+                                <option value="{{$getStudentByID->class}}">{{$getStudentByID->class}}</option>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Section *</label>
                             <select class="form-control" name="section">
-                                <option value="{{$getStudentByID->section}}">Please Select Section *</option>
-                                <option value="1">Pink</option>
-                                <option value="2">Green</option>
-                                <option value="3">Red</option>
-                                <option value="4">Orange</option>
-                                <option value="5">Blue</option>
-                                <option value="6">Silver</option>
-                                <option value="7">Yellow</option>
+                                <option value="{{$getStudentByID->section}}">{{$getStudentByID->section}}</option>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -212,7 +178,7 @@
                             </div>
                             <div class="item-content">
                                 <div class="header-inline item-header">
-                                    <h3 class="text-dark-medium font-medium">Jessia Rose</h3>
+                                    <h3 class="text-dark-medium font-medium">{{$getStudentByID->full_name}}</h3>
                                     <div class="header-elements">
                                         <ul>
                                             <li><a href="#"><i class="far fa-edit"></i></a></li>

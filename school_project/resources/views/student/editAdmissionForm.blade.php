@@ -61,10 +61,10 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Gender *</label>
                             <select class="form-control" name="gender">
-                                <option value="">Please Select Gender *</option>
-                                <option value="{{$getStudentByID->id}}">Male</option>
-                                <option value="{{$getStudentByID->id}}">Female</option>
-                                <option value="{{$getStudentByID->id}}">Others</option>
+                                <option value="{{$getStudentByID->gender}}">{{$getStudentByID->gender}}</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -80,26 +80,26 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Blood Group *</label>
                             <select class="form-control" name="blood_group">
-                                <option value="{{$getStudentByID->blood_group}}">Please Select Group *</option>
-                                <option value="1">A+</option>
-                                <option value="2">A-</option>
-                                <option value="3">B+</option>
-                                <option value="4">B-</option>
-                                <option value="5">O+</option>
-                                <option value="6">O-</option>
-                                <option value="7">AB+</option>
-                                <option value="8">AB-</option>
+                                <option value="{{$getStudentByID->blood_group}}">{{$getStudentByID->blood_group}}</option>
+                                <option value="A+">A+</option>
+                                <option value="B+">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O_">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Religion *</label>
                             <select class="form-control" name="religion">
-                                <option value="{{$getStudentByID->religion}}">Please Select Religion *</option>
-                                <option value="1">Islam</option>
-                                <option value="2">Hindu</option>
-                                <option value="3">Christian</option>
-                                <option value="4">Buddish</option>
-                                <option value="5">Others</option>
+                                <option value="{{$getStudentByID->religion}}">{{$getStudentByID->religion}}</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Hindu">Hindu</option>
+                                <option value="Christian">Christian</option>
+                                <option value="Buddhist">Buddist</option>
+                                <option value="Others">Others</option>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -109,32 +109,32 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Class *</label>
                             <select class="form-control" name="class">
-                                <option value="{{$getStudentByID->class}}">Please Select Class *</option>
-                                <option value="1">ECE</option>
-                                <option value="2">Prep</option>
-                                <option value="3">One</option>
-                                <option value="4">Two</option>
-                                <option value="5">Three</option>
-                                <option value="6">Four</option>
-                                <option value="7">Five</option>
-                                <option value="8">Six</option>
-                                <option value="9">Seven</option>
-                                <option value="10">Eight</option>
-                                <option value="11">Nine</option>
-                                <option value="12">Ten</option>>
+                                <option value="{{$getStudentByID->class}}">{{$getStudentByID->class}}</option>
+                                <option value="ECE">ECE</option>
+                                <option value="Prep">Prep</option>
+                                <option value="One">One</option>
+                                <option value="Two">Two</option>
+                                <option value="Three">Three</option>
+                                <option value="Four">Four</option>
+                                <option value="Five">Five</option>
+                                <option value="Six">Six</option>
+                                <option value="Seven">Seven</option>
+                                <option value="Eight">Eight</option>
+                                <option value="Nine">Nine</option>
+                                <option value="Ten">Ten</option>>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Section *</label>
                             <select class="form-control" name="section">
-                                <option value="{{$getStudentByID->section}}">Please Select Section *</option>
-                                <option value="1">Pink</option>
-                                <option value="2">Green</option>
-                                <option value="3">Red</option>
-                                <option value="4">Orange</option>
-                                <option value="5">Blue</option>
-                                <option value="6">Silver</option>
-                                <option value="7">Yellow</option>
+                                <option value="{{$getStudentByID->section}}">{{$getStudentByID->section}}</option>
+                                <option value="Pink">Pink</option>
+                                <option value="Green">Green</option>
+                                <option value="Red">Red</option>
+                                <option value="Orange">Orange</option>
+                                <option value="Blue">Blue</option>
+                                <option value="Silver">Silver</option>
+                                <option value="Yellow">Yellow</option>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -143,8 +143,8 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Admission ID</label>
-                            <input type="text" value="{{$getStudentByID->admission_id}}"
-                                class="form-control" name="admission_id">
+                            <input type="text" value="{{$getStudentByID->admission_id}}
+                                class="form-control" >
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Phone</label>
