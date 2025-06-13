@@ -6,7 +6,7 @@
         <h3>Parents</h3>
         <ul>
             <li><a href="{{ url('/') }}">Home</a></li>
-            <li>Add New Parents</li>
+            <li>Edit Parents</li>
         </ul>
     </div>
 
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Gender *</label>
-                        <select class="form-control" name="gender">
+                        <select class="form-control" name="parent_gender">
                             <option value="">Please Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -59,12 +59,12 @@
                         <input type="text" class="form-control"  name="spouse_occupation">
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>CNIC</label>
+                        <label>ID No</label>
                         <input type="text" class="form-control" name="id_no">
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Blood Group *</label>
-                        <select class="form-control"name="blood_group" >
+                        <select name="blood_group" class="form-control">
                             <option value="">Please Select</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Religion *</label>
-                        <select class="form-control" name="religion">
+                        <select name="religion" class="form-control">
                             <option value="">Please Select</option>
                             <option value="Islam">Islam</option>
                             <option value="Hindu">Hindu</option>

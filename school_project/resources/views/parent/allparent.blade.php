@@ -9,7 +9,7 @@
                         <li>
                             <a href="index.html">Home</a>
                         </li>
-                        <li>All Parents</li>
+                        <li>All Parents Data</li>
                     </ul>
                 </div>
                 <!-- Breadcubs Area End Here -->
@@ -61,30 +61,43 @@
                                             </div>
                                         </th>
                                         <th>Photo</th>
-                                        <th>Name</th>
+                                        <th>Full Name</th>
                                         <th>Gender</th>
-                                        <th>Occupation</th>
+                                        <th>Parent Occupation</th>
+                                        <th>Spouse Name</th>
+                                        <th>Spouse Occupation</th>
+                                        <th>CNIC</th>
+                                        <th>Blood Group</th>
+                                        <th>Religion</th>
+                                        <th>E-mail</th>
                                         <th>Address</th>
                                         <th>Phone</th>
-                                        <th>E-mail</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
+
+                                @foreach($parents_array as $row)
+
                                     <tr>
                                         <td>
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input">
-                                                <label class="form-check-label">#0021</label>
+                                                <label class="form-check-label">{{$row->id}}</label>
                                             </div>
                                         </td>
                                         <td class="text-center"><img src="img/figure/student2.png" alt="student"></td>
-                                        <td>Mark Willy</td>
-                                        <td>Male</td>
-                                        <td>Businessman</td>
-                                        <td>TA-107 Newyork</td>
-                                        <td>+ 123 9988568</td>
-                                        <td>kazifahim93@gmail.com</td>
+                                        <td>{{$row->full_name}}</td>
+                                        <td>{{$row->gender}}</td>
+                                        <td>{{$row->parent_occupation}}</td>
+                                        <td>{{$row->spouse_name}}</td>
+                                        <td>{{$row->spouse_occupation}}</td>
+                                        <td>{{$row->id_no}}</td>
+                                        <td>{{$row->blood_group}}</td>
+                                        <td>{{$row->religion}}</td>
+                                        <td>{{$row->email}}</td>
+                                        <td>{{$row->address}}</td>
+                                        <td>{{$row->phone}}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
@@ -92,23 +105,25 @@
                                                     <span class="flaticon-more-button-of-three-dots"></span>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#"><i
-                                                            class="fas fa-times text-orange-red"></i>Close</a>
-                                                    <a class="dropdown-item" href="#"><i
+                                                    <a class="dropdown-item" href="{{url('delete-parent/'.$row->id)}}"><i
+                                                            class="fas fa-times text-orange-red"></i>Delete</a>
+                                                    <a class="dropdown-item" href="{{url('edit-parent/'.$row->id)}}"><i
                                                             class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                                    <a class="dropdown-item" href="#"><i
-                                                            class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                                    <a class="dropdown-item" href="{{url('view-parent/'.$row->id)}}"><i
+                                                            class="fas fa-redo-alt text-orange-peel"></i>View</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
 
+                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
                 <!-- Teacher Table Area End Here -->
+
             </div>
         </div>
         <!-- Page Area End Here -->

@@ -30,7 +30,6 @@ Route::get('/admit-form', 'StudentController@create')->name('admitform');
 Route::get('/view-student/{id}', 'StudentController@viewStudent');
 Route::get('/edit-student/{id}', 'StudentController@editStudent');
 Route::post('/update-student', 'StudentController@updateStudent');
-
 Route::get('/delete-student/{id}', 'StudentController@deleteStudent');
 
 Route::get('/view-teacher/{id}', 'TeachersController@viewTeacher');
@@ -56,8 +55,13 @@ Route::get('/all-student', 'StudentController@allStudent')->name('allstudent');
 Route::get('/all-teacher', 'TeachersController@allTeacher')->name('allteacher');
 Route::get('/all-parents', 'ParentsController@allParent')->name('allparent');
 
+Route::get('/view-parent/{id}', 'ParentsController@viewParent');
+Route::get('/edit-parent/{id}', 'ParentsController@editParent');
+Route::post('/update-parent', 'ParentsController@updateParent');
+Route::get('/delete-parent/{id}', 'ParentsController@deleteParent');
+
 Route::get('/teacher-details', 'TeachersController@teacherDetails')->name('teacherdetails');
-Route::get('/parents-details', 'ParentsController@parentDetails')->name('parentdetails');
+
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');
 Route::get('/add-book', 'LibraryController@create')->name('addbook');

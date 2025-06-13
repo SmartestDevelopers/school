@@ -325,7 +325,7 @@
                                         Parents</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('parents-details')}}" class="nav-link"><i
+                                    <a href="{{ url('view-parent')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Parents Details</a>
                                 </li>
                                 <li class="nav-item">

@@ -15,17 +15,17 @@ class CreateParentsTable extends Migration
     {
         Schema::create('parents', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('full_name');
             $table->string('gender');
-            $table->string('occupation')->nullable();
+            $table->string('parent_occupation')->nullable();
+            $table->string('spouse_name');
+            $table->string('spouse_occupation')->nullable();
             $table->string('id_no')->nullable();
             $table->string('blood_group');
             $table->string('religion');
             $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->text('bio')->nullable();
             $table->string('photo')->nullable();
             $table->timestamps();
         });
