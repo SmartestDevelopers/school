@@ -15,13 +15,13 @@ class StudentController extends Controller
 
     public function allstudent()
     {
-        //echo "line 18";
+        // echo "line 18";
         //echo "<br>";
         $admission_forms_array = DB::table('admission_forms')->get();
-       // print_r($admission_forms);
+        //print_r($admission_forms_array);
         
-        
-       
+        //die();
+       // now i will go to see view file
         return view('student.allstudents', compact('admission_forms_array'));
     }
 
@@ -106,7 +106,8 @@ class StudentController extends Controller
         'updated_at'    => now(),
     ]);
 
-    return redirect()->back()->with('success', 'Student data saved using query builder.');
+    // return redirect()->back()->with('success', 'Student data saved using query builder.');
+    return redirect()->route('allstudent')->with('success', 'Student data saved successfully.');
 }
 
     
@@ -173,6 +174,29 @@ class StudentController extends Controller
      public function editStudent($id)
     {
         $getStudentByID = DB::table('admission_forms')->where('id', $id)->first();    
-        print_r($getStudentByID);
+        //print_r($getStudentByID);
+        return view('student.editAdmissionform', compact('getStudentByID'));
+
+    }
+
+    public function updateStudent(Request $request)
+    {
+        // Validate input\
+        //echo "line 185 updateStudent Method  / Function";
+        $mydata = $request->all();
+
+        //print_r( $mydata);
+
+        //update query for $mydata
+        DB::table('admission_forms')
+            ->where('id', $request->id)
+            ->update([
+                'first_name'    => $request->first_name,
+                'last_name'     => $request->last_name,
+            ]);
+
+            return redirect()->route('allstudent')->with('success', 'Student data updated successfully.');
+
+
     }
 }

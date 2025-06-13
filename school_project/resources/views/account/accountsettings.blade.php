@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>User Type *</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select*</option>
                                                 <option value="1">Super Admin</option>
                                                 <option value="2">Admin</option>
@@ -57,7 +57,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Gender *</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select Gender *</option>
                                                 <option value="1">Male</option>
                                                 <option value="2">Female</option>
@@ -74,13 +74,13 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Date Of Birth *</label>
-                                            <input type="text" placeholder="dd/mm/yyyy" class="form-control air-datepicker"
+                                            <input type="date" placeholder="dd/mm/yyyy" class="form-control air-datepicker"
                                                 data-position='bottom right'>
                                             <i class="far fa-calendar-alt"></i>
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Religion *</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select *</option>
                                                 <option value="1">Islam</option>
                                                 <option value="2">Christian</option>
@@ -91,7 +91,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Joining Data *</label>
-                                            <input type="text" placeholder="dd/mm/yyyy" class="form-control air-datepicker"
+                                            <input type="date" placeholder="dd/mm/yyyy" class="form-control air-datepicker"
                                                 data-position='bottom right'>
                                             <i class="far fa-calendar-alt"></i>
                                         </div>
@@ -101,7 +101,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Subject *</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select*</option>
                                                 <option value="1">Mathmetics</option>
                                                 <option value="2">English</option>
@@ -112,7 +112,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Class *</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select Class *</option>
                                                 <option value="1">Play</option>
                                                 <option value="2">Nursery</option>
@@ -125,7 +125,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Section *</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select Section *</option>
                                                 <option value="1">Pink</option>
                                                 <option value="2">Blue</option>

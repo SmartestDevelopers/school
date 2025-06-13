@@ -105,8 +105,8 @@
     /*-------------------------------------
           Select 2 Init
       -------------------------------------*/
-    if ($.fn.select2 !== undefined) {
-      $('.select2').select2({
+    if ($.fn.form-control !== undefined) {
+      $('.form-control').form-control({
         width: '100%'
       });
     }

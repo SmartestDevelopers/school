@@ -43,7 +43,7 @@
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Gender *</label>
-                        <select name="gender" class="select2">
+                        <select name="gender" class="form-control">
                             <option value="">Please Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -53,7 +53,7 @@
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Class *</label>
-                        <select name="class" class="select2">
+                        <select name="class" class="form-control">
                             <option value="">Please Select</option>
                             <option value="Play">Play</option>
                             <option value="Nursery">Nursery</option>
@@ -67,7 +67,7 @@
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Subject *</label>
-                        <select name="subject" class="select2">
+                        <select name="subject" class="form-control">
                             <option value="">Please Select</option>
                             <option value="English">English</option>
                             <option value="Mathematics">Mathematics</option>
@@ -90,7 +90,7 @@
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Section *</label>
-                        <select name="section" class="select2">
+                        <select name="section" class="form-control">
                             <option value="">Please Select</option>
                             <option value="Pink">Pink</option>
                             <option value="Green">Green</option>
@@ -109,7 +109,7 @@
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Date *</label>
-                        <input type="text" name="date" placeholder="dd/mm/yyyy" class="form-control air-datepicker" data-position="bottom right">
+                        <input type="date" name="date" placeholder="dd/mm/yyyy" class="form-control air-datepicker" data-position="bottom right">
                         <i class="far fa-calendar-alt"></i>
                     </div>
 

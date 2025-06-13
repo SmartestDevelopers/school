@@ -230,7 +230,7 @@
                                                     class="form-control">
                                             </div>
                                             <div class="col-lg-3 col-md-3 form-group">
-                                                <input type="text" placeholder="dd/mm/yyyy" class="form-control">
+                                                <input type="date" placeholder="dd/mm/yyyy" class="form-control">
                                             </div>
                                             <div class="col-lg-2 col-md-3 form-group">
                                                 <button type="submit"
@@ -568,7 +568,7 @@
                                                     class="form-control">
                                             </div>
                                             <div class="col-lg-3 col-md-3 form-group">
-                                                <input type="text" placeholder="dd/mm/yyyy" class="form-control">
+                                                <input type="date" placeholder="dd/mm/yyyy" class="form-control">
                                             </div>
                                             <div class="col-lg-2 col-md-3 form-group">
                                                 <button type="submit"

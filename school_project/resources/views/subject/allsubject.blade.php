@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="col-lg-6 col-12 form-group">
                                     <label>Subject Type *</label>
-                                    <select name="subject_type" class="select2" required>
+                                    <select name="subject_type" class="form-control" required>
                                         <option value="">Please Select</option>
                                         <option value="Optional">Optional</option>
                                         <option value="Compulsory">Compulsory</option>
@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col-lg-6 col-12 form-group">
                                     <label>Select Class *</label>
-                                    <select name="class" class="select2" required>
+                                    <select name="class" class="form-control" required>
                                         <option value="">Please Select</option>
                                         <option value="ECE">ECE</option>
                                         <option value="Prep">Prep</option>
@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="col-lg-6 col-12 form-group">
                                     <label>Select Code *</label>
-                                    <select name="code" class="select2" required>
+                                    <select name="code" class="form-control" required>
                                         <option value="">Please Select</option>
                                         <option value="00524">00524</option>
                                         <option value="00525">00525</option>

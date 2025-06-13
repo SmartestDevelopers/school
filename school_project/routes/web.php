@@ -29,6 +29,8 @@ Route::get('/admit-form', 'StudentController@create')->name('admitform');
 
 Route::get('/view-student/{id}', 'StudentController@viewStudent');
 Route::get('/edit-student/{id}', 'StudentController@editStudent');
+Route::post('/update-student', 'StudentController@updateStudent');
+
 Route::get('/delete-student/{id}', 'StudentController@deleteStudent');
 
 Route::get('/view-teacher/{id}', 'TeachersController@viewTeacher');
@@ -50,6 +52,7 @@ Route::post('/admit-form', 'StudentController@store')->name('admitform.store');
 Route::get('/add-parent', 'ParentsController@create')->name('addparent');
 Route::post('/add-parent', 'ParentsController@store')->name('addparent.store');
 Route::get('/all-student', 'StudentController@allStudent')->name('allstudent');
+// this all-student is showing blank page, 
 Route::get('/all-teacher', 'TeachersController@allTeacher')->name('allteacher');
 Route::get('/all-parents', 'ParentsController@allParent')->name('allparent');
 Route::get('/student-details', 'StudentController@studentDetails')->name('studentdetails');

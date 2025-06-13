@@ -48,7 +48,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Gender *</label>
-                        <select name="gender" class="select2" required>
+                        <select name="gender" class="form-control" required>
                             <option value="">Please Select Gender *</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Date Of Birth *</label>
-                        <input type="text" name="dob" placeholder="dd/mm/yyyy" class="form-control air-datepicker" required>
+                        <input type="date" name="dob" placeholder="dd/mm/yyyy" class="form-control air-datepicker" required>
                         <i class="far fa-calendar-alt"></i>
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">

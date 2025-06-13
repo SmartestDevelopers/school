@@ -37,7 +37,7 @@
                                     <div class="row">
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Select Class</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Select Class</option>
                                                 <option value="1">Nursery</option>
                                                 <option value="2">Play</option>
@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Select Section</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="0">Select Section</option>
                                                 <option value="1">A</option>
                                                 <option value="2">B</option>
@@ -58,7 +58,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Select Month</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="0">Select Month</option>
                                                 <option value="1">January</option>
                                                 <option value="2">February</option>
@@ -76,7 +76,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                                             <label>Select Session</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="0">Select Session</option>
                                                 <option value="1">2016-2017</option>
                                                 <option value="2">2017-20108</option>

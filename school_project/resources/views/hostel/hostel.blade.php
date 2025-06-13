@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <label>Room Type</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select</option>
                                                 <option value="1">Big</option>
                                                 <option value="2">Medium</option>
@@ -57,7 +57,7 @@
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <label>Number Of Bed</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select</option>
                                                 <option value="1">02</option>
                                                 <option value="2">03</option>

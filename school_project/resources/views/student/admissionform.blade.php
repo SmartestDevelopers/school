@@ -56,7 +56,7 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Gender *</label>
-                            <select class="select2" name="gender">
+                            <select class="form-control form-control" name="gender">
                                 <option value="">Please Select Gender *</option>
                                 <option value="1">Male</option>
                                 <option value="2">Female</option>
@@ -65,8 +65,8 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Date Of Birth *</label>
-                            <input type="text" name="dob" placeholder="dd/mm/yyyy" class="form-control air-datepicker"
-                                data-position='bottom right'>
+                            <input type="date" placeholder="dd/mm/yyyy" class="form-control air-datepicker"
+                                data-position='bottom right' name="dob">
                             <i class="far fa-calendar-alt"></i>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -75,7 +75,7 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Blood Group *</label>
-                            <select class="select2" name="blood_group">
+                            <select class="form-control form-control" name="blood_group">
                                 <option value="">Please Select Group *</option>
                                 <option value="1">A+</option>
                                 <option value="2">A-</option>
@@ -89,7 +89,7 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Religion *</label>
-                            <select class="select2" name="religion">
+                            <select class="form-control" name="religion">
                                 <option value="">Please Select Religion *</option>
                                 <option value="1">Islam</option>
                                 <option value="2">Hindu</option>
@@ -104,7 +104,7 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Class *</label>
-                            <select class="select2" name="class">
+                            <select class="form-control" name="class">
                                 <option value="">Please Select Class *</option>
                                 <option value="1">Play</option>
                                 <option value="2">Nursery</option>
@@ -117,7 +117,7 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Section *</label>
-                            <select class="select2" name="section">
+                            <select class="form-control" name="section">
                                 <option value="">Please Select Section *</option>
                                 <option value="1">Pink</option>
                                 <option value="2">Blue</option>

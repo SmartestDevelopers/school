@@ -35,7 +35,7 @@
                             <div class="row">
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Current Session *</label>
-                                    <select class="select2">
+                                    <select class="form-control">
                                         <option value="">2017-2018</option>
                                         <option value="1">2018-2019</option>
                                         <option value="2">2015-2016</option>
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Promote Session *</label>
-                                    <select class="select2">
+                                    <select class="form-control">
                                         <option value="">2017-2018</option>
                                         <option value="1">2018-2019</option>
                                         <option value="2">2015-2016</option>
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Promotion From Class *</label>
-                                    <select class="select2">
+                                    <select class="form-control">
                                         <option value="">Please Select *</option>
                                         <option value="1">Play</option>
                                         <option value="2">Nursery</option>
@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Promotion To Class *</label>
-                                    <select class="select2">
+                                    <select class="form-control">
                                         <option value="">Please Select *</option>
                                         <option value="1">Play</option>
                                         <option value="2">Nursery</option>

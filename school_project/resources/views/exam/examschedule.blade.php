@@ -44,7 +44,7 @@
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <label>Subject Type *</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select</option>
                                                 <option value="1">Bangla</option>
                                                 <option value="2">English</option>
@@ -55,7 +55,7 @@
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <label>Select Class *</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="0">Please Select</option>
                                                 <option value="1">Play</option>
                                                 <option value="2">Nursery</option>
@@ -66,7 +66,7 @@
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <label>Select Section</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="0">Please Select</option>
                                                 <option value="1">A</option>
                                                 <option value="2">B</option>
@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <label>Select Date</label>
-                                            <input type="text" placeholder="dd/mm/yyyy"
+                                            <input type="date" placeholder="dd/mm/yyyy"
                                                 class="form-control air-datepicker">
                                             <i class="far fa-calendar-alt"></i>
                                         </div>

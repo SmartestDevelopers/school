@@ -44,7 +44,7 @@
                                         </div>
                                         <div class="col-12-xxxl col-lg-6 col-12 form-group">
                                             <label>Grade Point</label>
-                                            <select class="select2">
+                                            <select class="form-control">
                                                 <option value="">Please Select</option>
                                                 <option value="1">4.00</option>
                                                 <option value="2">3.65</option>

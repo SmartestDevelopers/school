@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Gender *</label>
-                        <select name="gender" class="select2">
+                        <select name="gender" class="form-control">
                             <option value="">Please Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Blood Group *</label>
-                        <select name="blood_group" class="select2">
+                        <select name="blood_group" class="form-control">
                             <option value="">Please Select</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
@@ -73,7 +73,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Religion *</label>
-                        <select name="religion" class="select2">
+                        <select name="religion" class="form-control">
                             <option value="">Please Select</option>
                             <option value="Islam">Islam</option>
                             <option value="Hindu">Hindu</option>

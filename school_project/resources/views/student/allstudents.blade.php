@@ -51,12 +51,6 @@
                             </div>
                         </form>
                         <div class="table-responsive">
-
-                @php
-                    // print_r($admission_forms_array[0]);
-                @endphp
-
-
                             <table class="table display data-table text-nowrap">
                                 <thead>
                                     <tr>
