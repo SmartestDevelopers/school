@@ -70,7 +70,7 @@
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Blood Group *</label>
                         <select name="blood_group" class="form-control">
-                            <option value="{{$getParentByID->blood_group}}" >{{$getParentByID->blood_group}}</option>
+                            <option value="{{$getParentByID->blood_group}}">{{$getParentByID->blood_group}}</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
                             <option value="B+">B+</option>
@@ -84,7 +84,7 @@
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Religion *</label>
                         <select name="religion" class="form-control">
-                            <option value="{{$getParentByID->religion}}">{{$getParentByID->religion}}</option>
+                            <option value="{{$getParentByID->religion}}">{{$getParentByID->full_name}}</option>
                             <option value="Islam">Islam</option>
                             <option value="Hindu">Hindu</option>
                             <option value="Christian">Christian</option>
@@ -98,7 +98,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Address</label>
-                        <input type="text" value="{{$getParentByID->address}}" class="form-control"name="address" >
+                        <input type="text" value="{{$getParentByID->full_address}}" class="form-control"name="address" >
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Phone</label>
@@ -109,7 +109,7 @@
                         <input type="file" name="photo" class="form-control-file">
                     </div>
                     <div class="col-12 form-group mg-t-8">
-                        <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Update</button>
+                        <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
                         <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
                     </div>
                 </div>
