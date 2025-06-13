@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +30,21 @@ Route::get('/admit-form', 'StudentController@create')->name('admitform');
 Route::get('/view-student/{id}', 'StudentController@viewStudent');
 Route::get('/edit-student/{id}', 'StudentController@editStudent');
 Route::get('/delete-student/{id}', 'StudentController@deleteStudent');
+
+Route::get('/view-teacher/{id}', 'TeachersController@viewTeacher');
+Route::get('/edit-teacher/{id}', 'TeachersController@editTeacher');
+Route::get('/delete-teacher/{id}', 'TeachersController@deleteTeacher');
+
+// Show edit form (GET)
+Route::get('/edit-transport/{id}', 'TransportController@edit')->name('transport.edit');
+
+// Update transport (PUT or PATCH)
+Route::put('/update-transport/{id}', 'TransportController@update')->name('transport.update');
+
+// Delete transport (DELETE)
+Route::delete('/delete-transport/{id}', 'TransportController@destroy')->name('transport.destroy');
+
+
 
 Route::post('/admit-form', 'StudentController@store')->name('admitform.store');
 Route::get('/add-parent', 'ParentsController@create')->name('addparent');

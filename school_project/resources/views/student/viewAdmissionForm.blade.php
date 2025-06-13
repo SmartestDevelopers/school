@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Date Of Birth *</label>
-                            <input type="text" name="dob" placeholder="dd/mm/yyyy" value="{{$getStudentByID->dob}}" class="form-control air-datepicker"
+                            <input type="date" name="dob" placeholder="dd/mm/yyyy" value="{{$getStudentByID->dob}}" class="form-control air-datepicker"
                                 data-position='bottom right'>
                             <i class="far fa-calendar-alt"></i>
                         </div>
@@ -81,7 +81,7 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Blood Group *</label>
                             <select class="form-control" name="blood_group">
-                                <option value="">Please Select Group *</option>
+                                <option value="{{$getStudentByID->blood_group}}">Please Select Group *</option>
                                 <option value="1">A+</option>
                                 <option value="2">A-</option>
                                 <option value="3">B+</option>
@@ -95,7 +95,7 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Religion *</label>
                             <select class="form-control" name="religion">
-                                <option value="">Please Select Religion *</option>
+                                <option value="{{$getStudentByID->religion}}">Please Select Religion *</option>
                                 <option value="1">Islam</option>
                                 <option value="2">Hindu</option>
                                 <option value="3">Christian</option>
@@ -110,7 +110,7 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Class *</label>
                             <select class="form-control" name="class">
-                                <option value="">Please Select Class *</option>
+                                <option value="{{$getStudentByID->class}}">Please Select Class *</option>
                                 <option value="1">Play</option>
                                 <option value="2">Nursery</option>
                                 <option value="3">One</option>
@@ -123,7 +123,7 @@
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Section *</label>
                             <select class="form-control" name="section">
-                                <option value="">Please Select Section *</option>
+                                <option value="{{$getStudentByID->section}}">Please Select Section *</option>
                                 <option value="1">Pink</option>
                                 <option value="2">Blue</option>
                                 <option value="3">Bird</option>

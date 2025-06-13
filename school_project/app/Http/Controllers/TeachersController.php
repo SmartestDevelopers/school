@@ -7,9 +7,16 @@ use Illuminate\Support\Facades\DB; // Correct placement
 
 class TeachersController extends Controller
 {
-    public function allTeacher()
+    public function allteacher()
     {
-        return view('teacher.allteachers');
+        //echo "line 18";
+        //echo "<br>";
+        $addteachers_array = DB::table('teachers')->get();
+       // print_r($addteachers);
+        
+        
+       
+        return view('teacher.allteachers', compact('addteachers_array'));
     }
 
     public function teacherDetails()
@@ -102,5 +109,26 @@ class TeachersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function viewTeacher($id)
+    {
+        $getStudentByID = DB::table('admission_forms')->where('id', $id)->first();    
+        // print_r($getStudentByID);
+        return view('student.viewAdmissionform', compact('getStudentByID'));
+
+    }
+
+    public function deleteTeacher($id)
+    {
+        
+        DB::table('teachers')->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Teacher deleted successfully.');
+    }
+
+     public function editTeacher($id)
+    {
+        $getStudentByID = DB::table('teachers')->where('id', $id)->first();    
+        print_r($getStudentByID);
     }
 }
