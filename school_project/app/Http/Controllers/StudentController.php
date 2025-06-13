@@ -25,10 +25,6 @@ class StudentController extends Controller
         return view('student.allstudents', compact('admission_forms_array'));
     }
 
-    public function studentDetails()
-    {
-        return view('student.studentdetails');
-    }
 
     public function studentPromotion()
     {

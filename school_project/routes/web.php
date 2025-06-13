@@ -55,7 +55,7 @@ Route::get('/all-student', 'StudentController@allStudent')->name('allstudent');
 // this all-student is showing blank page, 
 Route::get('/all-teacher', 'TeachersController@allTeacher')->name('allteacher');
 Route::get('/all-parents', 'ParentsController@allParent')->name('allparent');
-Route::get('/student-details', 'StudentController@studentDetails')->name('studentdetails');
+
 Route::get('/teacher-details', 'TeachersController@teacherDetails')->name('teacherdetails');
 Route::get('/parents-details', 'ParentsController@parentDetails')->name('parentdetails');
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');

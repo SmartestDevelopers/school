@@ -284,11 +284,7 @@
                                 <li class="nav-item">
                                     <a href="{{ url('all-student')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Students</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('student-details')}}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Student Details</a>
-                                </li>
+                                </li>              
                                 <li class="nav-item">
                                     <a href="{{ url('admit-form')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Admission Form</a>
