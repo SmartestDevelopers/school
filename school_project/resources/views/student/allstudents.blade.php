@@ -85,12 +85,12 @@
                                             </div>
                                         </td>
                                         <td class="text-center"><img src="img/figure/student2.png" alt="student"></td>
-                                        <td>{{$row->first_name}} {{$row->last_name}}</td>
+                                        <td>{{$row->full_name}}</td>
                                         <td>{{$row->gender}}</td>
                                         <td>{{$row->class}}</td>
                                         <td>{{$row->section}}</td>
-                                        <td>Jack Sparrow </td>
-                                        <td>TA-107 Newyork</td>
+                                        <td>{{$row->parent_name}}</td>
+                                        <td>{{$row->address}}</td>
                                         <td>{{$row->dob}}</td>
                                         <td>{{$row->phone}}</td>
                                         <td>{{$row->email}}</td>

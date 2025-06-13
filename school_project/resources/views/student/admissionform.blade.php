@@ -56,7 +56,7 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Gender *</label>
-                            <select class="form-control form-control" name="gender">
+                            <select class="form-control" name="gender">
                                 <option value="">Please Select Gender *</option>
                                 <option value="1">Male</option>
                                 <option value="2">Female</option>
@@ -106,13 +106,18 @@
                             <label>Class *</label>
                             <select class="form-control" name="class">
                                 <option value="">Please Select Class *</option>
-                                <option value="1">Play</option>
-                                <option value="2">Nursery</option>
+                                <option value="1">ECE</option>
+                                <option value="2">Prep</option>
                                 <option value="3">One</option>
                                 <option value="4">Two</option>
                                 <option value="5">Three</option>
                                 <option value="6">Four</option>
                                 <option value="7">Five</option>
+                                <option value="8">Six</option>
+                                <option value="9">Seven</option>
+                                <option value="10">Eight</option>
+                                <option value="11">Nine</option>
+                                <option value="12">Ten</option>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -120,24 +125,27 @@
                             <select class="form-control" name="section">
                                 <option value="">Please Select Section *</option>
                                 <option value="1">Pink</option>
-                                <option value="2">Blue</option>
-                                <option value="3">Bird</option>
-                                <option value="4">Rose</option>
-                                <option value="5">Red</option>
+                                <option value="2">Green</option>
+                                <option value="3">Red</option>
+                                <option value="4">Orange</option>
+                                <option value="5">Blue</option>
+                                <option value="6">Silver</option>
+                                <option value="7">Yellow</option>
+                                
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Admission ID</label>
-                            <input type="text" name="admission_id" placeholder="" class="form-control">
+                            <input type="text" placeholder="" class="form-control" name="admission_id">
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Phone</label>
-                            <input type="text" name="phone" placeholder="" class="form-control">
+                            <input type="text" placeholder="" class="form-control" name="phone">
                         </div>
                         <div class="col-lg-6 col-12 form-group">
-                            <label>Short BIO</label>
-                            <textarea class="textarea form-control" name="bio" id="form-message" cols="10"
-                                rows="9"></textarea>
+                            <label>Address</label>
+                            <textarea class="textarea form-control" id="form-message" cols="10"
+                                rows="9" name="address"></textarea>
                         </div>
                         <div class="col-lg-6 col-12 form-group mg-t-30">
                             <label class="text-dark-medium">Upload Student Photo (150px X 150px)</label>

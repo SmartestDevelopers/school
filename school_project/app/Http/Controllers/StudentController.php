@@ -19,9 +19,9 @@ class StudentController extends Controller
         //echo "<br>";
         $admission_forms_array = DB::table('admission_forms')->get();
         //print_r($admission_forms_array);
-        
+
         //die();
-       // now i will go to see view file
+        // now i will go to see view file
         return view('student.allstudents', compact('admission_forms_array'));
     }
 
@@ -33,9 +33,9 @@ class StudentController extends Controller
 
     public function index()
     {
-        
+
         // here we will add table where we can see record inserted record, stored record
-        
+
     }
 
     /**
@@ -55,58 +55,60 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
-    public function store(Request $request)
-{
-    // Validate input
-    $request->validate([
-        'first_name' => 'required',
-        'last_name' => 'required',
-        'gender' => 'required',
-        'dob' => 'required',
-        'roll' => 'nullable',
-        'blood_group' => 'required',
-        'religion' => 'required',
-        'email' => 'nullable|email',
-        'class' => 'required',
-        'section' => 'required',
-        'admission_id' => 'nullable',
-        'phone' => 'nullable',
-        'bio' => 'nullable',
-        'photo' => 'nullable|image|max:2048',
-    ]);
 
-    // Handle file upload
-    $photoPath = null;
-    if ($request->hasFile('photo')) {
-        $photoPath = $request->file('photo')->store('student_photos', 'public');
+    public function store(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'full_name' => 'required',
+            'parent_name' => 'required',
+            'gender' => 'required',
+            'dob' => 'required',
+            'roll' => 'nullable',
+            'blood_group' => 'required',
+            'religion' => 'required',
+            'email' => 'nullable|email',
+            'class' => 'required',
+            'section' => 'required',
+            'teacher_name' => 'required',
+            'admission_id' => 'nullable',
+            'phone' => 'nullable',
+            'address' => 'nullable',
+            'photo' => 'nullable|image|max:2048',
+        ]);
+
+        // Handle file upload
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('student_photos', 'public');
+        }
+
+        // Insert into database using DB query
+        DB::table('admission_forms')->insert([
+            'full_name' => $request->full_name,
+            'parent_name' => $request->parent_name,
+            'gender' => $request->gender,
+            'dob' => $request->dob,
+            'roll' => $request->roll,
+            'blood_group' => $request->blood_group,
+            'religion' => $request->religion,
+            'email' => $request->email,
+            'class' => $request->class,
+            'section' => $request->section,
+            'teacher_name' => $request->teacher_name,
+            'admission_id' => $request->admission_id,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'photo' => $photoPath,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // return redirect()->back()->with('success', 'Student data saved using query builder.');
+        return redirect()->route('allstudent')->with('success', 'Student data saved successfully.');
     }
 
-    // Insert into database using DB query
-    DB::table('admission_forms')->insert([
-        'first_name'    => $request->first_name,
-        'last_name'     => $request->last_name,
-        'gender'        => $request->gender,
-        'dob'           => $request->dob,
-        'roll'          => $request->roll,
-        'blood_group'   => $request->blood_group,
-        'religion'      => $request->religion,
-        'email'         => $request->email,
-        'class'         => $request->class,
-        'section'       => $request->section,
-        'admission_id'  => $request->admission_id,
-        'phone'         => $request->phone,
-        'bio'           => $request->bio,
-        'photo'         => $photoPath,
-        'created_at'    => now(),
-        'updated_at'    => now(),
-    ]);
 
-    // return redirect()->back()->with('success', 'Student data saved using query builder.');
-    return redirect()->route('allstudent')->with('success', 'Student data saved successfully.');
-}
-
-    
     /**
      * Display the specified resource.
      *
@@ -154,7 +156,7 @@ class StudentController extends Controller
 
     public function viewStudent($id)
     {
-        $getStudentByID = DB::table('admission_forms')->where('id', $id)->first();    
+        $getStudentByID = DB::table('admission_forms')->where('id', $id)->first();
         // print_r($getStudentByID);
         return view('student.viewAdmissionform', compact('getStudentByID'));
 
@@ -162,14 +164,14 @@ class StudentController extends Controller
 
     public function deleteStudent($id)
     {
-        
+
         DB::table('admission_forms')->where('id', $id)->delete();
         return redirect()->back()->with('success', 'Student deleted successfully.');
     }
 
-     public function editStudent($id)
+    public function editStudent($id)
     {
-        $getStudentByID = DB::table('admission_forms')->where('id', $id)->first();    
+        $getStudentByID = DB::table('admission_forms')->where('id', $id)->first();
         //print_r($getStudentByID);
         return view('student.editAdmissionform', compact('getStudentByID'));
 
@@ -187,11 +189,23 @@ class StudentController extends Controller
         DB::table('admission_forms')
             ->where('id', $request->id)
             ->update([
-                'first_name'    => $request->first_name,
-                'last_name'     => $request->last_name,
+                'full_name' => $request->full_name,
+                'parent_name' => $request->parent_name,
+                'gender' => $request->gender,
+                'dob' => $request->dob,
+                'roll' => $request->roll,
+                'blood_group' => $request->blood_group,
+                'religion' => $request->religion,
+                'email' => $request->email,
+                'class' => $request->class,
+                'section' => $request->section,
+                'teacher_name' => $request->teacher_name,
+                'admission_id' => $request->admission_id,
+                'phone' => $request->phone,
+                'address' => $request->address,
             ]);
 
-            return redirect()->route('allstudent')->with('success', 'Student data updated successfully.');
+        return redirect()->route('allstudent')->with('success', 'Student data updated successfully.');
 
 
     }

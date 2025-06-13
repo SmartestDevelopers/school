@@ -51,12 +51,12 @@
                     @csrf
                     <div class="row">
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
-                            <label>First Name *</label>
-                            <input type="text" name="first_name" value="{{$getStudentByID->first_name}}"  class="form-control">
+                            <label>Full Name *</label>
+                            <input type="text" value="{{$getStudentByID->full_name}}"  class="form-control" name="full_name">
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
-                            <label>Last Name *</label>
-                            <input type="text" name="last_name" value="{{$getStudentByID->last_name}}" class="form-control">
+                            <label>Parent Name *</label>
+                            <input type="text" value="{{$getStudentByID->parent_name}}" class="form-control" name="parent_name">
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Gender *</label>
@@ -70,13 +70,13 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Date Of Birth *</label>
-                            <input type="date" name="dob" placeholder="dd/mm/yyyy" value="{{$getStudentByID->dob}}" class="form-control air-datepicker"
-                                data-position='bottom right'>
+                            <input type="date" placeholder="dd/mm/yyyy" value="{{$getStudentByID->dob}}" class="form-control air-datepicker"
+                                data-position='bottom right' name="dob">
                             <i class="far fa-calendar-alt"></i>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Roll</label>
-                            <input type="text" name="roll" value="{{$getStudentByID->roll}}" class="form-control">
+                            <input type="text" value="{{$getStudentByID->roll}}" class="form-control" name="roll">
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Blood Group *</label>
@@ -105,19 +105,24 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>E-Mail</label>
-                            <input type="email" name="email" value="{{$getStudentByID->email}}" class="form-control">
+                            <input type="email" value="{{$getStudentByID->email}}" class="form-control" name="email">
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Class *</label>
                             <select class="form-control" name="class">
                                 <option value="{{$getStudentByID->class}}">Please Select Class *</option>
-                                <option value="1">Play</option>
-                                <option value="2">Nursery</option>
+                                <option value="1">ECE</option>
+                                <option value="2">Prep</option>
                                 <option value="3">One</option>
                                 <option value="4">Two</option>
                                 <option value="5">Three</option>
                                 <option value="6">Four</option>
                                 <option value="7">Five</option>
+                                <option value="8">Six</option>
+                                <option value="9">Seven</option>
+                                <option value="10">Eight</option>
+                                <option value="11">Nine</option>
+                                <option value="12">Ten</option>>
                             </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -125,11 +130,17 @@
                             <select class="form-control" name="section">
                                 <option value="{{$getStudentByID->section}}">Please Select Section *</option>
                                 <option value="1">Pink</option>
-                                <option value="2">Blue</option>
-                                <option value="3">Bird</option>
-                                <option value="4">Rose</option>
-                                <option value="5">Red</option>
+                                <option value="2">Green</option>
+                                <option value="3">Red</option>
+                                <option value="4">Orange</option>
+                                <option value="5">Blue</option>
+                                <option value="6">Silver</option>
+                                <option value="7">Yellow</option>
                             </select>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 col-12 form-group">
+                            <label>Teacher Name *</label>
+                            <input type="text" value="{{$getStudentByID->teacher_name}}" class="form-control" name="teacher_name">
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Admission ID</label>
@@ -137,12 +148,12 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Phone</label>
-                            <input type="text" name="phone" value="{{$getStudentByID->phone}}" class="form-control">
+                            <input type="text" value="{{$getStudentByID->phone}}" class="form-control" name="phone">
                         </div>
                         <div class="col-lg-6 col-12 form-group">
-                            <label>Short BIO</label>
-                            <textarea class="textarea form-control" name="bio" id="form-message" cols="10"
-                                rows="9"></textarea>
+                            <label>Address</label>
+                            <textarea class="textarea form-control" id="form-message" cols="10"
+                                rows="9" name="address"></textarea>
                         </div>
                         <div class="col-lg-6 col-12 form-group mg-t-30">
                             <label class="text-dark-medium">Upload Student Photo (150px X 150px)</label>
@@ -182,7 +193,7 @@
                     <div class="card-body">
                         <div class="heading-layout1">
                             <div class="item-title">
-                                <h3>About Me</h3>
+                                <h3>Student Details</h3>
                             </div>
                            <div class="dropdown">
                                 <a class="dropdown-toggle" href="#" role="button" 
@@ -210,28 +221,21 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <p>Aliquam erat volutpat. Curabiene natis massa sedde lacu stiquen sodale 
-                                word moun taiery.Aliquam erat volutpaturabiene natis massa sedde  sodale 
-                                word moun taiery.</p>
                                 <div class="info-table table-responsive">
                                     <table class="table text-nowrap">
                                         <tbody>
                                             <tr>
                                                 <td>Name:</td>
-                                                <td class="font-medium text-dark-medium">{{$getStudentByID->first_name}} , {{$getStudentByID->last_name}}</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->full_name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Parent Name:</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->parent_name}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Gender:</td>
                                                 <td class="font-medium text-dark-medium">{{$getStudentByID->gender}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Father Name:</td>
-                                                <td class="font-medium text-dark-medium">Steve Jones</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mother Name:</td>
-                                                <td class="font-medium text-dark-medium">Naomi Rose</td>
-                                            </tr>
+                                            </tr>>
                                             <tr>
                                                 <td>Date Of Birth:</td>
                                                 <td class="font-medium text-dark-medium">{{$getStudentByID->dob}}</td>
@@ -241,36 +245,38 @@
                                                 <td class="font-medium text-dark-medium">{{$getStudentByID->religion}}</td>
                                             </tr>
                                             <tr>
-                                                <td>Father Occupation:</td>
-                                                <td class="font-medium text-dark-medium">Graphic Designer</td>
-                                            </tr>
-                                            <tr>
                                                 <td>E-mail:</td>
-                                                <td class="font-medium text-dark-medium">jessiarose@gmail.com</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->email}}</td>
                                             </tr>
                                             <tr>
-                                                <td>Admission Date:</td>
-                                                <td class="font-medium text-dark-medium">07.08.2019</td>
+                                                <td>Blood Group:</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->blood_group}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Class:</td>
-                                                <td class="font-medium text-dark-medium">2</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->class}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Section:</td>
-                                                <td class="font-medium text-dark-medium">Pink</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->section}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Teacher Name:</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->teacher_name}}</td>
                                             </tr>
                                             <tr>
                                                 <td>Roll:</td>
-                                                <td class="font-medium text-dark-medium">10005</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->roll}}</td>
+                                            </tr></td>
                                             </tr>
                                             <tr>
                                                 <td>Address:</td>
-                                                <td class="font-medium text-dark-medium">House #10, Road #6, Australia</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->address}}</td>
+                                            </tr></td>
                                             </tr>
                                             <tr>
                                                 <td>Phone:</td>
-                                                <td class="font-medium text-dark-medium">+ 88 98568888418</td>
+                                                <td class="font-medium text-dark-medium">{{$getStudentByID->address}}</td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -15,8 +15,8 @@ class CreateAdmissionFormsTable extends Migration
     {
         Schema::create('admission_forms', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('full_name');
+            $table->string('parent_name');
             $table->string('gender');
             $table->string('dob');
             $table->string('roll')->nullable();
@@ -25,9 +25,10 @@ class CreateAdmissionFormsTable extends Migration
             $table->string('email')->nullable();
             $table->string('class');
             $table->string('section');
+            $table->string('teacher_name');
             $table->string('admission_id')->nullable();
             $table->string('phone')->nullable();
-            $table->text('bio')->nullable();
+            $table->text('address')->nullable();
             $table->string('photo')->nullable(); // stores image path
             $table->timestamps();
         });
