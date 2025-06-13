@@ -111,24 +111,26 @@ class TeachersController extends Controller
         //
     }
 
-    public function viewTeacher($id)
+    public function viewTeachers($id)
     {
-        $getStudentByID = DB::table('admission_forms')->where('id', $id)->first();    
+        $getTeacherByID = DB::table('teachers')->where('id', $id)->first();    
         // print_r($getStudentByID);
-        return view('student.viewAdmissionform', compact('getStudentByID'));
+        return view('student.viewTeachers', compact('getTeacherByID'));
 
     }
 
-    public function deleteTeacher($id)
+    public function deleteTeachers($id)
     {
         
         DB::table('teachers')->where('id', $id)->delete();
         return redirect()->back()->with('success', 'Teacher deleted successfully.');
     }
 
-     public function editTeacher($id)
+     public function editTeachers($id)
     {
-        $getStudentByID = DB::table('teachers')->where('id', $id)->first();    
-        print_r($getStudentByID);
+        $getTeacherByID = DB::table('teachers')->where('id', $id)->first();    
+        //print_r($getStudentByID);
+        return view('student.editTeachers', compact('getTeacherByID'));
+
     }
 }
