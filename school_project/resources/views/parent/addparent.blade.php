@@ -33,16 +33,12 @@
                 @csrf
                 <div class="row">
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>First Name *</label>
-                        <input type="text" name="first_name" class="form-control">
-                    </div>
-                    <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Last Name *</label>
-                        <input type="text" name="last_name" class="form-control">
+                        <label>Full Name *</label>
+                        <input type="text" class="form-control" name="full_name">
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Gender *</label>
-                        <select name="gender" class="form-control">
+                        <select class="form-control" name="parent_gender">
                             <option value="">Please Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -50,12 +46,25 @@
                         </select>
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
-                        <label>Occupation</label>
-                        <input type="text" name="occupation" class="form-control">
+                        <label>Parent Occupation *</label>
+                        <input type="text" class="form-control"  name="parent_occupation">
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Spouse Name*</label>
+                        <input type="text" class="form-control"  name="spouse_name">
+                    </div>
+                    
+                    <div class="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Spouse Occupation *</label>
+                        <input type="text" class="form-control"  name="spouse_occupation">
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-12 form-group">
+                        <label>Number of Children Enrolled in Our School*</label>
+                        <input type="text" class="form-control"  name="enrolled_children_">
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>ID No</label>
-                        <input type="text" name="id_no" class="form-control">
+                        <input type="text" class="form-control" name="id_no">
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Blood Group *</label>
@@ -84,19 +93,15 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>E-Mail</label>
-                        <input type="email" name="email" class="form-control">
+                        <input type="email" class="form-control" name="email">
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Address</label>
-                        <input type="text" name="address" class="form-control">
+                        <input type="text" class="form-control"name="address" >
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Phone</label>
-                        <input type="text" name="phone" class="form-control">
-                    </div>
-                    <div class="col-lg-6 col-12 form-group">
-                        <label>Short BIO</label>
-                        <textarea name="bio" class="textarea form-control" cols="10" rows="9"></textarea>
+                        <input type="text" class="form-control"name="phone" >
                     </div>
                     <div class="col-lg-6 col-12 form-group mg-t-30">
                         <label class="text-dark-medium">Upload Photo</label>
