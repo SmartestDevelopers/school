@@ -167,7 +167,6 @@ class ParentsController extends Controller
             ->where('id', $request->id)
             ->update([
                 'full_name' => $request->full_name,
-                'parent_name' => $request->parent_name,
                 'gender' => $request->gender,
                 'parent_occupation' => $request->parent_occupation,
                 'spouse_name' => $request->spouse_name,
