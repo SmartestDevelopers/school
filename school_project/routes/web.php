@@ -32,8 +32,9 @@ Route::get('/edit-student/{id}', 'StudentController@editStudent');
 Route::post('/update-student', 'StudentController@updateStudent');
 Route::get('/delete-student/{id}', 'StudentController@deleteStudent');
 
-Route::get('/view-teacher/{id}', 'TeachersController@viewTeacher');
+Route::get('/view-teacher/{id}', 'TeachersController@viewTeacher')->name('viewTeacher');
 Route::get('/edit-teacher/{id}', 'TeachersController@editTeacher');
+Route::post('/update-teacher', 'TeachersController@updateTeacher')->name('updateTeacher');
 Route::get('/delete-teacher/{id}', 'TeachersController@deleteTeacher');
 
 // Show edit form (GET)
@@ -57,7 +58,7 @@ Route::get('/all-parents', 'ParentsController@allParent')->name('allparent');
 
 Route::get('/view-parent/{id}', 'ParentsController@viewParent');
 Route::get('/edit-parent/{id}', 'ParentsController@editParent');
-Route::post('/update-parent', 'ParentsController@updateParent');
+Route::post('/update-parent', 'ParentsController@updateParent')->name('update-parent');
 Route::get('/delete-parent/{id}', 'ParentsController@deleteParent');
 
 Route::get('/teacher-details', 'TeachersController@teacherDetails')->name('teacherdetails');

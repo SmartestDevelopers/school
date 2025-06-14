@@ -304,10 +304,6 @@
                                         Teachers</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('teacher-details')}}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Teacher Details</a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="{{ url('add-teacher')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add
                                         Teacher</a>
                                 </li>
@@ -323,10 +319,6 @@
                                 <li class="nav-item">
                                     <a href="{{ url('all-parents')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Parents</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('view-parent')}}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Parents Details</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('add-parent')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add

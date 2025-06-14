@@ -98,7 +98,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Address</label>
-                        <input type="text" value="{{$getParentByID->full_address}}" class="form-control"name="address" >
+                        <input type="text" value="{{$getParentByID->address}}" class="form-control"name="address" >
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Phone</label>

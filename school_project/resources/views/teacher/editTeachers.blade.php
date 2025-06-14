@@ -35,21 +35,23 @@
                     </div>
                 @endif
                 
-            <form action="{{ route('addteacher.store') }}" method="POST" enctype="multipart/form-data" class="new-added-form">
+            <form action="{{ route('updateTeacher') }}" method="POST" enctype="multipart/form-data" class="new-added-form">
                 @csrf
+                <input type="hidden" name="id" value="{{$getTeacherByID->id}}">
+                    <div class="row"></div>
                 <div class="row">
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>First Name *</label>
-                        <input type="text" name="first_name" class="form-control" required>
+                        <input type="text" value="{{$getTeacherByID->first_name}}" class="form-control"  name="first_name" required>
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Last Name *</label>
-                        <input type="text" name="last_name" class="form-control" required>
+                        <input type="text" value="{{$getTeacherByID->last_name}}" class="form-control" name="last_name" required>
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Gender *</label>
-                        <select name="gender" class="form-control" required>
-                            <option value="">Please Select Gender *</option>
+                        <select class="form-control" name="gender" required>
+                            <option value="{{$getTeacherByID->gender}}" >{{$getTeacherByID->gender}}</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Others">Others</option>
@@ -57,17 +59,17 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Date Of Birth *</label>
-                        <input type="date" name="dob" placeholder="dd/mm/yyyy" class="form-control air-datepicker" required>
+                        <input type="date" placeholder="dd/mm/yyyy" value="{{$getTeacherByID->dob}}" class="form-control air-datepicker" name="dob">
                         <i class="far fa-calendar-alt"></i>
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>ID No</label>
-                        <input type="text" name="id_no" class="form-control">
+                        <input type="text" value="{{$getTeacherByID->id_no}}" class="form-control" name="id_no">
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Blood Group *</label>
-                        <select name="blood_group" class="form-control" required>
-                            <option value="">Please Select Group *</option>
+                        <select class="form-control" name="blood_group" required>
+                            <option value="{{$getTeacherByID->blood_group}}">{{$getTeacherByID->blood_group}}</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
                             <option value="B+">B+</option>
@@ -80,8 +82,8 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Religion *</label>
-                        <select name="religion" class="form-control" required>
-                            <option value="">Please Select Religion *</option>
+                        <select class="form-control" name="religion" required>
+                            <option value="{{$getTeacherByID->religion}}">{{$getTeacherByID->religion}}</option>
                             <option value="Islam">Islam</option>
                             <option value="Hindu">Hindu</option>
                             <option value="Christian">Christian</option>
@@ -91,12 +93,12 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>E-Mail</label>
-                        <input type="email" name="email" class="form-control">
+                        <input type="email" value="{{$getTeacherByID->email}}" class="form-control" name="email">
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Class *</label>
                         <select name="class" class="form-control" required>
-                            <option value="">Please Select Class *</option>
+                            <option value="{{$getTeacherByID->class}}">{{$getTeacherByID->class}}</option>
                             <option value="ECE">ECE</option>
                             <option value="Prep">Prep</option>
                             <option value="One">One</option>
@@ -114,7 +116,7 @@
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Section *</label>
                         <select name="section" class="form-control" required>
-                            <option value="">Please Select Section *</option>
+                            <option value="{{$getTeacherByID->section}}">{{$getTeacherByID->section}}</option>
                             <option value="Pink">Pink</option>
                             <option value="Green">Green</option>
                             <option value="Red">Red</option>
@@ -127,15 +129,12 @@
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Address</label>
-                        <input type="text" name="address" class="form-control">
+                        <input type="text" value="{{$getTeacherByID->address}}" name="address" class="form-control">
                     </div>
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Phone</label>
-                        <input type="text" name="phone" class="form-control">
+                        <input type="text" value="{{$getTeacherByID->phone}}" class="form-control" name="phone">
                     </div>
-                    <div class="col-lg-6 col-12 form-group">
-                        <label>Short BIO</label>
-                        <textarea name="bio" class="textarea form-control" cols="10" rows="9"></textarea>
                     </div>
                     <div class="col-lg-6 col-12 form-group mg-t-30">
                         <label class="text-dark-medium">Upload Teacher Photo (150px X 150px)</label>

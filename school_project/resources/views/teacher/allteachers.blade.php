@@ -64,8 +64,10 @@
                                 <th>Photo</th>
                                 <th>Name</th>
                                 <th>Gender</th>
+                                <th>ID Number</th>
+                                <th>Blood Group</th>
+                                <th>Religion</th>
                                 <th>Class</th>
-                                <th>Subject</th>
                                 <th>Section</th>
                                 <th>Address</th>
                                 <th>Phone</th>
@@ -86,10 +88,12 @@
                                     <td class="text-center"><img src="img/figure/student2.png" alt="student"></td>
                                     <td>{{$row->first_name}} {{$row->last_name}}</td>
                                     <td>{{$row->gender}}</td>
+                                    <td>{{$row->id_no}}</td>
+                                    <td>{{$row->blood_group}}</td>
+                                    <td>{{$row->religion}}</td>
                                     <td>{{$row->class}}</td>
-                                    <td>English</td>
                                     <td>{{$row->section}}</td>
-                                    <td>TA-107 Newyork</td>
+                                    <td>{{$row->address}}</td>
                                     <td>{{$row->phone}}</td>
                                     <td>{{$row->email}}</td>
                                     <td>

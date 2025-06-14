@@ -133,10 +133,6 @@
                         <label>Phone</label>
                         <input type="text" name="phone" class="form-control">
                     </div>
-                    <div class="col-lg-6 col-12 form-group">
-                        <label>Short BIO</label>
-                        <textarea name="bio" class="textarea form-control" cols="10" rows="9"></textarea>
-                    </div>
                     <div class="col-lg-6 col-12 form-group mg-t-30">
                         <label class="text-dark-medium">Upload Teacher Photo (150px X 150px)</label>
                         <input type="file" name="photo" class="form-control-file">

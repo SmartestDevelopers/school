@@ -12,10 +12,10 @@ class TeachersController extends Controller
         //echo "line 18";
         //echo "<br>";
         $addteachers_array = DB::table('teachers')->get();
-       // print_r($addteachers);
-        
-        
-       
+        // print_r($addteachers);
+
+
+
         return view('teacher.allteachers', compact('addteachers_array'));
     }
 
@@ -43,20 +43,19 @@ class TeachersController extends Controller
     {
         // Validate request
         $validated = $request->validate([
-            'first_name'    => 'required|string|max:255',
-            'last_name'     => 'required|string|max:255',
-            'gender'        => 'required|string',
-            'dob'           => 'required',
-            'id_no'         => 'nullable|string|max:50',
-            'blood_group'   => 'required|string',
-            'religion'      => 'required|string',
-            'email'         => 'nullable|email|unique:teachers,email',
-            'class'         => 'required|string',
-            'section'       => 'required|string',
-            'address'       => 'nullable|string',
-            'phone'         => 'nullable|string|max:20',
-            'bio'           => 'nullable|string',
-            'photo'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'gender' => 'required|string',
+            'dob' => 'required',
+            'id_no' => 'nullable|string|max:50',
+            'blood_group' => 'required|string',
+            'religion' => 'required|string',
+            'email' => 'nullable|email|unique:teachers,email',
+            'class' => 'required|string',
+            'section' => 'required|string',
+            'address' => 'nullable|string',
+            'phone' => 'nullable|string|max:20',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // File upload
@@ -70,22 +69,21 @@ class TeachersController extends Controller
 
         // Insert into database
         DB::table('teachers')->insert([
-            'first_name'  => $request->first_name,
-            'last_name'   => $request->last_name,
-            'gender'      => $request->gender,
-            'dob'         => $request->dob,
-            'id_no'       => $request->id_no,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'gender' => $request->gender,
+            'dob' => $request->dob,
+            'id_no' => $request->id_no,
             'blood_group' => $request->blood_group,
-            'religion'    => $request->religion,
-            'email'       => $request->email,
-            'class'       => $request->class,
-            'section'     => $request->section,
-            'address'     => $request->address,
-            'phone'       => $request->phone,
-            'bio'         => $request->bio,
-            'photo'       => $photoPath,
-            'created_at'  => now(),
-            'updated_at'  => now(),
+            'religion' => $request->religion,
+            'email' => $request->email,
+            'class' => $request->class,
+            'section' => $request->section,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'photo' => $photoPath,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return redirect()->back()->with('success', 'Teacher added successfully!');
@@ -111,26 +109,58 @@ class TeachersController extends Controller
         //
     }
 
-    public function viewTeachers($id)
+    public function viewTeacher($id)
     {
-        $getTeacherByID = DB::table('teachers')->where('id', $id)->first();    
+        $getTeacherByID = DB::table('teachers')->where('id', $id)->first();
         // print_r($getStudentByID);
-        return view('student.viewTeachers', compact('getTeacherByID'));
+        return view('teacher.viewTeacher', compact('getTeacherByID'));
 
     }
 
-    public function deleteTeachers($id)
+    public function deleteTeacher($id)
     {
-        
+
         DB::table('teachers')->where('id', $id)->delete();
         return redirect()->back()->with('success', 'Teacher deleted successfully.');
     }
 
-     public function editTeachers($id)
+    public function editTeacher($id)
     {
-        $getTeacherByID = DB::table('teachers')->where('id', $id)->first();    
+        $getTeacherByID = DB::table('teachers')->where('id', $id)->first();
         //print_r($getStudentByID);
-        return view('student.editTeachers', compact('getTeacherByID'));
+        return view('teacher.editTeachers', compact('getTeacherByID'));
+
+    }
+
+    public function updateTeacher(Request $request)
+    {
+        // Validate input\
+        //echo "line 185 updateStudent Method  / Function";
+        $mydata = $request->all();
+
+        //print_r( $mydata);
+
+        //update query for $mydata
+        DB::table('teachers')
+            ->where('id', $request->id)
+            ->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'gender' => $request->gender,
+                'dob' => $request->dob,
+                'id_no' => $request->id_no,
+                'blood_group' => $request->blood_group,
+                'religion' => $request->religion,
+                'email' => $request->email,
+                'class' => $request->class,
+                'section' => $request->section,
+                'address' => $request->address,
+                'phone' => $request->phone,
+
+            ]);
+
+        return redirect()->route('allteacher')->with('success', 'Teacher data updated successfully.');
+
 
     }
 }
