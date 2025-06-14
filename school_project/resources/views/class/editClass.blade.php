@@ -7,7 +7,7 @@
         <h3>Classes</h3>
         <ul>
             <li><a href="{{ url('/') }}">Home</a></li>
-            <li>Add New Class</li>
+            <li>Edit Class</li>
         </ul>
     </div>
 
@@ -16,7 +16,7 @@
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>Add New Class Schedule</h3>
+                    <h3>Edit Class Schedule</h3>
                 </div>
                 <div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -28,35 +28,25 @@
                 </div>
             </div>
 
-            <!-- Success message -->
-                @if (session('success'))
-                    <div class="alert alert-success mt-2">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-danger mt-2">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
-            <form class="new-added-form" method="POST" action="{{ route('class.store') }}">
+            <form class="new-added-form" method="POST" action="{{ route('updateClass') }}">
                 @csrf
+                <input type="hidden" name="id" value="{{$getClassByID->id}}">
+                    <div class="row"></div>
                 <div class="row">
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Teacher Name *</label>
-                        <input type="text" class="form-control" name="teacher_name">
+                        <input type="text" value="{{$getClassByID->teacher_name}}" class="form-control" name="teacher_name">
                     </div>
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>ID No</label>
-                        <input type="text" name="id_no" class="form-control">
+                        <input type="text" value="{{$getClassByID->id_no}}" name="id_no" class="form-control">
                     </div>
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Gender *</label>
                         <select class="form-control" name="gender">
-                            <option value="">Please Select</option>
+                            <option value="{{$getClassByID->gender}}">{{$getClassByID->gender}}</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Others">Others</option>
@@ -66,7 +56,7 @@
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Class *</label>
                             <select class="form-control" name="class">
-                                <option value="">Please Select Class *</option>
+                                <option value="{{$getClassByID->class}}">{{$getClassByID->class}}</option>
                                 <option value="ECE">ECE</option>
                                 <option value="Prep">Prep</option>
                                 <option value="One">One</option>
@@ -85,7 +75,7 @@
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Subject *</label>
                         <select class="form-control" name="subject">
-                            <option value="">Please Select</option>
+                            <option value="{{$getClassByID->subject}}">{{$getClassByID->subject}}</option>
                             <option value="English">English</option>
                             <option value="Mathematics">Mathematics</option>
                             <option value="Physics">Physics</option>
@@ -108,7 +98,7 @@
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Section *</label>
                         <select class="form-control" name="section">
-                            <option value="">Please Select</option>
+                            <option value="{{$getClassByID->section}}">{{$getClassByID->section}}</option>
                             <option value="Pink">Pink</option>
                             <option value="Green">Green</option>
                             <option value="Red">Red</option>
@@ -121,29 +111,29 @@
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Time *</label>
-                        <input type="text" class="form-control" name="time">
+                        <input type="text" value="{{$getClassByID->time}}" class="form-control" name="time">
                     </div>
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Date *</label>
-                        <input type="date" placeholder="dd/mm/yyyy" class="form-control air-datepicker" data-position="bottom right" name="date">
+                        <input type="date" value="{{$getClassByID->date}}" placeholder="dd/mm/yyyy" class="form-control air-datepicker" data-position="bottom right" name="date">
                         <i class="far fa-calendar-alt"></i>
                     </div>
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>Phone *</label>
-                        <input type="text" class="form-control" name="phone">
+                        <input type="text" value="{{$getClassByID->phone}}" class="form-control" name="phone">
                     </div>
 
                     <div class="col-xl-3 col-lg-6 col-12 form-group">
                         <label>E-Mail *</label>
-                        <input type="email" class="form-control" name="email">
+                        <input type="email" value="{{$getClassByID->email}}" class="form-control" name="email">
                     </div>
 
                     <div class="col-md-6 form-group"></div>
 
                     <div class="col-12 form-group mg-t-8">
-                        <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Save</button>
+                        <button type="submit" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">Update</button>
                         <button type="reset" class="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
                     </div>
                 </div>

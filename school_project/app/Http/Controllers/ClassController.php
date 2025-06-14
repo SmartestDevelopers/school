@@ -13,7 +13,8 @@ class ClassController extends Controller
      */
     public function allClass()
     {
-        return view('class.allclass');
+        $class_array = DB::table('class_forms')->get();
+        return view('class.allclass', compact('class_array'));
     }
 
     public function classRoutine()
@@ -130,5 +131,49 @@ class ClassController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function deleteClass($id)
+    {
+
+        DB::table('class_forms')->where('id', $id)->delete();
+        return redirect()->back()->with('success', 'Class deleted successfully.');
+    }
+
+    public function editClass($id)
+    {
+        $getClassByID = DB::table('class_forms')->where('id', $id)->first();
+        //print_r($getStudentByID);
+        return view('class.editClass', compact('getClassByID'));
+
+    }
+
+    public function updateClass(Request $request)
+    {
+        // Validate input\
+        //echo "line 185 updateStudent Method  / Function";
+        $mydata = $request->all();
+
+        //print_r( $mydata);
+
+        //update query for $mydata
+        DB::table('class_forms')
+            ->where('id', $request->id)
+            ->update([
+                'teacher_name' => $request->teacher_name,
+                'id_no' => $request->id_no,
+                'gender' => $request->gender,
+                'class' => $request->class,
+                'subject' => $request->subject,
+                'section' => $request->section,
+                'time' => $request->time,
+                'date' => $request->date,
+                'phone' => $request->phone,
+                'email' => $request->email,
+            ]);
+
+        return redirect()->route('allclass')->with('success', 'Class data updated successfully.');
+
+
     }
 }

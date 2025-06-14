@@ -61,7 +61,13 @@ Route::get('/edit-parent/{id}', 'ParentsController@editParent');
 Route::post('/update-parent', 'ParentsController@updateParent')->name('update-parent');
 Route::get('/delete-parent/{id}', 'ParentsController@deleteParent');
 
-Route::get('/teacher-details', 'TeachersController@teacherDetails')->name('teacherdetails');
+Route::get('/all-class', 'ClassController@allClass')->name('allclass');
+Route::get('/add-class', 'ClassController@create')->name('addclass');
+Route::post('/add-class', 'ClassController@store')->name('class.store');
+Route::get('/edit-class/{id}', 'ClassController@editClass')->name('editClass');
+Route::post('/update-class', 'ClassController@updateClass')->name('updateClass');
+Route::get('/delete-class/{id}', 'ClassController@deleteClass')->name('deleteClass');
+
 
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');
@@ -74,8 +80,7 @@ Route::post('/add-expense', 'AccountController@store')->name('addexpense.store')
 Route::get('/all-expense', 'AccountController@allExpense')->name('allexpense');
 Route::get('/account-settings', 'AccountController@accountSettings')->name('accountsettings');
 Route::post('/account-settings', 'AccountController@store')->name('accountsettings.store');
-Route::get('/all-class', 'ClassController@allClass')->name('allclass');
-Route::get('/add-class', 'ClassController@create')->name('addclass');
+
 Route::post('/add-class', 'ClassController@store')->name('class.store');
 Route::get('/class-routine', 'ClassController@classRoutine')->name('classroutine');
 Route::post('/class-routine', 'ClassController@store')->name('classroutine.store');
