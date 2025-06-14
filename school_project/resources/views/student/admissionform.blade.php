@@ -52,7 +52,15 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Parent Name *</label>
-                            <input type="text" placeholder="" class="form-control" name="parent_name">
+                            
+                            <select class="form-control" name="parent_name">
+                                <option value="">Please Select Parent *</option>
+                                
+                            @foreach($parents_array as $parrent)
+                                <option value="{{ $parrent->full_name }}">{{ $parrent->full_name }}</option>
+                            @endforeach
+
+                            </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Gender *</label>
@@ -136,7 +144,17 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Teacher Name *</label>
-                            <input type="text" placeholder="" class="form-control" name="teacher_name">
+                            
+
+                             <select class="form-control" name="teacher_name">
+                                <option value="">Please Select Teacher *</option>
+                                
+                            @foreach($teachers_array as $teacher)
+                                <option value="{{ $teacher->first_name }}">{{ $teacher->first_name }}</option>
+                            @endforeach
+
+                            </select>
+
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Admission ID</label>

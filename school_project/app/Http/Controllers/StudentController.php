@@ -45,8 +45,11 @@ class StudentController extends Controller
      */
     public function create()
     {
+
+        $parents_array = DB::table('parents')->get();
+        $teachers_array = DB::table('teachers')->get();
         // here we add form so that from this form we can insert recrod
-        return view('student.admissionform');
+        return view('student.admissionform', compact('parents_array', 'teachers_array'));
     }
 
     /**
