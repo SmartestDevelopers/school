@@ -71,6 +71,8 @@ Route::get('/delete-class/{id}', 'ClassController@deleteClass')->name('deleteCla
 
 Route::get('/list-fee-type', 'FeeController@addFee')->name('addfeetype');
 Route::post('/list-fee-type', 'FeeController@store')->name('addfeetype.store');
+Route::get('/edit-fee-type/{id}', 'FeeController@edit')->name('addfeetype.edit');
+Route::post('/update-fee-type/{id}', 'FeeController@update')->name('addfeetype.update');
 
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');

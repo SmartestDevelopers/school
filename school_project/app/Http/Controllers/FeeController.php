@@ -8,16 +8,13 @@ use Illuminate\Support\Facades\DB;
 class FeeController extends Controller
 {
     /**
-     * Display the form to add a fee type and list existing fee types.
+     * Display the form to add/edit fee types and list existing fee types.
      *
      * @return \Illuminate\Http\Response
      */
     public function addFee()
     {
-        // Fetch all fee types from the add_fees table
         $fees = DB::table('add_fees')->get();
-        
-        // Return the view with the fees data
         return view('acconunt.listfeetype', compact('fees'));
     }
 
@@ -40,5 +37,50 @@ class FeeController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Fee added successfully!');
+    }
+
+    /**
+     * Show the form for editing a fee type.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $fees = DB::table('add_fees')->get();
+        $editFee = DB::table('add_fees')->where('id', $id)->first();
+        
+        if (!$editFee) {
+            return redirect()->route('addfeetype')->with('error', 'Fee type not found.');
+        }
+
+        return view('acconunt.listfeetype', compact('fees', 'editFee'));
+    }
+
+    /**
+     * Update the specified fee type in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'fee_type' => 'required|string|max:255',
+        ]);
+
+        $updated = DB::table('add_fees')
+            ->where('id', $id)
+            ->update([
+                'fee_type' => $request->fee_type,
+                'updated_at' => now(),
+            ]);
+
+        if ($updated) {
+            return redirect()->route('addfeetype')->with('success', 'Fee updated successfully!');
+        } else {
+            return redirect()->route('addfeetype')->with('error', 'Fee type not found or no changes made.');
+        }
     }
 }
