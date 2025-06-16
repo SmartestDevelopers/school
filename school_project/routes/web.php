@@ -73,6 +73,10 @@ Route::get('/list-fee-type', 'FeeController@addFee')->name('addfeetype');
 Route::post('/list-fee-type', 'FeeController@store')->name('addfeetype.store');
 Route::get('/edit-fee-type/{id}', 'FeeController@edit')->name('addfeetype.edit');
 Route::post('/update-fee-type/{id}', 'FeeController@update')->name('addfeetype.update');
+Route::get('/fee-management', 'FeeController@manageFees')->name('fee-management');
+Route::post('/fee-management', 'FeeController@storeFee')->name('fee-management.store');
+Route::get('/edit-fee/{id}', 'FeeController@editFee')->name('fee-management.edit');
+Route::post('/update-fee/{id}', 'FeeController@updateFee')->name('fee-management.update');
 
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');

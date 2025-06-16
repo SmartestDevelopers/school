@@ -346,7 +346,7 @@
                                     <a href="{{ url('list-fee-type')}}" class="nav-link"><i class="fas fa-angle-right"></i>List Fee Types</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('list-fee-type')}}" class="nav-link"><i class="fas fa-angle-right"></i>Fee Management</a>
+                                    <a href="{{ url('fee-management')}}" class="nav-link"><i class="fas fa-angle-right"></i>Fee Management</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('fee-management')}}" class="nav-link"><i class="fas fa-angle-right"></i>Create Fee Challan</a>
