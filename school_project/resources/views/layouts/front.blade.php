@@ -349,12 +349,12 @@
                                     <a href="{{ url('fee-management')}}" class="nav-link"><i class="fas fa-angle-right"></i>Fee Management</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('fee-management')}}" class="nav-link"><i class="fas fa-angle-right"></i>Create Fee Challan</a>
+                                    <a href="{{ url('create-challan')}}" class="nav-link"><i class="fas fa-angle-right"></i>Create Fee Challan</a>
                                 </li>
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a href="{{ url('create-challan')}}" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
                                         Collection</a>
-                                </li>
+                                </li> -->
                                 <li class="nav-item">
                                     <a href="{{ url('all-expense')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Expenses</a>

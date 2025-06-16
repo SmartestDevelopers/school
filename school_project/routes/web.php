@@ -77,6 +77,11 @@ Route::get('/fee-management', 'FeeController@manageFees')->name('fee-management'
 Route::post('/fee-management', 'FeeController@storeFee')->name('fee-management.store');
 Route::get('/edit-fee/{id}', 'FeeController@editFee')->name('fee-management.edit');
 Route::post('/update-fee/{id}', 'FeeController@updateFee')->name('fee-management.update');
+Route::get('/create-challan', 'FeeController@createChallan')->name('create-challan');
+Route::post('/create-challan', 'FeeController@storeChallan')->name('create-challan.store');
+Route::get('/view-challan/{id}', 'FeeController@viewChallan')->name('view-challan');
+
+
 
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');
