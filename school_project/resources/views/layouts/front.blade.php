@@ -343,7 +343,7 @@
                             <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="{{ url('list-fee--type')}}" class="nav-link"><i class="fas fa-angle-right"></i>List Fee Types</a>
+                                    <a href="{{ url('list-fee-type')}}" class="nav-link"><i class="fas fa-angle-right"></i>List Fee Types</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('list-fee-type')}}" class="nav-link"><i class="fas fa-angle-right"></i>Fee Management</a>
