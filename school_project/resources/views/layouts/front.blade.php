@@ -343,7 +343,16 @@
                             <a href="#" class="nav-link"><i class="flaticon-technological"></i><span>Acconunt</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="{{ url('all-fees')}}" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
+                                    <a href="{{ url('list-fee--type')}}" class="nav-link"><i class="fas fa-angle-right"></i>List Fee Types</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('list-fee-type')}}" class="nav-link"><i class="fas fa-angle-right"></i>Fee Management</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('fee-management')}}" class="nav-link"><i class="fas fa-angle-right"></i>Create Fee Challan</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('create-challan')}}" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
                                         Collection</a>
                                 </li>
                                 <li class="nav-item">

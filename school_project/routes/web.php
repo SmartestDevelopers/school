@@ -68,6 +68,8 @@ Route::get('/edit-class/{id}', 'ClassController@editClass')->name('editClass');
 Route::post('/update-class', 'ClassController@updateClass')->name('updateClass');
 Route::get('/delete-class/{id}', 'ClassController@deleteClass')->name('deleteClass');
 
+//Route::get('/list-fee-type', 'FeeController@create'()->name('addfeetype'));
+//Route::post('/list-fee-type', 'FeeController@store'()->name('addfeetype.store'));
 
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');
