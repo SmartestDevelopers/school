@@ -82,12 +82,20 @@ Route::post('/create-challan', 'FeeController@storeChallan')->name('create-chall
 Route::get('/view-challan/{id}', 'FeeController@viewChallan')->name('view-challan');
 
 
+Route::get('/add-book', 'LibraryController@addBook')->name('add-book');
+Route::post('/store-book', 'LibraryController@storeBook')->name('store-book');
+Route::get('/edit-book/{id}', 'LibraryController@editBook')->name('edit-book');
+Route::post('/update-book/{id}', 'LibraryController@updateBook')->name('update-book');
+Route::get('/delete-book/{id}', 'LibraryController@deleteBook')->name('delete-book');
+Route::get('/issue-book', 'LibraryController@issueBook')->name('issue-book');
+Route::post('/store-issue', 'LibraryController@storeIssue')->name('store-issue');
+Route::post('/update-issue/{id}', 'LibraryController@updateIssue')->name('update-issue');
+
 
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');
-Route::get('/add-book', 'LibraryController@create')->name('addbook');
-Route::post('/add-book', 'LibraryController@store')->name('addbook.store');
-Route::get('/all-book', 'LibraryController@allBook')->name('allbook');
+
+//Route::get('/all-book', 'LibraryController@allBook')->name('allbook');
 Route::get('/all-fees', 'AccountController@allFees')->name('allfees');
 Route::get('/add-expense', 'AccountController@create')->name('addexpense');
 Route::post('/add-expense', 'AccountController@store')->name('addexpense.store');

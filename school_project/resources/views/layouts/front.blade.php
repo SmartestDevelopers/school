@@ -330,12 +330,11 @@
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="{{ url('all-book')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
+                                    <a href="{{ url('add-book')}}" class="nav-link"><i class="fas fa-angle-right"></i>All
                                         Book</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('add-book')}}" class="nav-link"><i class="fas fa-angle-right"></i>Add New
-                                        Book</a>
+                                    <a href="{{ url('issue-book')}}" class="nav-link"><i class="fas fa-angle-right"></i>Book Issued/Returned</a>
                                 </li>
                             </ul>
                         </li>
