@@ -13,14 +13,10 @@ class ChallanController extends Controller
 {
     public function create()
     {
+
         $challans = DB::table('challans')->get();
-        Log::info('View paths: ' . json_encode(View::getFinder()->getPaths()));
-        Log::info('Checking if view exists: createchallan');
-        if (!View::exists('createchallan')) {
-            Log::error('View createchallan not found');
-            abort(500, 'View createchallan not found');
-        }
-        return view('createchallan', compact('challans'));
+        
+        return view('acconunt.createchallan', compact('challans'));
     }
 
     public function store(Request $request)

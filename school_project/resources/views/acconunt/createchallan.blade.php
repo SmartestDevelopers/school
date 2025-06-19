@@ -95,15 +95,6 @@
     }
 </style>
 
-<div class="dashboard-content-one">
-    <!-- Breadcrumbs Area -->
-    <div class="breadcrumbs-area">
-        <h3>Challan Management</h3>
-        <ul>
-            <li><a href="{{ route('dashboard') }}">Home</a></li>
-            <li>Create Challan</li>
-        </ul>
-    </div>
     <!-- Create Challan Area -->
     <div class="card height-auto">
         <div class="card-body">
