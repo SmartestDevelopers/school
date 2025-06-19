@@ -69,14 +69,19 @@ Route::post('/update-class', 'ClassController@updateClass')->name('updateClass')
 Route::get('/delete-class/{id}', 'ClassController@deleteClass')->name('deleteClass');
 
 
+// Fee Type Routes
 Route::get('/list-fee-type', 'FeeController@addFee')->name('addfeetype');
 Route::post('/list-fee-type', 'FeeController@store')->name('addfeetype.store');
 Route::get('/edit-fee-type/{id}', 'FeeController@edit')->name('addfeetype.edit');
 Route::post('/update-fee-type/{id}', 'FeeController@update')->name('addfeetype.update');
+
+// Fee Management Routes
 Route::get('/fee-management', 'FeeController@manageFees')->name('fee-management');
 Route::post('/fee-management', 'FeeController@storeFee')->name('fee-management.store');
 Route::get('/edit-fee/{id}', 'FeeController@editFee')->name('fee-management.edit');
 Route::post('/update-fee/{id}', 'FeeController@updateFee')->name('fee-management.update');
+
+// Challan Routes
 Route::get('/create-challan', 'FeeController@createChallan')->name('create-challan');
 Route::post('/create-challan', 'FeeController@storeChallan')->name('create-challan.store');
 Route::get('/view-challan/{id}', 'FeeController@viewChallan')->name('view-challan');

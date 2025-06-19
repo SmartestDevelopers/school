@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\Facade\Pdf; // Correct facade for v2.x
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FeeController extends Controller
 {
@@ -18,7 +18,7 @@ class FeeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'fee_type' => 'required|string|max:255',
+            'fee_type' => 'required|string|max:255|unique:add_fees,fee_type',
         ]);
 
         DB::table('add_fees')->insert([
@@ -45,7 +45,7 @@ class FeeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'fee_type' => 'required|string|max:255',
+            'fee_type' => 'required|string|max:255|unique:add_fees,fee_type,' . $id,
         ]);
 
         $updated = DB::table('add_fees')
@@ -66,8 +66,25 @@ class FeeController extends Controller
     public function manageFees()
     {
         $feeTypes = DB::table('add_fees')->get();
-        $fees = DB::table('fees')->get();
-        return view('acconunt.feemanagement', compact('feeTypes', 'fees'));
+        // Group fees by class, section, month, year, academic_year
+        $feeGroups = DB::table('fees')
+            ->select('class', 'section', 'month', 'year', 'academic_year')
+            ->groupBy('class', 'section', 'month', 'year', 'academic_year')
+            ->paginate(10);
+
+        // Attach fees to each group
+        $feeGroups->getCollection()->transform(function ($group) {
+            $group->fees = DB::table('fees')
+                ->where('class', $group->class)
+                ->where('section', $group->section)
+                ->where('month', $group->month)
+                ->where('year', $group->year)
+                ->where('academic_year', $group->academic_year)
+                ->get();
+            return $group;
+        });
+
+        return view('acconunt.feemanagement', compact('feeTypes', 'feeGroups'));
     }
 
     public function storeFee(Request $request)
@@ -78,38 +95,70 @@ class FeeController extends Controller
             'month' => 'required|string',
             'year' => 'required|numeric',
             'academic_year' => 'required|string',
-            'fee_amounts' => 'required|array',
-            'fee_amounts.*' => 'required|numeric|min:0',
+            'fee_types.*.type' => 'required|string|exists:add_fees,fee_type',
+            'fee_types.*.amount' => 'required|numeric|min:0',
         ]);
 
-        foreach ($request->fee_amounts as $feeTypeId => $amount) {
+        // Insert fees
+        foreach ($request->fee_types as $feeType) {
             DB::table('fees')->insert([
                 'class' => $request->class,
                 'section' => $request->section,
                 'month' => $request->month,
                 'year' => $request->year,
                 'academic_year' => $request->academic_year,
-                'fee_type' => DB::table('add_fees')->where('id', $feeTypeId)->value('fee_type'),
-                'fee_amount' => $amount,
+                'fee_type' => $feeType['type'],
+                'fee_amount' => $feeType['amount'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
         }
 
-        return redirect()->back()->with('success', 'Fees added successfully!');
+        return redirect()->route('fee-management')->with('success', 'Fees added successfully!');
     }
 
     public function editFee($id)
     {
         $feeTypes = DB::table('add_fees')->get();
-        $fees = DB::table('fees')->get();
-        $editFee = DB::table('fees')->where('id', $id)->first();
+        // Group fees by class, section, month, year, academic_year
+        $feeGroups = DB::table('fees')
+            ->select('class', 'section', 'month', 'year', 'academic_year')
+            ->groupBy('class', 'section', 'month', 'year', 'academic_year')
+            ->paginate(10);
 
+        // Attach fees to each group
+        $feeGroups->getCollection()->transform(function ($group) {
+            $group->fees = DB::table('fees')
+                ->where('class', $group->class)
+                ->where('section', $group->section)
+                ->where('month', $group->month)
+                ->where('year', $group->year)
+                ->where('academic_year', $group->academic_year)
+                ->get();
+            return $group;
+        });
+
+        // Find the fee group by ID of one of its fees
+        $editFee = DB::table('fees')->where('id', $id)->first();
         if (!$editFee) {
             return redirect()->route('fee-management')->with('error', 'Fee record not found.');
         }
+        $editFeeGroup = (object) [
+            'class' => $editFee->class,
+            'section' => $editFee->section,
+            'month' => $editFee->month,
+            'year' => $editFee->year,
+            'academic_year' => $editFee->academic_year,
+            'fees' => DB::table('fees')
+                ->where('class', $editFee->class)
+                ->where('section', $editFee->section)
+                ->where('month', $editFee->month)
+                ->where('year', $editFee->year)
+                ->where('academic_year', $editFee->academic_year)
+                ->get(),
+        ];
 
-        return view('acconunt.feemanagement', compact('feeTypes', 'fees', 'editFee'));
+        return view('acconunt.feemanagement', compact('feeTypes', 'feeGroups', 'editFeeGroup'));
     }
 
     public function updateFee(Request $request, $id)
@@ -120,35 +169,51 @@ class FeeController extends Controller
             'month' => 'required|string',
             'year' => 'required|numeric',
             'academic_year' => 'required|string',
-            'fee_type' => 'required|string',
-            'fee_amount' => 'required|numeric|min:0',
+            'fee_types.*.type' => 'required|string|exists:add_fees,fee_type',
+            'fee_types.*.amount' => 'required|numeric|min:0',
         ]);
 
-        $updated = DB::table('fees')
-            ->where('id', $id)
-            ->update([
+        // Find the original fee group by ID of one of its fees
+        $originalFee = DB::table('fees')->where('id', $id)->first();
+        if (!$originalFee) {
+            return redirect()->route('fee-management')->with('error', 'Fee record not found.');
+        }
+
+        // Delete existing fees for this group
+        DB::table('fees')
+            ->where('class', $originalFee->class)
+            ->where('section', $originalFee->section)
+            ->where('month', $originalFee->month)
+            ->where('year', $originalFee->year)
+            ->where('academic_year', $originalFee->academic_year)
+            ->delete();
+
+        // Insert updated fees
+        foreach ($request->fee_types as $feeType) {
+            DB::table('fees')->insert([
                 'class' => $request->class,
                 'section' => $request->section,
                 'month' => $request->month,
                 'year' => $request->year,
                 'academic_year' => $request->academic_year,
-                'fee_type' => $request->fee_type,
-                'fee_amount' => $request->fee_amount,
+                'fee_type' => $feeType['type'],
+                'fee_amount' => $feeType['amount'],
+                'created_at' => now(),
                 'updated_at' => now(),
             ]);
-
-        if ($updated) {
-            return redirect()->route('fee-management')->with('success', 'Fee updated successfully!');
-        } else {
-            return redirect()->route('fee-management')->with('error', 'Fee record not found or no changes made.');
         }
+
+        return redirect()->route('fee-management')->with('success', 'Fees updated successfully!');
     }
 
     // Challan Actions
     public function createChallan()
     {
         $challans = DB::table('challans')->get();
-        return view('acconunt.createchallan', compact('challans'));
+        $classes = DB::table('fees')->distinct()->pluck('class');
+        $sections = DB::table('fees')->distinct()->pluck('section');
+        $academicYears = DB::table('fees')->distinct()->pluck('academic_year');
+        return view('acconunt.createchallan', compact('challans', 'classes', 'sections', 'academicYears'));
     }
 
     public function storeChallan(Request $request)
@@ -158,15 +223,19 @@ class FeeController extends Controller
             'school_branch' => 'required|string|max:255',
             'class' => 'required|string',
             'section' => 'required|string',
-            'months' => 'required|integer|min:1',
-            'students' => 'required|integer|min:1',
+            'months' => 'required|string',
+            'students' => 'required|string',
             'student_name' => 'required|string|max:255',
             'roll_number' => 'required|string|max:50',
             'academic_session' => 'required|string',
             'year' => 'required|numeric',
+            'father_name' => 'required|string|max:255',
+            'issue_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:issue_date',
+            'account_number' => 'required|string|max:255',
         ]);
 
-        // Calculate total fee from fees table
+        // Calculate total fee
         $fees = DB::table('fees')
             ->where('class', $request->class)
             ->where('section', $request->section)
@@ -174,7 +243,11 @@ class FeeController extends Controller
             ->where('academic_year', $request->academic_session)
             ->get();
 
-        $totalFee = $fees->sum('fee_amount') * $request->months * $request->students;
+        if ($fees->isEmpty()) {
+            return redirect()->back()->with('error', 'No fees found for the specified class, section, and academic year.');
+        }
+
+        $totalFee = $fees->sum('fee_amount');
 
         DB::table('challans')->insert([
             'school_name' => $request->school_name,
@@ -187,6 +260,10 @@ class FeeController extends Controller
             'roll_number' => $request->roll_number,
             'academic_session' => $request->academic_session,
             'year' => $request->year,
+            'father_name' => $request->father_name,
+            'issue_date' => $request->issue_date,
+            'due_date' => $request->due_date,
+            'account_number' => $request->account_number,
             'total_fee' => $totalFee,
             'status' => 'unpaid',
             'created_at' => now(),
