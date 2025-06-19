@@ -16,17 +16,22 @@ class CreateChallansTable extends Migration
         Schema::create('challans', function (Blueprint $table) {
             $table->id();
             $table->string('school_name');
-            $table->string('school_branch');
             $table->string('class');
             $table->string('section');
-            $table->integer('months');
-            $table->integer('students');
             $table->string('student_name');
-            $table->string('roll_number');
+            $table->string('father_name')->nullable();
+            $table->string('gr_number')->nullable();
             $table->string('academic_session');
-            $table->year('year');
+            $table->integer('year');
+            $table->string('from_month');
+            $table->integer('from_year');
+            $table->string('to_month')->nullable();
+            $table->integer('to_year')->nullable();
             $table->decimal('total_fee', 10, 2);
-            $table->enum('status', ['paid', 'unpaid'])->default('unpaid');
+            $table->string('status')->default('pending');
+            $table->string('issued_on');
+            $table->string('due_date');
+            $table->string('amount_in_words');
             $table->timestamps();
         });
     }
