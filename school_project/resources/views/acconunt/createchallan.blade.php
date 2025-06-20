@@ -134,7 +134,7 @@
             @csrf
             <div class="row gutters-8">
                 <!-- School Name -->
-                <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                <div class="col-md-1 form-group">
                     <label for="school_name" class="form-label">School Name</label>
                     <input type="text" name="school_name" id="school_name" class="form-control" value="FG FPS (2nd Shift) PAF BASE FAISAL KARACHI" required>
                     @error('school_name')
@@ -142,7 +142,7 @@
                     @enderror
                 </div>
                 <!-- Class Dropdown -->
-                <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                <div class="col-md-1 form-group">
                     <label for="class" class="form-label">Class</label>
                     <select name="class" id="class" class="form-control" required onchange="updateStudents()">
                         <option value="" disabled selected>Select</option>
@@ -155,11 +155,11 @@
                     @enderror
                 </div>
                 <!-- Section Dropdown -->
-                <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                <div class="col-md-1 form-group">
                     <label for="section" class="form-label">Section</label>
                     <select name="section" id="section" class="form-control" required onchange="updateStudents()">
                         <option value="" disabled selected>Select</option>
-                        @foreach(['Pink', 'Green', 'Red', 'Orange', 'Blue', 'Silver', 'Yellow'] as $section)
+                        @foreach(['A','B','Pink', 'Green', 'Red', 'Orange', 'Blue', 'Silver', 'Yellow'] as $section)
                             <option value="{{ $section }}">{{ $section }}</option>
                         @endforeach
                     </select>
@@ -168,7 +168,7 @@
                     @enderror
                 </div>
                 <!-- How Many Months -->
-                <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                <div class="col-md-1 form-group">
                     <label for="months_option" class="form-label">How Many Months</label>
                     <select name="months_option" id="months_option" class="form-control" required onchange="toggleMonthFields()">
                         <option value="" disabled selected>Select</option>
@@ -180,7 +180,7 @@
                     @enderror
                 </div>
                 <!-- How Many Students -->
-                <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                <div class="col-md-1 form-group">
                     <label for="students_option" class="form-label">How Many Students</label>
                     <select name="students_option" id="students_option" class="form-control" required onchange="toggleStudentFields()">
                         <option value="" disabled selected>Select</option>
@@ -193,7 +193,7 @@
                 </div>
                 <!-- One Month Fields -->
                 <div id="one-month-fields" class="hidden col-12 row gutters-8">
-                    <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                    <div class="col-md-1 form-group">
                         <label for="month" class="form-label">Month</label>
                         <select name="month" id="month" class="form-control">
                             <option value="" disabled selected>Select</option>
@@ -205,7 +205,7 @@
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                    <div class="col-md-1 form-group">
                         <label for="year" class="form-label">Year</label>
                         <select name="year" id="year" class="form-control">
                             <option value="" disabled selected>Select</option>
@@ -220,7 +220,7 @@
                 </div>
                 <!-- Many Months Fields -->
                 <div id="many-months-fields" class="hidden col-12 row gutters-8">
-                    <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                    <div class="col-md-1 form-group">
                         <label for="from_month" class="form-label">From Month</label>
                         <select name="from_month" id="from_month" class="form-control" onchange="calculateTotalMonths()">
                             <option value="" disabled selected>Select</option>
@@ -232,7 +232,7 @@
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                    <div class="col-md-1 form-group">
                         <label for="from_year" class="form-label">From Year</label>
                         <select name="from_year" id="from_year" class="form-control" onchange="calculateTotalMonths()">
                             <option value="" disabled selected>Select</option>
@@ -244,7 +244,7 @@
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                    <div class="col-md-1 form-group">
                         <label for="to_month" class="form-label">To Month</label>
                         <select name="to_month" id="to_month" class="form-control" onchange="calculateTotalMonths()">
                             <option value="" disabled selected>Select</option>
@@ -256,7 +256,7 @@
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                    <div class="col-md-1 form-group">
                         <label for="to_year" class="form-label">To Year</label>
                         <select name="to_year" id="to_year" class="form-control" onchange="calculateTotalMonths()">
                             <option value="" disabled selected>Select</option>
@@ -268,7 +268,7 @@
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                    <div class="col-md-1 form-group">
                         <label for="total_months" class="form-label">Total Months</label>
                         <input type="number" name="total_months" id="total_months" class="form-control" readonly>
                         @error('total_months')
@@ -277,7 +277,7 @@
                     </div>
                 </div>
                 <!-- One Student Field -->
-                <div id="one-student-field" class="hidden col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
+                <div id="one-student-field" class="hidden col-md-1 form-group">
                     <label for="student_id" class="form-label">Student Name</label>
                     <select name="student_id" id="student_id" class="form-control">
                         <option value="" disabled selected>Select Student</option>

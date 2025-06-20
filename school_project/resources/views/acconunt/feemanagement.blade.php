@@ -224,9 +224,7 @@
                 @endif
                 <form action="{{ isset($editFeeGroup) ? route('fee-management.update', $editFeeGroup->fees->first()->id) : route('fee-management.store') }}" method="POST" class="mg-b-10">
                     @csrf
-                    @if(isset($editFeeGroup))
-                        <input type="hidden" name="_method" value="PUT">
-                    @endif
+                    
                     <div class="row gutters-8">
                         <!-- Class Dropdown -->
                         <div class="col-6 form-group">
