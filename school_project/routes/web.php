@@ -69,25 +69,46 @@ Route::post('/update-class', 'ClassController@updateClass')->name('updateClass')
 Route::get('/delete-class/{id}', 'ClassController@deleteClass')->name('deleteClass');
 
 
+// Fee Type Routes
 Route::get('/list-fee-type', 'FeeController@addFee')->name('addfeetype');
 Route::post('/list-fee-type', 'FeeController@store')->name('addfeetype.store');
 Route::get('/edit-fee-type/{id}', 'FeeController@edit')->name('addfeetype.edit');
 Route::post('/update-fee-type/{id}', 'FeeController@update')->name('addfeetype.update');
+
+// Fee Management Routes
 Route::get('/fee-management', 'FeeController@manageFees')->name('fee-management');
 Route::post('/fee-management', 'FeeController@storeFee')->name('fee-management.store');
 Route::get('/edit-fee/{id}', 'FeeController@editFee')->name('fee-management.edit');
 Route::post('/update-fee/{id}', 'FeeController@updateFee')->name('fee-management.update');
-Route::get('/create-challan', 'FeeController@createChallan')->name('create-challan');
-Route::post('/create-challan', 'FeeController@storeChallan')->name('create-challan.store');
-Route::get('/view-challan/{id}', 'FeeController@viewChallan')->name('view-challan');
 
+Route::get('/create-challan', 'ChallanController@create')->name('create-challan');
+Route::post('/create-challan', 'ChallanController@store')->name('create-challan.store');
+Route::get('/view-challan/{id}', 'ChallanController@view')->name('challan-view');
+Route::get('/api/students', 'ChallanController@getStudents')->name('api.students');
+Route::get('/download-challan/{id}', 'ChallanController@downloadPdf')->name('download-challan');
+
+
+Route::get('/list-total-students', 'ReportsController@totalStudents')->name('totalstudents');
+Route::get('/list-total-fees', 'ReportsController@totalFees')->name('totalfees');
+Route::get('/collective-fees', 'ReportsController@collectiveFees')->name('collectivefees');
+Route::get('/reports/total-students', 'ReportsController@totalStudents')->name('reports.total-students');
+Route::delete('/reports/delete-student/{id}', 'ReportsController@deleteStudent')->name('reports.delete-student');
+
+
+Route::get('/add-book', 'LibraryController@addBook')->name('add-book');
+Route::post('/store-book', 'LibraryController@storeBook')->name('store-book');
+Route::get('/edit-book/{id}', 'LibraryController@editBook')->name('edit-book');
+Route::post('/update-book/{id}', 'LibraryController@updateBook')->name('update-book');
+Route::get('/delete-book/{id}', 'LibraryController@deleteBook')->name('delete-book');
+Route::get('/issue-book', 'LibraryController@issueBook')->name('issue-book');
+Route::post('/store-issue', 'LibraryController@storeIssue')->name('store-issue');
+Route::post('/update-issue/{id}', 'LibraryController@updateIssue')->name('update-issue');
 
 
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');
-Route::get('/add-book', 'LibraryController@create')->name('addbook');
-Route::post('/add-book', 'LibraryController@store')->name('addbook.store');
-Route::get('/all-book', 'LibraryController@allBook')->name('allbook');
+
+//Route::get('/all-book', 'LibraryController@allBook')->name('allbook');
 Route::get('/all-fees', 'AccountController@allFees')->name('allfees');
 Route::get('/add-expense', 'AccountController@create')->name('addexpense');
 Route::post('/add-expense', 'AccountController@store')->name('addexpense.store');
