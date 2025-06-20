@@ -34,15 +34,17 @@
         font-size: 12px;
         border-radius: 4px;
         height: 30px;
+        width: 100%;
     }
     .dynamic-fee-field {
         display: flex;
         align-items: center;
         margin-bottom: 8px;
         gap: 6px;
+        flex-wrap: nowrap; /* Ensure columns stay in one row */
     }
     .fee-types-container {
-        max-height: 120px;
+        max-height: 320px;
         overflow-y: auto;
         padding-right: 8px;
     }
@@ -51,6 +53,9 @@
         cursor: pointer;
         font-size: 18px;
         line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .btn {
         padding: 8px 16px;
@@ -108,7 +113,7 @@
     .table th:nth-child(3), .table td:nth-child(3) { width: 12%; } /* Month */
     .table th:nth-child(4), .table td:nth-child(4) { width: 8%; }  /* Year */
     .table th:nth-child(5), .table td:nth-child(5) { width: 12%; } /* Academic Year */
-    .table th:nth-child(6), .table td:nth-child(6) { width: 24%; } /* Fees */
+    .table th:nth-child(6), .table td:nth-child(6)):before { width: 24%; } /* Fees */
     .table th:nth-child(7), .table td:nth-child(7) { width: 20%; } /* Action */
     .fees-column {
         max-height: 80px;
@@ -188,6 +193,9 @@
         .fees-tooltip {
             font-size: 10px;
         }
+        .dynamic-fee-field {
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
     }
 </style>
 
@@ -217,7 +225,7 @@
                 <form action="{{ isset($editFeeGroup) ? route('fee-management.update', $editFeeGroup->fees->first()->id) : route('fee-management.store') }}" method="POST" class="mg-b-10">
                     @csrf
                     @if(isset($editFeeGroup))
-                        <input type="hidden" name="_method" value="POST">
+                        <input type="hidden" name="_method" value="PUT">
                     @endif
                     <div class="row gutters-8">
                         <!-- Class Dropdown -->
@@ -285,11 +293,12 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-5 form-group">
+                                    <div class="col-4 form-group">
                                         <label for="fee_amount_{{ $index }}" class="form-label">Amount</label>
                                         <input type="number" name="fee_types[{{ $index }}][amount]" id="fee_amount_{{ $index }}" class="form-control" value="{{ $fee->fee_amount }}" step="0.01" min="0" required>
                                     </div>
-                                    <div class="col-1 form-group">
+                                    <div class="col-2 form-group">
+                                        <label class="form-label" style="visibility: hidden;">Remove</label>
                                         <span class="remove-fee-btn" onclick="removeFeeField(this)">×</span>
                                     </div>
                                 </div>
@@ -305,11 +314,12 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-5 form-group">
+                                <div class="col-4 form-group">
                                     <label for="fee_amount_0" class="form-label">Amount</label>
                                     <input type="number" name="fee_types[0][amount]" id="fee_amount_0" class="form-control" step="0.01" min="0" required>
                                 </div>
-                                <div class="col-1 form-group">
+                                <div class="col-2 form-group">
+                                    <label class="form-label" style="visibility: hidden;">Remove</label>
                                     <span class="remove-fee-btn" onclick="removeFeeField(this)">×</span>
                                 </div>
                             </div>
@@ -317,7 +327,7 @@
                     </div>
                     <div class="row-fluid">
                         <div class="col-12 form-group">
-                            <button type="button" class="btn btn-info">Add Fee Type</button>
+                            <button type="button" class="btn btn-info" onclick="addFeeField()">Add Fee Type</button>
                         </div>
                     </div>
                     <!-- Submit Button -->
@@ -406,6 +416,7 @@
     let feeIndex = {{ isset($editFeeGroup) ? count($editFeeGroup->fees) : 1 }};
 
     function addFeeField() {
+        console.log('Adding new fee field, current index:', feeIndex);
         const container = document.getElementById('fee-types-container');
         const newField = document.createElement('div');
         newField.className = 'dynamic-fee-field row gutters-8';
@@ -419,11 +430,12 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-5 form-group">
+            <div class="col-4 form-group">
                 <label for="fee_amount_${feeIndex}" class="form-label">Amount</label>
                 <input type="number" name="fee_types[${feeIndex}][amount]" id="fee_amount_${feeIndex}" class="form-control" step="0.01" min="0" required>
             </div>
-            <div class="col-1 form-group">
+            <div class="col-2 form-group">
+                <label class="form-label" style="visibility: hidden;">Remove</label>
                 <span class="remove-fee-btn" onclick="removeFeeField(this)">×</span>
             </div>
         `;

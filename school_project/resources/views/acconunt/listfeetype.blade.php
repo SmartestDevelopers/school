@@ -206,7 +206,7 @@
     }
 </style>
 
-<main id="main" class="main">
+
     <div class="container-fluid dashboard-content-one">
         <div class="row justify-content-center">
             <div class="col-12">
@@ -216,9 +216,8 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <hr>
                             <!-- Add/Edit Fee Type Form -->
-                            <div class="col-md-4 col-lg-3">
+                            <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>{{ isset($editFee) ? 'Edit Fee Type' : 'Add New Fee Type' }}</h5>
@@ -255,7 +254,7 @@
                                 <hr>
                             </div>
                             <!-- Fee Type List Table -->
-                            <div class="col-md-8 col-lg-9">
+                            <div class="col-md-8">
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>Fee Type List</h5>
@@ -333,7 +332,7 @@
             </div>
         </div>
     </div>
-</main>
+
 
 <script>
     $(document).ready(function() {
