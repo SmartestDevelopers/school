@@ -6,11 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFeesTable extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('fee_group_id');
             $table->string('class');
             $table->string('section');
             $table->string('month');
@@ -19,10 +23,14 @@ class CreateFeesTable extends Migration
             $table->string('fee_type');
             $table->decimal('fee_amount', 10, 2);
             $table->timestamps();
-            $table->foreign('fee_group_id')->references('id')->on('fee_groups')->onDelete('cascade');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::dropIfExists('fees');
