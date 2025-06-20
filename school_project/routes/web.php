@@ -91,6 +91,9 @@ Route::get('/download-challan/{id}', 'ChallanController@downloadPdf')->name('dow
 Route::get('/list-total-students', 'ReportsController@totalStudents')->name('totalstudents');
 Route::get('/list-total-fees', 'ReportsController@totalFees')->name('totalfees');
 Route::get('/collective-fees', 'ReportsController@collectiveFees')->name('collectivefees');
+Route::get('/reports/total-students', 'ReportsController@totalStudents')->name('reports.total-students');
+Route::delete('/reports/delete-student/{id}', 'ReportsController@deleteStudent')->name('reports.delete-student');
+
 
 Route::get('/add-book', 'LibraryController@addBook')->name('add-book');
 Route::post('/store-book', 'LibraryController@storeBook')->name('store-book');
