@@ -120,6 +120,15 @@
         @if(session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <!-- Challan Form -->
         <form action="{{ route('create-challan.store') }}" method="POST" class="mg-b-20">
             @csrf
@@ -306,16 +315,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse(DB::table('challans')->get() as $challan)
+                    @forelse($challans as $challan)
                         <tr>
-                            <td>{{ $challan->academic_session }}</td>
+                            <td>{{ $challan->academic_year }}</td>
                             <td>{{ $challan->year }}</td>
                             <td>{{ $challan->class }}</td>
                             <td>{{ $challan->section }}</td>
                             <td>{{ number_format($challan->total_fee, 2) }}</td>
                             <td>{{ ucfirst($challan->status) }}</td>
                             <td>
-                                <a href="{{ route('view-challan', $challan->id) }}" class="btn btn-lg btn-primary">
+                                <a href="{{ route('challan-view', $challan->id) }}" class="btn btn-lg btn-primary">
                                     <i class="fas fa-eye"></i> View
                                 </a>
                             </td>

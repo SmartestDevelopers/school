@@ -83,7 +83,7 @@ Route::post('/update-fee/{id}', 'FeeController@updateFee')->name('fee-management
 
 Route::get('/create-challan', 'ChallanController@create')->name('create-challan');
 Route::post('/create-challan', 'ChallanController@store')->name('create-challan.store');
-Route::get('/view-challan/{id}', 'ChallanController@view')->name('view-challan');
+Route::get('/view-challan/{id}', 'ChallanController@view')->name('challan-view');
 Route::get('/api/students', 'ChallanController@getStudents')->name('api.students');
 Route::get('/download-challan/{id}', 'ChallanController@downloadPdf')->name('download-challan');
 

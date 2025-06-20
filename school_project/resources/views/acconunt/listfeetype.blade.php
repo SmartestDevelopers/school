@@ -25,7 +25,7 @@
                                         @if(session('error'))
                                             <div class="alert alert-danger">{{ session('error') }}</div>
                                         @endif
-                                        <form action="{{ isset($editFee) ? route('addfeetype.update', $editFee->id) : route('addfeetype.store') }}" method="POST">
+                                        <form action="{{ isset($editFee) ? route('feetype.update', $editFee->id) : route('addfeetype.store') }}" method="POST">
                                             @csrf
                                             <div class="form-group mb-3">
                                                 <label style="font-weight: bold; color: #000;">Fee Type Name</label>
@@ -59,7 +59,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form method="POST" action="{{ route('addfeetype.update', $fee->id) }}">
+                                                                <form method="POST" action="{{ route('feetype.update', $fee->id) }}">
                                                                     @csrf
                                                                     <input type="hidden" name="id" value="{{ $fee->id }}">
                                                                     <div class="form-group">

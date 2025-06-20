@@ -45,7 +45,6 @@
                             </tr>
                             <tr>
                                 <td colspan="6" class="left bold">
-                                    Issued on: <strong>{{ $challan->issued_on }}</strong>
                                     Due Date: <strong>{{ $challan->due_date }}</strong>
                                 </td>
                             </tr>
@@ -57,7 +56,7 @@
                             </tr>
                             <tr>
                                 <td colspan="6" class="left">
-                                    Student Name: <strong>{{ $challan->student_name }}</strong>
+                                    Student Name: <strong>{{ $challan->full_name }}</strong>
                                     D/O <strong>{{ $challan->father_name }}</strong>
                                 </td>
                             </tr>
@@ -72,23 +71,24 @@
                                 <td>Sr</td><td>Fund</td><td>Rs</td>
                             </tr>
                             @php
-                                $govtFees = ['Admission' => 0, 'Tution' => 40, 'Breakage' => 0, 'Misc' => 0, 'SLC' => 40];
-                                $fundFees = ['IDF' => 215, 'Exams' => 85, 'IT' => 50, 'CSF' => 250, 'RDF/CDF' => 100, 'Security' => 100];
-                                $govtTotal = array_sum($govtFees);
-                                $fundTotal = array_sum($fundFees);
+                                $govtFeeTypes = ['Admission', 'Tution', 'Breakage', 'Misc', 'SLC'];
+                                $fundFeeTypes = ['IDF', 'Exams', 'IT', 'CSF', 'RDF/CDF', 'Security'];
+                                $govtFees = $fees->whereIn('fee_type', $govtFeeTypes);
+                                $fundFees = $fees->whereIn('fee_type', $fundFeeTypes);
+                                $govtTotal = $govtFees->sum('fee_amount');
+                                $fundTotal = $fundFees->sum('fee_amount');
                                 $grandTotal = $govtTotal + $fundTotal;
                             @endphp
-                            @foreach($govtFees as $type => $amount)
-                                @php $index = array_search($type, array_keys($govtFees)) + 1; @endphp
+                            @foreach($govtFees as $index => $fee)
                                 <tr class="allBorders">
-                                    <td>{{ $index }}</td>
-                                    <td>{{ $type }}</td>
-                                    <td class="bold">{{ number_format($amount, 0) }}</td>
-                                    @if($index <= count($fundFees))
-                                        @php $fundType = array_keys($fundFees)[$index-1]; $fundAmount = $fundFees[$fundType]; @endphp
-                                        <td>{{ $index }}</td>
-                                        <td>{{ $fundType }}</td>
-                                        <td class="bold">{{ number_format($fundAmount, 0) }}</td>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $fee->fee_type }}</td>
+                                    <td class="bold">{{ number_format($fee->fee_amount, 0) }}</td>
+                                    @php $fundFee = $fundFees->skip($index)->first() @endphp
+                                    @if($fundFee)
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $fundFee->fee_type }}</td>
+                                        <td class="bold">{{ number_format($fundFee->fee_amount, 0) }}</td>
                                     @else
                                         <td></td><td></td><td></td>
                                     @endif
@@ -106,7 +106,7 @@
                                 <td colspan="6" class="left">
                                     Rupees (In words): <strong class="large">{{ strtoupper($challan->amount_in_words) }}</strong>
                                     <br><br><br><br><br><br><br><br>
-                                    Depositor's Sign       Bank Officer's Sign
+                                    Depositor's Sign        Bank Officer's Sign
                                 </td>
                             </tr>
                         </table>
