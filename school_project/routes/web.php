@@ -97,6 +97,8 @@ Route::post('/store-issue', 'LibraryController@storeIssue')->name('store-issue')
 Route::post('/update-issue/{id}', 'LibraryController@updateIssue')->name('update-issue');
 
 
+Route::get('/list-total-students', 'StudentController@studentPromotion')->name('studentpromotion');
+
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');
 

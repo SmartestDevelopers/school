@@ -381,6 +381,23 @@
                             </ul>
                         </li>
                         <li class="nav-item sidebar-nav-item">
+                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Reports</span></a>
+                            <ul class="nav sub-group-menu">
+                                <li class="nav-item">
+                                    <a href="{{ url('list-total-students')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>List Total Students</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('list-total-fees')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>List Total Fees</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('list-collective-fees')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>List Collective Fees</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item sidebar-nav-item">
                             <a href="#" class="nav-link"><i
                                     class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Class</span></a>
                             <ul class="nav sub-group-menu">
