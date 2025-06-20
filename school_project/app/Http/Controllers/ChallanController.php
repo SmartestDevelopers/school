@@ -7,21 +7,22 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use NumberFormatter;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\View;
 
 class ChallanController extends Controller
 {
     public function create()
     {
-
         $challans = DB::table('challans')->get();
-        
         return view('acconunt.createchallan', compact('challans'));
     }
 
     public function store(Request $request)
     {
+        \Log::info('Store method called', $request->all());
+
+        
         $data = $request->validate([
+
             'school_name' => 'required|string',
             'class' => 'required|string',
             'section' => 'required|string',
@@ -36,12 +37,18 @@ class ChallanController extends Controller
             'total_months' => 'required_if:months_option,many|integer|min:1',
             'student_id' => 'required_if:students_option,one|integer',
         ]);
+        dd($data);
+
+        \Log::info('Validated data', $data);
 
         $students = $data['students_option'] === 'one'
-            ? DB::table('students')->where('id', $data['student_id'])->get()
-            : DB::table('students')->where('class', $data['class'])->where('section', $data['section'])->get();
+            ? DB::table('admission_forms')->where('id', $data['student_id'])->select('id', 'full_name as name', 'father_name', 'gr')->get()
+            : DB::table('admission_forms')->where('class', $data['class'])->where('section', $data['section'])->select('id', 'full_name as name', 'father_name', 'gr')->get();
+
+        \Log::info('Students found', ['count' => $students->count(), 'data' => $students->toArray()]);
 
         if ($students->isEmpty()) {
+            \Log::warning('No students found', ['class' => $data['class'], 'section' => $data['section']]);
             return redirect()->back()->with('error', 'No students found for the selected class and section.');
         }
 
@@ -53,7 +60,21 @@ class ChallanController extends Controller
                 ->where('year', $data['year'] ?? $data['from_year'])
                 ->first();
 
+            \Log::info('Fee group query', [
+                'class' => $data['class'],
+                'section' => $data['section'],
+                'month' => $data['month'] ?? $data['from_month'],
+                'year' => $data['year'] ?? $data['from_year'],
+                'result' => $feeGroup ? (array)$feeGroup : null
+            ]);
+
             if (!$feeGroup) {
+                \Log::warning('No fee group found', [
+                    'class' => $data['class'],
+                    'section' => $data['section'],
+                    'month' => $data['month'] ?? $data['from_month'],
+                    'year' => $data['year'] ?? $data['from_year']
+                ]);
                 return redirect()->back()->with('error', 'No fee group found for the selected criteria.');
             }
 
@@ -61,13 +82,15 @@ class ChallanController extends Controller
                 ->where('fee_group_id', $feeGroup->id)
                 ->sum('fee_amount') * ($data['total_months'] ?? 1);
 
+            \Log::info('Total fee calculated', ['fee_group_id' => $feeGroup->id, 'total_fee' => $totalFee]);
+
             DB::table('challans')->insert([
                 'school_name' => $data['school_name'],
                 'class' => $data['class'],
                 'section' => $data['section'],
                 'student_name' => $student->name,
                 'father_name' => $student->father_name ?? 'N/A',
-                'gr_number' => $student->gr_number ?? 'N/A',
+                'gr_number' => $student->gr ?? 'N/A',
                 'academic_session' => ($data['year'] ?? $data['from_year']) . '-' . (($data['year'] ?? $data['from_year']) + 1),
                 'year' => $data['year'] ?? $data['from_year'],
                 'from_month' => $data['month'] ?? $data['from_month'],
@@ -84,6 +107,8 @@ class ChallanController extends Controller
             ]);
         }
 
+        \Log::info('Challan(s) created successfully');
+
         return redirect()->route('create-challan')->with('success', 'Challan(s) created successfully.');
     }
 
@@ -98,11 +123,13 @@ class ChallanController extends Controller
 
     public function getStudents(Request $request)
     {
-        $students = DB::table('students')
+        \Log::info('getStudents called', ['class' => $request->class, 'section' => $request->section]);
+        $students = DB::table('admission_forms')
             ->where('class', $request->class)
             ->where('section', $request->section)
-            ->select('id', 'name', 'roll_number')
+            ->select('id', 'full_name as name', 'roll as roll_number')
             ->get();
+        \Log::info('Students fetched for dropdown', ['count' => $students->count(), 'data' => $students->toArray()]);
         return response()->json($students);
     }
 
