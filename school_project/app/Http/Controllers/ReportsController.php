@@ -15,13 +15,13 @@ class ReportsController extends Controller
 
     public function totalStudents()
     {
-        return view("reports.totalstudents");
+        return view("reports.listtotalstudents");
     }
 
 
     public function totalFees()
     {
-        return view("reports.totalfees");
+        return view("reports.listtotalfees");
     }
 
 
