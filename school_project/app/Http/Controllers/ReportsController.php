@@ -11,6 +11,26 @@ class ReportsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+    public function totalStudents()
+    {
+        return view("reports.totalstudents");
+    }
+
+
+    public function totalFees()
+    {
+        return view("reports.totalfees");
+    }
+
+
+    public function collectiveFees()
+    {
+        return view("reports.collectivefees");
+    }
+
+
     public function index()
     {
         //

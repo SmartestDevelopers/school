@@ -87,6 +87,11 @@ Route::get('/view-challan/{id}', 'ChallanController@view')->name('challan-view')
 Route::get('/api/students', 'ChallanController@getStudents')->name('api.students');
 Route::get('/download-challan/{id}', 'ChallanController@downloadPdf')->name('download-challan');
 
+
+Route::get('/list-total-students', 'ReportsController@totalStudents')->name('totalstudents');
+Route::get('/list-total-fees', 'ReportsController@totalFees')->name('totalfees');
+Route::get('/collective-fees', 'ReportsController@collectiveFees')->name('collectivefees');
+
 Route::get('/add-book', 'LibraryController@addBook')->name('add-book');
 Route::post('/store-book', 'LibraryController@storeBook')->name('store-book');
 Route::get('/edit-book/{id}', 'LibraryController@editBook')->name('edit-book');
@@ -96,8 +101,6 @@ Route::get('/issue-book', 'LibraryController@issueBook')->name('issue-book');
 Route::post('/store-issue', 'LibraryController@storeIssue')->name('store-issue');
 Route::post('/update-issue/{id}', 'LibraryController@updateIssue')->name('update-issue');
 
-
-Route::get('/list-total-students', 'StudentController@studentPromotion')->name('studentpromotion');
 
 Route::get('/student-promotion', 'StudentController@studentPromotion')->name('studentpromotion');
 Route::get('/teacher-payment', 'TeachersController@teacherPayment')->name('teacherpayment');

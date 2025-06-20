@@ -392,8 +392,8 @@
                                             class="fas fa-angle-right"></i>List Total Fees</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('list-collective-fees')}}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>List Collective Fees</a>
+                                    <a href="{{ url('collective-fees')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Collective Fees</a>
                                 </li>
                             </ul>
                         </li>
