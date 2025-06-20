@@ -1,7 +1,7 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'Laravel',
+    'name' => 'School-Management-System',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:7i7KmISQYgFSgARCYVkV7EVI/HLdZD+9xOxkXt6XKuE=',
+    'key' => 'base64:nXntTcCLjC/i1zWxgoUIGi47NAjgQg3vMLZpRpus55w=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -176,7 +176,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -215,7 +215,7 @@
         'endpoint' => NULL,
       ),
     ),
-    'prefix' => 'laravel_cache',
+    'prefix' => 'school_management_system_cache',
   ),
   'cors' => 
   array (
@@ -251,7 +251,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'school_project',
+        'database' => 'school',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -261,7 +261,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'school_project',
+        'database' => 'school',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -281,7 +281,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'school_project',
+        'database' => 'school',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -296,7 +296,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'school_project',
+        'database' => 'school',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -311,7 +311,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'laravel_database_',
+        'prefix' => 'school_management_system_database_',
       ),
       'default' => 
       array (
@@ -340,12 +340,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\app',
+        'root' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\app/public',
+        'root' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -361,7 +361,7 @@
     ),
     'links' => 
     array (
-      'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\public\\storage' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\app/public',
+      'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\public\\storage' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -395,13 +395,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -451,7 +451,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -491,14 +491,14 @@
     'from' => 
     array (
       'address' => NULL,
-      'name' => 'Laravel',
+      'name' => 'School-Management-System',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -576,7 +576,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -585,7 +585,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'laravel_session',
+    'cookie' => 'school_management_system_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -596,9 +596,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\resources\\views',
+      0 => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\framework\\views',
     'expires' => true,
   ),
   'flare' => 
