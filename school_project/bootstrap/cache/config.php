@@ -1,7 +1,7 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'School-Management-System',
+    'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost',
@@ -10,7 +10,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:nXntTcCLjC/i1zWxgoUIGi47NAjgQg3vMLZpRpus55w=',
+    'key' => 'base64:7i7KmISQYgFSgARCYVkV7EVI/HLdZD+9xOxkXt6XKuE=',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -176,7 +176,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -215,7 +215,7 @@
         'endpoint' => NULL,
       ),
     ),
-    'prefix' => 'school_management_system_cache',
+    'prefix' => 'laravel_cache',
   ),
   'cors' => 
   array (
@@ -251,7 +251,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'school',
+        'database' => 'school_project',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -261,7 +261,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'school',
+        'database' => 'school_project',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -281,7 +281,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'school',
+        'database' => 'school_project',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -296,7 +296,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'school',
+        'database' => 'school_project',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -311,7 +311,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'school_management_system_database_',
+        'prefix' => 'laravel_database_',
       ),
       'default' => 
       array (
@@ -340,12 +340,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\app',
+        'root' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\app/public',
+        'root' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
@@ -361,7 +361,7 @@
     ),
     'links' => 
     array (
-      'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\public\\storage' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\app/public',
+      'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\public\\storage' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -395,13 +395,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -451,7 +451,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -491,14 +491,14 @@
     'from' => 
     array (
       'address' => NULL,
-      'name' => 'School-Management-System',
+      'name' => 'Laravel',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -576,7 +576,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -585,7 +585,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'school_management_system_session',
+    'cookie' => 'laravel_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -596,10 +596,57 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\resources\\views',
+      0 => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\DELL\\Documents\\GitHub\\school\\school_project\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\framework\\views',
     'expires' => true,
+  ),
+  'dompdf' => 
+  array (
+    'show_warnings' => false,
+    'public_path' => NULL,
+    'convert_entities' => true,
+    'options' => 
+    array (
+      'font_dir' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\fonts',
+      'font_cache' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project\\storage\\fonts',
+      'temp_dir' => 'C:\\Users\\Toshiba\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\Users\\Toshiba\\OneDrive\\Documents\\GitHub\\school\\school_project',
+      'allowed_protocols' => 
+      array (
+        'file://' => 
+        array (
+          'rules' => 
+          array (
+          ),
+        ),
+        'http://' => 
+        array (
+          'rules' => 
+          array (
+          ),
+        ),
+        'https://' => 
+        array (
+          'rules' => 
+          array (
+          ),
+        ),
+      ),
+      'log_output_file' => NULL,
+      'enable_font_subsetting' => false,
+      'pdf_backend' => 'CPDF',
+      'default_media_type' => 'screen',
+      'default_paper_size' => 'a4',
+      'default_paper_orientation' => 'portrait',
+      'default_font' => 'serif',
+      'dpi' => 96,
+      'enable_php' => false,
+      'enable_javascript' => true,
+      'enable_remote' => true,
+      'font_height_ratio' => 1.1,
+      'enable_html5_parser' => true,
+    ),
   ),
   'flare' => 
   array (
