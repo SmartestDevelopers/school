@@ -472,7 +472,7 @@
 
         if (classSelect && sectionSelect) {
             try {
-                const url = `{{ route('api.students') }}?class=${encodeURIComponent(classSelect)}§ion=${encodeURIComponent(sectionSelect)}`;
+                const url = `{{ route('api.students') }}?class=${encodeURIComponent(classSelect)}&section=${encodeURIComponent(sectionSelect)}`;
                 console.log('Fetching students from:', url);
                 const response = await fetch(url);
                 if (!response.ok) {

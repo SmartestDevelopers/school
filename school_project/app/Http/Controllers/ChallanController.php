@@ -69,32 +69,6 @@ class ChallanController extends Controller
 
                 // Calculate fees for each month
                 foreach ($months as $monthData) {
-                    $feeGroup = DB::table('fee_groups')
-                        ->where('class', $data['class'])
-                        ->where('section', $data['section'])
-                        ->where('month', $monthData['month'])
-                        ->where('year', $monthData['year'])
-                        ->first();
-
-                    Log::info('Fee group query', [
-                        'class' => $data['class'],
-                        'section' => $data['section'],
-                        'month' => $monthData['month'],
-                        'year' => $monthData['year'],
-                        'result' => $feeGroup ? (array)$feeGroup : null
-                    ]);
-
-                    if (!$feeGroup) {
-                        Log::warning('No fee group found', [
-                            'class' => $data['class'],
-                            'section' => $data['section'],
-                            'month' => $monthData['month'],
-                            'year' => $monthData['year']
-                        ]);
-                        DB::rollBack();
-                        return redirect()->back()->with('error', "No fee group found for {$monthData['month']} {$monthData['year']}.")->withInput();
-                    }
-
                     $monthFee = DB::table('fees')
                         ->where('class', $data['class'])
                         ->where('section', $data['section'])
@@ -169,7 +143,38 @@ class ChallanController extends Controller
             Log::warning('Challan not found', ['id' => $id]);
             return redirect()->route('create-challan')->with('error', 'Challan not found.');
         }
-        return view('acconunt.view-challan', compact('challan'));
+
+        // Fetch all challans for the same class, section, academic_year, and period
+        $challans = DB::table('challans')
+            ->where('class', $challan->class)
+            ->where('section', $challan->section)
+            ->where('academic_year', $challan->academic_year)
+            ->where('from_month', $challan->from_month)
+            ->where('from_year', $challan->from_year)
+            ->where(function ($query) use ($challan) {
+                if ($challan->to_month && $challan->to_year) {
+                    $query->where('to_month', $challan->to_month)
+                          ->where('to_year', $challan->to_year);
+                }
+            })
+            ->get();
+
+        $total_fee_sum = $challans->sum('total_fee');
+
+        // Fetch fee details for each challan
+        $fees = [];
+        foreach ($challans as $ch) {
+            $ch_fees = DB::table('fees')
+                ->where('class', $ch->class)
+                ->where('section', $ch->section)
+                ->where('academic_year', $ch->academic_year)
+                ->where('month', $ch->from_month)
+                ->where('year', $ch->from_year)
+                ->get(['fee_type', 'fee_amount']);
+            $fees[$ch->id] = $ch_fees;
+        }
+
+        return view('acconunt.view-challan', compact('challans', 'fees', 'total_fee_sum'));
     }
 
     public function getStudents(Request $request)
@@ -193,16 +198,39 @@ class ChallanController extends Controller
                 abort(404, 'Challan not found.');
             }
 
-            $fees = DB::table('fees')
+            // Fetch all challans for the same class, section, academic_year, and period
+            $challans = DB::table('challans')
                 ->where('class', $challan->class)
                 ->where('section', $challan->section)
-                ->where('month', $challan->from_month)
-                ->where('year', $challan->from_year)
                 ->where('academic_year', $challan->academic_year)
+                ->where('from_month', $challan->from_month)
+                ->where('from_year', $challan->from_year)
+                ->where(function ($query) use ($challan) {
+                    if ($challan->to_month && $challan->to_year) {
+                        $query->where('to_month', $challan->to_month)
+                              ->where('to_year', $challan->to_year);
+                    }
+                })
                 ->get();
 
-            $pdf = Pdf::loadView('acconunt.challan-pdf', compact('challan', 'fees'));
-            return $pdf->download('challan-' . $challan->id . '.pdf');
+            $total_fee_sum = $challans->sum('total_fee');
+
+            // Fetch fee details for each challan
+            $fees = [];
+            foreach ($challans as $ch) {
+                $ch_fees = DB::table('fees')
+                    ->where('class', $ch->class)
+                    ->where('section', $ch->section)
+                    ->where('academic_year', $ch->academic_year)
+                    ->where('month', $ch->from_month)
+                    ->where('year', $ch->from_year)
+                    ->get(['fee_type', 'fee_amount']);
+                $fees[$ch->id] = $ch_fees;
+            }
+
+            $pdf = Pdf::loadView('acconunt.challan-pdf', compact('challans', 'fees', 'total_fee_sum'))
+                ->setPaper('legal', 'landscape');
+            return $pdf->download('challan-' . $id . '.pdf');
         } catch (\Exception $e) {
             Log::error('PDF generation failed: ' . $e->getMessage(), ['exception' => $e]);
             return redirect()->route('create-challan')->with('error', 'Failed to generate PDF: ' . $e->getMessage());
