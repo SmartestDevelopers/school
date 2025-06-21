@@ -12,7 +12,7 @@ class ChallanController extends Controller
 {
     public function create()
     {
-        $challans = DB::table('challans')->get();
+        $challans = DB::table('challans')->orderBy('created_at', 'desc')->get();
         return view('acconunt.createchallan', compact('challans'));
     }
 
@@ -21,6 +21,7 @@ class ChallanController extends Controller
         try {
             $data = $request->validate([
                 'school_name' => 'required|string|max:255',
+                'academic_year' => 'required|string',
                 'class' => 'required|string',
                 'section' => 'required|string',
                 'months_option' => 'required|in:one,many',
@@ -32,14 +33,22 @@ class ChallanController extends Controller
                 'to_month' => 'required_if:months_option,many|string',
                 'to_year' => 'required_if:months_option,many|integer',
                 'total_months' => 'required_if:months_option,many|integer|min:1',
-                'student_id' => 'required_if:students_option,one|integer',
+                'student_id' => 'required_if:students_option,one|integer|exists:admission_forms,id',
             ]);
 
             Log::info('Validated data', $data);
 
+            // Fetch students
             $students = $data['students_option'] === 'one'
-                ? DB::table('admission_forms')->where('id', $data['student_id'])->select('id', 'full_name as name', 'father_name', 'gr')->get()
-                : DB::table('admission_forms')->where('class', $data['class'])->where('section', $data['section'])->select('id', 'full_name as name', 'father_name', 'gr')->get();
+                ? DB::table('admission_forms')
+                    ->where('id', $data['student_id'])
+                    ->select('id', 'full_name as name', 'parent_name', 'roll as gr')
+                    ->get()
+                : DB::table('admission_forms')
+                    ->where('class', $data['class'])
+                    ->where('section', $data['section'])
+                    ->select('id', 'full_name as name', 'parent_name', 'roll as gr')
+                    ->get();
 
             Log::info('Students found', ['count' => $students->count(), 'data' => $students->toArray()]);
 
@@ -50,48 +59,83 @@ class ChallanController extends Controller
 
             DB::beginTransaction();
 
+            // Determine months for fee calculation
+            $months = $data['months_option'] === 'one'
+                ? [['month' => $data['month'], 'year' => $data['year']]]
+                : $this->getMonthRange($data['from_month'], $data['from_year'], $data['to_month'], $data['to_year']);
+
             foreach ($students as $student) {
-                $feeGroup = DB::table('fee_groups')
-                    ->where('class', $data['class'])
-                    ->where('section', $data['section'])
-                    ->where('month', $data['month'] ?? $data['from_month'])
-                    ->where('year', $data['year'] ?? $data['from_year'])
-                    ->first();
+                $totalFee = 0;
 
-                Log::info('Fee group query', [
-                    'class' => $data['class'],
-                    'section' => $data['section'],
-                    'month' => $data['month'] ?? $data['from_month'],
-                    'year' => $data['year'] ?? $data['from_year'],
-                    'result' => $feeGroup ? (array)$feeGroup : null
-                ]);
+                // Calculate fees for each month
+                foreach ($months as $monthData) {
+                    $feeGroup = DB::table('fee_groups')
+                        ->where('class', $data['class'])
+                        ->where('section', $data['section'])
+                        ->where('month', $monthData['month'])
+                        ->where('year', $monthData['year'])
+                        ->first();
 
-                if (!$feeGroup) {
-                    Log::warning('No fee group found', [
+                    Log::info('Fee group query', [
                         'class' => $data['class'],
                         'section' => $data['section'],
-                        'month' => $data['month'] ?? $data['from_month'],
-                        'year' => $data['year'] ?? $data['from_year']
+                        'month' => $monthData['month'],
+                        'year' => $monthData['year'],
+                        'result' => $feeGroup ? (array)$feeGroup : null
                     ]);
-                    DB::rollBack();
-                    return redirect()->back()->with('error', 'No fee group found for the selected criteria.')->withInput();
+
+                    if (!$feeGroup) {
+                        Log::warning('No fee group found', [
+                            'class' => $data['class'],
+                            'section' => $data['section'],
+                            'month' => $monthData['month'],
+                            'year' => $monthData['year']
+                        ]);
+                        DB::rollBack();
+                        return redirect()->back()->with('error', "No fee group found for {$monthData['month']} {$monthData['year']}.")->withInput();
+                    }
+
+                    $monthFee = DB::table('fees')
+                        ->where('class', $data['class'])
+                        ->where('section', $data['section'])
+                        ->where('month', $monthData['month'])
+                        ->where('year', $monthData['year'])
+                        ->where('academic_year', $data['academic_year'])
+                        ->sum('fee_amount');
+
+                    if ($monthFee == 0) {
+                        Log::warning('No fees found', [
+                            'class' => $data['class'],
+                            'section' => $data['section'],
+                            'month' => $monthData['month'],
+                            'year' => $monthData['year'],
+                            'academic_year' => $data['academic_year']
+                        ]);
+                        DB::rollBack();
+                        return redirect()->back()->with('error', "No fees found for {$monthData['month']} {$monthData['year']}.")->withInput();
+                    }
+
+                    $totalFee += $monthFee;
                 }
 
-                $totalFee = DB::table('fees')
-                    ->where('fee_group_id', $feeGroup->id)
-                    ->sum('fee_amount') * ($data['total_months'] ?? 1);
+                Log::info('Total fee calculated', [
+                    'student_id' => $student->id,
+                    'total_fee' => $totalFee
+                ]);
 
-                Log::info('Total fee calculated', ['fee_group_id' => $feeGroup->id, 'total_fee' => $totalFee]);
+                $monthsString = $data['months_option'] === 'one'
+                    ? $data['month']
+                    : "{$data['from_month']} {$data['from_year']} - {$data['to_month']} {$data['to_year']}";
 
                 DB::table('challans')->insert([
                     'school_name' => $data['school_name'],
                     'class' => $data['class'],
                     'section' => $data['section'],
                     'full_name' => $student->name,
-                    'father_name' => $student->father_name ?? 'N/A',
+                    'father_name' => $student->parent_name ?? 'N/A',
                     'gr_number' => $student->gr ?? 'N/A',
-                    'academic_year' => ($data['year'] ?? $data['from_year']) . '-' . (($data['year'] ?? $data['from_year']) + 1),
-                    'year' => $data['year'] ?? $data['from_year'],
+                    'academic_year' => $data['academic_year'],
+                    'year' => $data['months_option'] === 'one' ? $data['year'] : $data['to_year'],
                     'from_month' => $data['month'] ?? $data['from_month'],
                     'from_year' => $data['year'] ?? $data['from_year'],
                     'to_month' => $data['to_month'] ?? null,
@@ -113,7 +157,7 @@ class ChallanController extends Controller
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Challan creation failed: ' . $e->getMessage());
+            Log::error('Challan creation failed: ' . $e->getMessage(), ['exception' => $e]);
             return redirect()->back()->with('error', 'Failed to create challan: ' . $e->getMessage())->withInput();
         }
     }
@@ -149,25 +193,44 @@ class ChallanController extends Controller
                 abort(404, 'Challan not found.');
             }
 
-            $feeGroup = DB::table('fee_groups')
+            $fees = DB::table('fees')
                 ->where('class', $challan->class)
                 ->where('section', $challan->section)
                 ->where('month', $challan->from_month)
                 ->where('year', $challan->from_year)
-                ->first();
+                ->where('academic_year', $challan->academic_year)
+                ->get();
 
-            if (!$feeGroup) {
-                Log::warning('No fee group found for PDF', ['challan_id' => $id]);
-                return redirect()->route('create-challan')->with('error', 'No fee group found for this challan.');
-            }
-
-            $fees = DB::table('fees')->where('fee_group_id', $feeGroup->id)->get();
             $pdf = Pdf::loadView('acconunt.challan-pdf', compact('challan', 'fees'));
             return $pdf->download('challan-' . $challan->id . '.pdf');
         } catch (\Exception $e) {
-            Log::error('PDF generation failed: ' . $e->getMessage());
+            Log::error('PDF generation failed: ' . $e->getMessage(), ['exception' => $e]);
             return redirect()->route('create-challan')->with('error', 'Failed to generate PDF: ' . $e->getMessage());
         }
+    }
+
+    private function getMonthRange($fromMonth, $fromYear, $toMonth, $toYear)
+    {
+        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $start = array_search($fromMonth, $months);
+        $end = array_search($toMonth, $months);
+        $startYear = (int)$fromYear;
+        $endYear = (int)$toYear;
+        $monthRange = [];
+
+        while ($startYear < $endYear || ($startYear == $endYear && $start <= $end)) {
+            $monthRange[] = [
+                'month' => $months[$start],
+                'year' => $startYear,
+            ];
+            $start++;
+            if ($start > 11) {
+                $start = 0;
+                $startYear++;
+            }
+        }
+
+        return $monthRange;
     }
 
     private function numberToWords($number)
