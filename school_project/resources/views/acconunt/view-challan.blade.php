@@ -20,22 +20,22 @@
     .card-header {
         background: linear-gradient(to right, #E4E5E6, #0072ff);
         color: #000;
-        font-size: 27px;
+        font-size: 20px;
         font-weight: bold;
         text-align: left;
-        padding: 10px;
+        padding: 10px 15px;
         position: relative;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     .status {
-        position: absolute;
-        top: 10px;
-        right: 10px;
         text-align: right;
-    }
-    .status h1 {
-        font-size: 24px;
-        margin: 0;
+        font-size: 16px;
+        font-weight: bold;
         color: {{ $challan->status == 'paid' ? 'green' : 'red' }};
+        margin-left: 10px;
     }
     .card-body {
         padding: 15px;
@@ -105,10 +105,8 @@
                     @foreach(['Bank Copy', 'School Copy', 'Student Copy', 'Teacher Copy'] as $copy)
                         <div class="card">
                             <div class="card-header">
-                                C H A L L A N
-                                <div class="status">
-                                    <h1><strong>{{ strtoupper($ch->status) }}</strong></h1>
-                                </div>
+                                <span>CHALLAN</span>
+                                <span class="status">{{ strtoupper($ch->status) }}</span>
                             </div>
                             <div class="card-body">
                                 <table class="inner-table">

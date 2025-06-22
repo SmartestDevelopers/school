@@ -12,7 +12,10 @@ class ChallanController extends Controller
     public function create()
     {
         $challans = DB::table('challans')->orderBy('created_at', 'desc')->get();
-        return view('acconunt.createchallan', compact('challans'));
+        $students = DB::table('admission_forms')
+            ->select('roll', 'full_name as name', 'roll as roll_number', 'class', 'section')
+            ->get();
+        return view('acconunt.createchallan', compact('challans', 'students'));
     }
 
     public function store(Request $request)
@@ -32,21 +35,20 @@ class ChallanController extends Controller
                 'to_month' => 'required_if:months_option,many|string',
                 'to_year' => 'required_if:months_option,many|integer',
                 'total_months' => 'required_if:months_option,many|integer|min:1',
-                'student_id' => 'required_if:students_option,one|integer|exists:admission_forms,id',
+                'roll' => 'required_if:students_option,one|string|exists:admission_forms,roll',
             ]);
 
             Log::info('Validated data', $data);
 
-            // Fetch students from admission_forms
             $students = $data['students_option'] === 'one'
                 ? DB::table('admission_forms')
-                    ->where('id', $data['student_id'])
-                    ->select('id', 'full_name as name', 'parent_name', 'roll as gr')
+                    ->where('roll', $data['roll'])
+                    ->select('roll', 'full_name as name', 'parent_name as father_name', 'roll as gr')
                     ->get()
                 : DB::table('admission_forms')
                     ->where('class', $data['class'])
                     ->where('section', $data['section'])
-                    ->select('id', 'full_name as name', 'parent_name', 'roll as gr')
+                    ->select('roll', 'full_name as name', 'parent_name as father_name', 'roll as gr')
                     ->get();
 
             if ($students->isEmpty()) {
@@ -56,7 +58,6 @@ class ChallanController extends Controller
 
             DB::beginTransaction();
 
-            // Determine months for fee calculation
             $months = $data['months_option'] === 'one'
                 ? [['month' => $data['month'], 'year' => $data['year']]]
                 : $this->getMonthRange($data['from_month'], $data['from_year'], $data['to_month'], $data['to_year']);
@@ -64,7 +65,6 @@ class ChallanController extends Controller
             foreach ($students as $student) {
                 $totalFee = 0;
 
-                // Calculate fees for each month from fees table
                 foreach ($months as $monthData) {
                     $monthFee = DB::table('fees')
                         ->where('class', $data['class'])
@@ -90,7 +90,7 @@ class ChallanController extends Controller
                 }
 
                 Log::info('Total fee calculated', [
-                    'student_id' => $student->id,
+                    'roll' => $student->roll,
                     'total_fee' => $totalFee
                 ]);
 
@@ -103,8 +103,8 @@ class ChallanController extends Controller
                     'class' => $data['class'],
                     'section' => $data['section'],
                     'full_name' => $student->name,
-                    'father_name' => $student->parent_name ?? 'N/A',
-                    'gr_number' => $student->gr ?? 'N/A',
+                    'father_name' => $student->father_name ?? 'N/A',
+                    'gr_number' => $student->roll,
                     'academic_year' => $data['academic_year'],
                     'year' => $data['months_option'] === 'one' ? $data['year'] : $data['to_year'],
                     'from_month' => $data['month'] ?? $data['from_month'],
@@ -112,7 +112,7 @@ class ChallanController extends Controller
                     'to_month' => $data['to_month'] ?? null,
                     'to_year' => $data['to_year'] ?? null,
                     'total_fee' => $totalFee,
-                    'status' => 'pending',
+                    'status' => 'unpaid',
                     'due_date' => now()->addDays(30)->format('d/m/Y'),
                     'amount_in_words' => $this->numberToWords($totalFee),
                     'created_at' => now(),
@@ -141,7 +141,6 @@ class ChallanController extends Controller
             return redirect()->route('create-challan')->with('error', 'Challan not found.');
         }
 
-        // Fetch all challans for the same class, section, academic_year, and period
         $challans = DB::table('challans')
             ->where('class', $challan->class)
             ->where('section', $challan->section)
@@ -159,10 +158,8 @@ class ChallanController extends Controller
         $total_fee_sum = $challans->sum('total_fee');
         $total_fee_sum_words = $this->numberToWords($total_fee_sum);
 
-        // Fetch fee types from add_fees
         $fee_types = DB::table('add_fees')->pluck('fee_type')->toArray();
 
-        // Fetch fee details for each challan
         $fees = [];
         foreach ($challans as $ch) {
             $ch_fees = DB::table('fees')
@@ -191,7 +188,7 @@ class ChallanController extends Controller
         $students = DB::table('admission_forms')
             ->where('class', $request->class)
             ->where('section', $request->section)
-            ->select('id', 'full_name as name', 'roll as roll_number')
+            ->select('roll', 'full_name as name', 'roll as roll_number')
             ->get();
         Log::info('Students fetched for dropdown', ['count' => $students->count(), 'data' => $students->toArray()]);
         return response()->json($students);
@@ -260,7 +257,10 @@ class ChallanController extends Controller
             Log::warning('Challan not found for paid form', ['id' => $id]);
             return redirect()->route('create-challan')->with('error', 'Challan not found.');
         }
-        return view('acconunt.challanpaid', compact('challan'));
+        $students = DB::table('admission_forms')
+            ->select('roll', 'full_name as name', 'roll as roll_number')
+            ->get();
+        return view('acconunt.challanpaid', compact('challan', 'students'));
     }
 
     public function markPaid(Request $request, $id)
@@ -273,7 +273,7 @@ class ChallanController extends Controller
                 'section' => 'required|string',
                 'month' => 'required|string',
                 'year' => 'required|integer',
-                'student_id' => 'required|integer|exists:admission_forms,id',
+                'roll' => 'required|string|exists:admission_forms,roll',
             ]);
 
             $challan = DB::table('challans')
@@ -348,7 +348,7 @@ class ChallanController extends Controller
             $group = $number % 1000;
             if ($group > 0) {
                 $groupWords = '';
-                $hundreds = (int) ($group / 100);
+                $hundreds = (int)($group / 100);
                 $remainder = $group % 100;
 
                 if ($hundreds > 0) {
@@ -364,8 +364,8 @@ class ChallanController extends Controller
                     } elseif ($remainder < 20) {
                         $groupWords .= $teens[$remainder - 10];
                     } else {
-                        $tensDigit = (int) ($remainder / 10);
-                        $unitsDigit = $group % 10;
+                        $tensDigit = (int)($remainder / 10);
+                        $unitsDigit = $remainder % 10;
                         $groupWords .= $tens[$tensDigit];
                         if ($unitsDigit > 0) {
                             $groupWords .= ' ' . $units[$unitsDigit];
@@ -377,7 +377,7 @@ class ChallanController extends Controller
                 $words = trim($groupWords) . ($words ? ' ' . $words : '');
             }
 
-            $number = (int) ($number / 1000);
+            $number = (int)($number / 1000);
             $groupIndex++;
         }
 

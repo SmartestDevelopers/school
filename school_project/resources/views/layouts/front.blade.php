@@ -365,6 +365,10 @@
                                     <a href="{{ url('create-challan')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>Create Fee Challan</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('challan/paid/{id}')}}" class="nav-link"><i
+                                            class="fas fa-angle-right"></i>Challan Paid</a>
+                                </li>
                                 <!-- <li class="nav-item">
                                     <a href="{{ url('create-challan')}}" class="nav-link"><i class="fas fa-angle-right"></i>All Fees
                                         Collection</a>

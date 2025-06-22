@@ -1,6 +1,54 @@
 @extends('layouts.front')
 
 @section('content')
+<style>
+    .form-group {
+        margin-bottom: 0;
+        padding: 0 8px;
+    }
+    .form-control {
+        font-size: 14px;
+        height: 38px;
+        padding: 6px 12px;
+    }
+    .form-label {
+        font-size: 14px;
+        margin-bottom: 4px;
+        white-space: nowrap;
+    }
+    .radio-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+    }
+    .radio-group label {
+        margin-bottom: 4px;
+        font-size: 14px;
+    }
+    .btn-primary {
+        font-size: 14px;
+        padding: 8px 16px;
+        margin-top: 20px;
+    }
+    @media (max-width: 768px) {
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-control, .form-label, .radio-group label {
+            font-size: 12px;
+        }
+        .form-control {
+            height: 34px;
+            padding: 6px 10px;
+        }
+        .btn-primary {
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+    }
+</style>
+
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-10">
@@ -22,70 +70,69 @@
                             </ul>
                         </div>
                     @endif
-
                     <form action="{{ route('create-challan.store') }}" method="POST">
                         @csrf
-                        <div class="form-group">
-                            <label for="school_name">School Name</label>
-                            <input type="text" name="school_name" id="school_name" class="form-control" value="{{ old('school_name', 'FG FPS (2nd Shift) PAF BASE FAISAL KARACHI') }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="academic_year">Academic Year</label>
-                            <select name="academic_year" id="academic_year" class="form-control" required>
-                                <option value="">Select Academic Year</option>
-                                @for ($year = 2023; $year <= 2026; $year++)
-                                    <option value="{{ $year }}-{{ $year + 1 }}" {{ old('academic_year') == "$year-".($year+1) ? 'selected' : '' }}>{{ $year }}-{{ $year + 1 }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="class">Class</label>
-                            <select name="class" id="class" class="form-control" required>
-                                <option value="">Select Class</option>
-                                <option value="One" {{ old('class') == 'One' ? 'selected' : '' }}>One</option>
-                                <option value="Two" {{ old('class') == 'Two' ? 'selected' : '' }}>Two</option>
-                                <option value="Three" {{ old('class') == 'Three' ? 'selected' : '' }}>Three</option>
-                                <option value="Four" {{ old('class') == 'Four' ? 'selected' : '' }}>Four</option>
-                                <option value="Five" {{ old('class') == 'Five' ? 'selected' : '' }}>Five</option>
-                                <option value="Six" {{ old('class') == 'Six' ? 'selected' : '' }}>Six</option>
-                                <option value="Seven" {{ old('class') == 'Seven' ? 'selected' : '' }}>Seven</option>
-                                <option value="Eight" {{ old('class') == 'Eight' ? 'selected' : '' }}>Eight</option>
-                                <option value="Nine" {{ old('class') == 'Nine' ? 'selected' : '' }}>Nine</option>
-                                <option value="Ten" {{ old('class') == 'Ten' ? 'selected' : '' }}>Ten</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="section">Section</label>
-                            <select name="section" id="section" class="form-control" required>
-                                <option value="">Select Section</option>
-                                <option value="A" {{ old('section') == 'A' ? 'selected' : '' }}>A</option>
-                                <option value="B" {{ old('section') == 'B' ? 'selected' : '' }}>B</option>
-                                <option value="C" {{ old('section') == 'C' ? 'selected' : '' }}>C</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Months Option</label><br>
-                            <input type="radio" name="months_option" value="one" {{ old('months_option', 'one') == 'one' ? 'checked' : '' }} required> One Month
-                            <input type="radio" name="months_option" value="many" {{ old('months_option') == 'many' ? 'checked' : '' }}> Many Months
-                        </div>
-                        <div id="one_month_fields" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
-                            <div class="form-group">
-                                <label for="month">Month</label>
+                        <div class="row align-items-end">
+                            <div class="col-md-1 form-group">
+                                <label for="school_name" class="form-label">School Name</label>
+                                <input type="text" name="school_name" id="school_name" class="form-control" value="{{ old('school_name', 'FG FPS (2nd Shift) PAF BASE FAISAL KARACHI') }}" required>
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label for="academic_year" class="form-label">Academic Year</label>
+                                <select name="academic_year" id="academic_year" class="form-control" required>
+                                    <option value="">Select Year</option>
+                                    @for ($year = 2023; $year <= 2026; $year++)
+                                        <option value="{{ $year }}-{{ $year + 1 }}" {{ old('academic_year') == "$year-".($year+1) ? 'selected' : '' }}>{{ $year }}-{{ $year + 1 }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label for="class" class="form-label">Class</label>
+                                <select name="class" id="class" class="form-control" required>
+                                    <option value="">Select Class</option>
+                                    <option value="One" {{ old('class') == 'One' ? 'selected' : '' }}>One</option>
+                                    <option value="Two" {{ old('class') == 'Two' ? 'selected' : '' }}>Two</option>
+                                    <option value="Three" {{ old('class') == 'Three' ? 'selected' : '' }}>Three</option>
+                                    <option value="Four" {{ old('class') == 'Four' ? 'selected' : '' }}>Four</option>
+                                    <option value="Five" {{ old('class') == 'Five' ? 'selected' : '' }}>Five</option>
+                                    <option value="Six" {{ old('class') == 'Six' ? 'selected' : '' }}>Six</option>
+                                    <option value="Seven" {{ old('class') == 'Seven' ? 'selected' : '' }}>Seven</option>
+                                    <option value="Eight" {{ old('class') == 'Eight' ? 'selected' : '' }}>Eight</option>
+                                    <option value="Nine" {{ old('class') == 'Nine' ? 'selected' : '' }}>Nine</option>
+                                    <option value="Ten" {{ old('class') == 'Ten' ? 'selected' : '' }}>Ten</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label for="section" class="form-label">Section</label>
+                                <select name="section" id="section" class="form-control" required>
+                                    <option value="">Select Section</option>
+                                    <option value="A" {{ old('section') == 'A' ? 'selected' : '' }}>A</option>
+                                    <option value="B" {{ old('section') == 'B' ? 'selected' : '' }}>B</option>
+                                    <option value="C" {{ old('section') == 'C' ? 'selected' : '' }}>C</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label class="form-label">Months Option</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="months_option" value="one" {{ old('months_option', 'one') == 'one' ? 'checked' : '' }} required> One</label>
+                                    <label><input type="radio" name="months_option" value="many" {{ old('months_option') == 'many' ? 'checked' : '' }}> Many</label>
+                                </div>
+                            </div>
+                            <div class="col-md-1 form-group" id="one_month_fields" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
+                                <label for="month" class="form-label">Month</label>
                                 <select name="month" id="month" class="form-control">
                                     <option value="">Select Month</option>
                                     @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $m)
-                                        <option value="{{ $m }}" {{ old('month') == $m ? 'selected' : '' }}>{{ $m }}</option>
+                                        Botany($m) value="{{ $m }}" {{ old('month') == $m ? 'selected' : '' }}>{{ $m }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="year">Year</label>
+                            <div class="col-md-1 form-group" id="one_month_year" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
+                                <label for="year" class="form-label">Year</label>
                                 <input type="number" name="year" id="year" class="form-control" value="{{ old('year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                        </div>
-                        <div id="many_months_fields" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
-                            <div class="form-group">
-                                <label for="from_month">From Month</label>
+                            <div class="col-md-1 form-group" id="many_months_from" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
+                                <label for="from_month" class="form-label">From Month</label>
                                 <select name="from_month" id="from_month" class="form-control">
                                     <option value="">Select Month</option>
                                     @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $m)
@@ -93,12 +140,12 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="from_year">From Year</label>
+                            <div class="col-md-1 form-group" id="many_months_from_year" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                                <label for="from_year" class="form-label">From Year</label>
                                 <input type="number" name="from_year" id="from_year" class="form-control" value="{{ old('from_year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="form-group">
-                                <label for="to_month">To Month</label>
+                            <div class="col-md-1 form-group" id="many_months_to" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                                <label for="to_month" class="form-label">To Month</label>
                                 <select name="to_month" id="to_month" class="form-control">
                                     <option value="">Select Month</option>
                                     @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $m)
@@ -106,30 +153,34 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="to_year">To Year</label>
+                            <div class="col-md-1 form-group" id="many_months_to_year" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                                <label for="to_year" class="form-label">To Year</label>
                                 <input type="number" name="to_year" id="to_year" class="form-control" value="{{ old('to_year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="form-group">
-                                <label for="total_months">Total Months</label>
+                            <div class="col-md-1 form-group" id="many_months_total" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                                <label for="total_months" class="form-label">Total Months</label>
                                 <input type="number" name="total_months" id="total_months" class="form-control" value="{{ old('total_months') }}" readonly>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Students Option</label><br>
-                            <input type="radio" name="students_option" value="one" {{ old('students_option', 'one') == 'one' ? 'checked' : '' }} required> One Student
-                            <input type="radio" name="students_option" value="all" {{ old('students_option') == 'all' ? 'checked' : '' }}> All Students
-                        </div>
-                        <div id="one_student_fields" style="display: {{ old('students_option', 'one') == 'one' ? 'block' : 'none' }};">
-                            <div class="form-group">
-                                <label for="student_id">Student</label>
-                                <select name="student_id" id="student_id" class="form-control">
+                            <div class="col-md-1 form-group">
+                                <label class="form-label">Students Option</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="students_option" value="one" {{ old('students_option', 'one') == 'one' ? 'checked' : '' }} required> One</label>
+                                    <label><input type="radio" name="students_option" value="all" {{ old('students_option') == 'all' ? 'checked' : '' }}> All</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2 form-group" id="one_student_fields" style="display: {{ old('students_option', 'one') == 'one' ? 'block' : 'none' }};">
+                                <label for="roll" class="form-label">Student Roll</label>
+                                <select name="roll" id="roll_number" class="form-control">
                                     <option value="">Select Student</option>
-                                    <!-- Populated via JavaScript -->
+                                    @foreach ($students as $student)
+                                        <option value="{{ $student->roll_number }}" {{ old('roll') == $student->roll ? 'selected' : '' }} data-class="{{ $student->class }}" data-section="{{ $student->section }}">{{ $student->name }} (Roll: {{ $student->roll_number }})</option>
+                                    @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-1 form-group">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Create Challan</button>
                     </form>
 
                     <hr>
@@ -162,16 +213,12 @@
                                             to {{ $challan->to_month }}-{{ $challan->to_year }}
                                         @endif
                                     </td>
-                                    <td>{{ number_format($challan->total_fee, 2) }}</td>
-                                    <td style="color: {{ $challan->status == 'paid' ? 'green' : 'red' }};">
-                                        {{ strtoupper($challan->status) }}
-                                    </td>
+                                    <td>{{ $challan->total_fee }}</td>
+                                    <td>{{ strtoupper($challan->status) }}</td>
                                     <td>
                                         <a href="{{ route('challan-view', $challan->id) }}" class="btn btn-info btn-sm">View</a>
                                         <a href="{{ route('download-challan', $challan->id) }}" class="btn btn-success btn-sm">Download</a>
-                                        @if($challan->status != 'paid')
-                                            <a href="{{ route('challan.paid-form', $challan->id) }}" class="btn btn-primary btn-sm">Mark Paid</a>
-                                        @endif
+                                        <a href="{{ route('challan.paid-form', $challan->id) }}" class="btn btn-warning btn-sm">Mark Paid</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -188,13 +235,13 @@
 $(document).ready(function() {
     $('input[name="months_option"]').change(function() {
         if ($(this).val() === 'one') {
-            $('#one_month_fields').show();
-            $('#many_months_fields').hide();
+            $('#one_month_fields, #one_month_year').show();
+            $('#many_months_from, #many_months_from_year, #many_months_to, #many_months_to_year, #many_months_total').hide();
             $('#month, #year').prop('required', true);
             $('#from_month, #from_year, #to_month, #to_year, #total_months').prop('required', false);
         } else {
-            $('#one_month_fields').hide();
-            $('#many_months_fields').show();
+            $('#one_month_fields, #one_month_year').hide();
+            $('#many_months_from, #many_months_from_year, #many_months_to, #many_months_to_year, #many_months_total').show();
             $('#month, #year').prop('required', false);
             $('#from_month, #from_year, #to_month, #to_year, #total_months').prop('required', true);
         }
@@ -203,10 +250,10 @@ $(document).ready(function() {
     $('input[name="students_option"]').change(function() {
         if ($(this).val() === 'one') {
             $('#one_student_fields').show();
-            $('#student_id').prop('required', true);
+            $('#roll_number').prop('required', true);
         } else {
             $('#one_student_fields').hide();
-            $('#student_id').prop('required', false);
+            $('#roll_number').prop('required', false);
         }
     });
 
@@ -214,20 +261,22 @@ $(document).ready(function() {
         var classVal = $('#class').val();
         var sectionVal = $('#section').val();
         if (classVal && sectionVal) {
-            $.ajax({
-                url: '{{ route("api.students") }}',
-                type: 'GET',
-                data: { class: classVal, section: sectionVal },
-                success: function(data) {
-                    $('#student_id').empty().append('<option value="">Select Student</option>');
-                    $.each(data, function(index, student) {
-                        $('#student_id').append('<option value="' + student.id + '">' + student.name + ' (Roll: ' + student.roll_number + ')</option>');
-                    });
-                },
-                error: function(xhr) {
-                    console.log('Error fetching students:', xhr.responseText);
+            $('#roll_number option').each(function() {
+                var option = $(this);
+                if (option.val() === '') {
+                    option.show();
+                } else {
+                    var optionClass = option.data('class');
+                    var optionSection = option.data('section');
+                    if (optionClass === classVal && optionSection === sectionVal) {
+                        option.show();
+                    } else {
+                        option.hide();
+                    }
                 }
             });
+        } else {
+            $('#roll_number option').show();
         }
     });
 
