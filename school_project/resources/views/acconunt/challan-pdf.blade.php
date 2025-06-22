@@ -214,7 +214,7 @@
                 <div class="total-sum">
                     Total Fee for All Students: <strong>{{ number_format($total_fee_sum, 2) }}</strong>
                     <br>
-                    Rupees (In words): <strong>{{ strtoupper((new NumberFormatter('en', NumberFormatter::SPELLOUT))->format($total_fee_sum)) . ' ONLY' }}</strong>
+                    Rupees (In words): <strong>{{ $total_fee_sum_words }}</strong>
                 </div>
             </div>
         </div>

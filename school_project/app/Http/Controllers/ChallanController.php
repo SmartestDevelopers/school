@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
-use NumberFormatter;
 
 class ChallanController extends Controller
 {
@@ -160,6 +159,7 @@ class ChallanController extends Controller
             ->get();
 
         $total_fee_sum = $challans->sum('total_fee');
+        $total_fee_sum_words = $this->numberToWords($total_fee_sum);
 
         // Fetch fee details for each challan
         $fees = [];
@@ -174,7 +174,7 @@ class ChallanController extends Controller
             $fees[$ch->id] = $ch_fees;
         }
 
-        return view('acconunt.view-challan', compact('challans', 'fees', 'total_fee_sum'));
+        return view('acconunt.view-challan', compact('challans', 'fees', 'total_fee_sum', 'total_fee_sum_words'));
     }
 
     public function getStudents(Request $request)
@@ -214,6 +214,7 @@ class ChallanController extends Controller
                 ->get();
 
             $total_fee_sum = $challans->sum('total_fee');
+            $total_fee_sum_words = $this->numberToWords($total_fee_sum);
 
             // Fetch fee details for each challan
             $fees = [];
@@ -228,7 +229,7 @@ class ChallanController extends Controller
                 $fees[$ch->id] = $ch_fees;
             }
 
-            $pdf = Pdf::loadView('acconunt.challan-pdf', compact('challans', 'fees', 'total_fee_sum'))
+            $pdf = Pdf::loadView('acconunt.challan-pdf', compact('challans', 'fees', 'total_fee_sum', 'total_fee_sum_words'))
                 ->setPaper('legal', 'landscape');
             return $pdf->download('challan-' . $id . '.pdf');
         } catch (\Exception $e) {
@@ -263,7 +264,56 @@ class ChallanController extends Controller
 
     private function numberToWords($number)
     {
-        $formatter = new NumberFormatter('en', NumberFormatter::SPELLOUT);
-        return strtoupper($formatter->format($number) . ' ONLY');
+        $units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+        $teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+        $tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+        $thousands = ['', 'Thousand', 'Million', 'Billion'];
+
+        if ($number == 0) {
+            return 'Zero';
+        }
+
+        $words = '';
+        $number = (int)$number;
+        $groupIndex = 0;
+
+        while ($number > 0) {
+            $group = $number % 1000;
+            if ($group > 0) {
+                $groupWords = '';
+                $hundreds = (int)($group / 100);
+                $remainder = $group % 100;
+
+                if ($hundreds > 0) {
+                    $groupWords .= $units[$hundreds] . ' Hundred';
+                }
+
+                if ($remainder > 0) {
+                    if ($groupWords) {
+                        $groupWords .= ' ';
+                    }
+                    if ($remainder < 10) {
+                        $groupWords .= $units[$remainder];
+                    } elseif ($remainder < 20) {
+                        $groupWords .= $teens[$remainder - 10];
+                    } else {
+                        $tensDigit = (int)($remainder / 10);
+                        $unitsDigit = $remainder % 10;
+                        $groupWords .= $tens[$tensDigit];
+                        if ($unitsDigit > 0) {
+                            $groupWords .= ' ' . $units[$unitsDigit];
+                        }
+                    }
+                }
+
+                $groupWords .= ' ' . $thousands[$groupIndex];
+                $words = trim($groupWords) . ($words ? ' ' . $words : '');
+            }
+
+            $number = (int)($number / 1000);
+            $groupIndex++;
+        }
+
+        return strtoupper(trim($words) . ' ONLY');
     }
 }
