@@ -1,527 +1,247 @@
 @extends('layouts.front')
 
 @section('content')
-<style>
-    .dashboard-content-one {
-        padding: 15px;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-    .card {
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    .card-body {
-        padding: 15px;
-    }
-    .form-group {
-        margin-bottom: 10px;
-        padding: 0 2px;
-    }
-    .form-label {
-        font-weight: 600;
-        font-size: 10px;
-        margin-bottom: 2px;
-        display: block;
-        line-height: 1.2;
-    }
-    .form-control {
-        padding: 4px;
-        font-size: 10px;
-        border-radius: 3px;
-        height: 26px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .btn-gradient-yellow {
-        background: linear-gradient(90deg, #ff8c00, #ffa500);
-        color: white;
-        border: none;
-        padding: 6px 12px;
-        font-size: 10px;
-        border-radius: 3px;
-    }
-    .btn-gradient-yellow:hover {
-        background: linear-gradient(90deg, #e07b00, #ff8c00);
-    }
-    .alert {
-        padding: 8px;
-        margin-bottom: 8px;
-        border-radius: 3px;
-        font-size: 10px;
-    }
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-    }
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
-    .table-responsive {
-        overflow-x: hidden;
-    }
-    .table {
-        width: 100%;
-        table-layout: fixed;
-        border-collapse: collapse;
-        font-size: 10px;
-    }
-    .table th, .table td {
-        padding: 6px;
-        text-align: left;
-        vertical-align: middle;
-    }
-    .table th {
-        background-color: #f8f9fa;
-        font-weight: 600;
-    }
-    .table td {
-        border-top: 1px solid #dee2e6;
-    }
-    .hidden {
-        display: none;
-    }
-    .error-message {
-        color: #721c24;
-        font-size: 8px;
-        margin-top: 1px;
-        line-height: 1.2;
-    }
-    .form-row {
-        display: flex;
-        align-items: flex-start;
-        flex-wrap: nowrap;
-        margin: 0 -2px;
-    }
-    .form-group.col-md-1, .form-group.col-md-3 {
-        flex: 0 0 auto;
-        padding: 0 2px;
-        box-sizing: border-box;
-    }
-    .form-group.col-md-1 {
-        width: 8.333333%;
-    }
-    .form-group.col-md-3 {
-        width: 25%;
-    }
-    .form-control, .form-label {
-        max-height: 26px;
-        overflow: hidden;
-    }
-    @media (max-width: 768px) {
-        .form-row {
-            flex-wrap: wrap;
-        }
-        .form-group.col-md-1, .form-group.col-md-3 {
-            flex: 0 0 100%;
-            width: 100%;
-            padding: 0 5px;
-        }
-        .form-control, .btn, .form-label, .table th, .table td {
-            font-size: 9px;
-        }
-        .form-control {
-            height: 24px;
-            padding: 3px;
-        }
-        .btn {
-            padding: 5px 10px;
-        }
-        .card-body, .dashboard-content-one {
-            padding: 10px;
-        }
-        .error-message {
-            font-size: 7px;
-        }
-    }
-</style>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">Create Fee Challan</div>
+                <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
-<div class="card height-auto">
-    <div class="card-body">
-        <div class="heading-layout1">
-            <div class="item-title">
-                <h3>Create New Challan</h3>
-            </div>
-            <div class="dropdown">
-                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="{{ route('create-challan') }}"><i class="fas fa-times text-orange-red"></i>Close</a>
-                    <a class="dropdown-item" href="{{ route('create-challan') }}"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                    <form action="{{ route('create-challan.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="school_name">School Name</label>
+                            <input type="text" name="school_name" id="school_name" class="form-control" value="{{ old('school_name', 'FG FPS (2nd Shift) PAF BASE FAISAL KARACHI') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="academic_year">Academic Year</label>
+                            <select name="academic_year" id="academic_year" class="form-control" required>
+                                <option value="">Select Academic Year</option>
+                                @for ($year = 2023; $year <= 2026; $year++)
+                                    <option value="{{ $year }}-{{ $year + 1 }}" {{ old('academic_year') == "$year-".($year+1) ? 'selected' : '' }}>{{ $year }}-{{ $year + 1 }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="class">Class</label>
+                            <select name="class" id="class" class="form-control" required>
+                                <option value="">Select Class</option>
+                                <option value="One" {{ old('class') == 'One' ? 'selected' : '' }}>One</option>
+                                <option value="Two" {{ old('class') == 'Two' ? 'selected' : '' }}>Two</option>
+                                <option value="Three" {{ old('class') == 'Three' ? 'selected' : '' }}>Three</option>
+                                <option value="Four" {{ old('class') == 'Four' ? 'selected' : '' }}>Four</option>
+                                <option value="Five" {{ old('class') == 'Five' ? 'selected' : '' }}>Five</option>
+                                <option value="Six" {{ old('class') == 'Six' ? 'selected' : '' }}>Six</option>
+                                <option value="Seven" {{ old('class') == 'Seven' ? 'selected' : '' }}>Seven</option>
+                                <option value="Eight" {{ old('class') == 'Eight' ? 'selected' : '' }}>Eight</option>
+                                <option value="Nine" {{ old('class') == 'Nine' ? 'selected' : '' }}>Nine</option>
+                                <option value="Ten" {{ old('class') == 'Ten' ? 'selected' : '' }}>Ten</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="section">Section</label>
+                            <select name="section" id="section" class="form-control" required>
+                                <option value="">Select Section</option>
+                                <option value="A" {{ old('section') == 'A' ? 'selected' : '' }}>A</option>
+                                <option value="B" {{ old('section') == 'B' ? 'selected' : '' }}>B</option>
+                                <option value="C" {{ old('section') == 'C' ? 'selected' : '' }}>C</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Months Option</label><br>
+                            <input type="radio" name="months_option" value="one" {{ old('months_option', 'one') == 'one' ? 'checked' : '' }} required> One Month
+                            <input type="radio" name="months_option" value="many" {{ old('months_option') == 'many' ? 'checked' : '' }}> Many Months
+                        </div>
+                        <div id="one_month_fields" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
+                            <div class="form-group">
+                                <label for="month">Month</label>
+                                <select name="month" id="month" class="form-control">
+                                    <option value="">Select Month</option>
+                                    @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $m)
+                                        <option value="{{ $m }}" {{ old('month') == $m ? 'selected' : '' }}>{{ $m }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="year">Year</label>
+                                <input type="number" name="year" id="year" class="form-control" value="{{ old('year', date('Y')) }}" min="2023" max="2030">
+                            </div>
+                        </div>
+                        <div id="many_months_fields" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                            <div class="form-group">
+                                <label for="from_month">From Month</label>
+                                <select name="from_month" id="from_month" class="form-control">
+                                    <option value="">Select Month</option>
+                                    @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $m)
+                                        <option value="{{ $m }}" {{ old('from_month') == $m ? 'selected' : '' }}>{{ $m }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="from_year">From Year</label>
+                                <input type="number" name="from_year" id="from_year" class="form-control" value="{{ old('from_year', date('Y')) }}" min="2023" max="2030">
+                            </div>
+                            <div class="form-group">
+                                <label for="to_month">To Month</label>
+                                <select name="to_month" id="to_month" class="form-control">
+                                    <option value="">Select Month</option>
+                                    @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $m)
+                                        <option value="{{ $m }}" {{ old('to_month') == $m ? 'selected' : '' }}>{{ $m }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="to_year">To Year</label>
+                                <input type="number" name="to_year" id="to_year" class="form-control" value="{{ old('to_year', date('Y')) }}" min="2023" max="2030">
+                            </div>
+                            <div class="form-group">
+                                <label for="total_months">Total Months</label>
+                                <input type="number" name="total_months" id="total_months" class="form-control" value="{{ old('total_months') }}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Students Option</label><br>
+                            <input type="radio" name="students_option" value="one" {{ old('students_option', 'one') == 'one' ? 'checked' : '' }} required> One Student
+                            <input type="radio" name="students_option" value="all" {{ old('students_option') == 'all' ? 'checked' : '' }}> All Students
+                        </div>
+                        <div id="one_student_fields" style="display: {{ old('students_option', 'one') == 'one' ? 'block' : 'none' }};">
+                            <div class="form-group">
+                                <label for="student_id">Student</label>
+                                <select name="student_id" id="student_id" class="form-control">
+                                    <option value="">Select Student</option>
+                                    <!-- Populated via JavaScript -->
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Challan</button>
+                    </form>
+
+                    <hr>
+                    <h4>Existing Challans</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>School Name</th>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Student Name</th>
+                                <th>Period</th>
+                                <th>Total Fee</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($challans as $challan)
+                                <tr>
+                                    <td>{{ $challan->id }}</td>
+                                    <td>{{ $challan->school_name }}</td>
+                                    <td>{{ $challan->class }}</td>
+                                    <td>{{ $challan->section }}</td>
+                                    <td>{{ $challan->full_name }}</td>
+                                    <td>
+                                        {{ $challan->from_month }}-{{ $challan->from_year }}
+                                        @if($challan->to_month && $challan->to_year)
+                                            to {{ $challan->to_month }}-{{ $challan->to_year }}
+                                        @endif
+                                    </td>
+                                    <td>{{ $challan->total_fee }}</td>
+                                    <td>{{ strtoupper($challan->status) }}</td>
+                                    <td>
+                                        <a href="{{ route('challan-view', $challan->id) }}" class="btn btn-info btn-sm">View</a>
+                                        <a href="{{ route('download-challan', $challan->id) }}" class="btn btn-success btn-sm">Download</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <!-- Challan Form -->
-        <form action="{{ route('create-challan.store') }}" method="POST" class="mg-b-20">
-            @csrf
-            <div class="form-row">
-                <!-- School Name -->
-                <div class="col-md-1 form-group">
-                    <label for="school_name" class="form-label">School Name</label>
-                    <input type="text" name="school_name" id="school_name" class="form-control" value="FG FPS (2nd Shift) PAF BASE FAISAL KARACHI" required>
-                    @error('school_name')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- Academic Year -->
-                <div class="col-md-1 form-group">
-                    <label for="academic_year" class="form-label">Academic Year</label>
-                    <select name="academic_year" id="academic_year" class="form-control" required>
-                        <option value="" disabled selected>Select</option>
-                        @for($year = 2020; $year <= 2030; $year++)
-                            <option value="{{ $year }}-{{ $year + 1 }}">{{ $year }}-{{ $year + 1 }}</option>
-                        @endfor
-                    </select>
-                    @error('academic_year')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- Class -->
-                <div class="col-md-1 form-group">
-                    <label for="class" class="form-label">Class</label>
-                    <select name="class" id="class" class="form-control" required onchange="updateStudents()">
-                        <option value="" disabled selected>Select</option>
-                        @foreach(['ECE', 'Prep', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'] as $class)
-                            <option value="{{ $class }}">{{ $class }}</option>
-                        @endforeach
-                    </select>
-                    @error('class')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- Section -->
-                <div class="col-md-1 form-group">
-                    <label for="section" class="form-label">Section</label>
-                    <select name="section" id="section" class="form-control" required onchange="updateStudents()">
-                        <option value="" disabled selected>Select</option>
-                        @foreach(['A', 'B', 'Pink', 'Green', 'Red', 'Orange', 'Blue', 'Silver', 'Yellow'] as $section)
-                            <option value="{{ $section }}">{{ $section }}</option>
-                        @endforeach
-                    </select>
-                    @error('section')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- How Many Months -->
-                <div class="col-md-1 form-group">
-                    <label for="months_option" class="form-label">Months Option</label>
-                    <select name="months_option" id="months_option" class="form-control" required onchange="toggleMonthFields()">
-                        <option value="" disabled selected>Select</option>
-                        <option value="one">One</option>
-                        <option value="many">Many</option>
-                    </select>
-                    @error('months_option')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- How Many Students -->
-                <div class="col-md-1 form-group">
-                    <label for="students_option" class="form-label">Students Option</label>
-                    <select name="students_option" id="students_option" class="form-control" required onchange="toggleStudentFields()">
-                        <option value="" disabled selected>Select</option>
-                        <option value="one">One</option>
-                        <option value="all">All</option>
-                    </select>
-                    @error('students_option')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- Month (One) -->
-                <div class="col-md-1 form-group one-month-field hidden">
-                    <label for="month" class="form-label">Month</label>
-                    <select name="month" id="month" class="form-control">
-                        <option value="" disabled selected>Select</option>
-                        @foreach(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $month)
-                            <option value="{{ $month }}">{{ $month }}</option>
-                        @endforeach
-                    </select>
-                    @error('month')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- Year (One) -->
-                <div class="col-md-1 form-group one-month-field hidden">
-                    <label for="year" class="form-label">Year</label>
-                    <select name="year" id="year" class="form-control">
-                        <option value="" disabled selected>Select</option>
-                        @for($year = 2020; $year <= 2030; $year++)
-                            <option value="{{ $year }}">{{ $year }}</option>
-                        @endfor
-                    </select>
-                    @error('year')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- From Month (Many) -->
-                <div class="col-md-1 form-group many-month-field hidden">
-                    <label for="from_month" class="form-label">From Month</label>
-                    <select name="from_month" id="from_month" class="form-control" onchange="calculateTotalMonths()">
-                        <option value="" disabled selected>Select</option>
-                        @foreach(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $month)
-                            <option value="{{ $month }}">{{ $month }}</option>
-                        @endforeach
-                    </select>
-                    @error('from_month')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- From Year (Many) -->
-                <div class="col-md-1 form-group many-month-field hidden">
-                    <label for="from_year" class="form-label">From Year</label>
-                    <select name="from_year" id="from_year" class="form-control" onchange="calculateTotalMonths()">
-                        <option value="" disabled selected>Select</option>
-                        @for($year = 2020; $year <= 2030; $year++)
-                            <option value="{{ $year }}">{{ $year }}</option>
-                        @endfor
-                    </select>
-                    @error('from_year')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- To Month (Many) -->
-                <div class="col-md-1 form-group many-month-field hidden">
-                    <label for="to_month" class="form-label">To Month</label>
-                    <select name="to_month" id="to_month" class="form-control" onchange="calculateTotalMonths()">
-                        <option value="" disabled selected>Select</option>
-                        @foreach(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $month)
-                            <option value="{{ $month }}">{{ $month }}</option>
-                        @endforeach
-                    </select>
-                    @error('to_month')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- To Year (Many) -->
-                <div class="col-md-1 form-group many-month-field hidden">
-                    <label for="to_year" class="form-label">To Year</label>
-                    <select name="to_year" id="to_year" class="form-control" onchange="calculateTotalMonths()">
-                        <option value="" disabled selected>Select</option>
-                        @for($year = 2020; $year <= 2030; $year++)
-                            <option value="{{ $year }}">{{ $year }}</option>
-                        @endfor
-                    </select>
-                    @error('to_year')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- Total Months -->
-                <div class="col-md-1 form-group">
-                    <label for="total_months" class="form-label">Total Months</label>
-                    <input type="number" name="total_months" id="total_months" class="form-control" readonly>
-                    @error('total_months')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-                <!-- Student Name -->
-                <div class="col-md-3 form-group student-field hidden">
-                    <label for="student_id" class="form-label">Student Name</label>
-                    <select name="student_id" id="student_id" class="form-control">
-                        <option value="" disabled selected>Select Student</option>
-                    </select>
-                    @error('student_id')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-            <!-- Create Challan Button -->
-            <div class="row gutters-8">
-                <div class="col-12 form-group">
-                    <button type="submit" class="btn-gradient-yellow">Create Challan</button>
-                </div>
-            </div>
-        </form>
-        <hr class="my-4">
-        <!-- Challan List -->
-        <div class="heading-layout1">
-            <div class="item-title">
-                <h3>Challan List</h3>
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table display data-table">
-                <thead>
-                    <tr>
-                        <th>Academic Year</th>
-                        <th>Year</th>
-                        <th>Class</th>
-                        <th>Section</th>
-                        <th>Student</th>
-                        <th>Months</th>
-                        <th>Fee</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($challans as $challan)
-                        <tr>
-                            <td>{{ $challan->academic_year }}</td>
-                            <td>{{ $challan->year }}</td>
-                            <td>{{ $challan->class }}</td>
-                            <td>{{ $challan->section }}</td>
-                            <td>{{ $challan->full_name }} ({{ $challan->gr_number }})</td>
-                            <td>
-                                {{ $challan->to_month ? ($challan->from_month . ' ' . $challan->from_year . ' - ' . $challan->to_month . ' ' . $challan->to_year) : $challan->from_month }}
-                            </td>
-                            <td>{{ number_format($challan->total_fee, 2) }}</td>
-                            <td>{{ $challan->due_date }}</td>
-                            <td>{{ ucfirst($challan->status) }}</td>
-                            <td>
-                                <a href="{{ route('challan-view', $challan->id) }}" class="btn btn-lg btn-primary">
-                                    <i class="fas fa-eye"></i> View
-                                </a>
-                                <a href="{{ route('download-challan', $challan->id) }}" class="btn btn-lg btn-secondary">
-                                    <i class="fas fa-download"></i> Download
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="10">No challans created yet.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    function toggleMonthFields() {
-        const monthsOption = document.getElementById('months_option').value;
-        const oneMonthFields = document.querySelectorAll('.one-month-field');
-        const manyMonthFields = document.querySelectorAll('.many-month-field');
-        const totalMonthsField = document.getElementById('total_months');
-
-        oneMonthFields.forEach(field => field.classList.add('hidden'));
-        manyMonthFields.forEach(field => field.classList.add('hidden'));
-
-        if (monthsOption === 'one') {
-            oneMonthFields.forEach(field => {
-                field.classList.remove('hidden');
-                field.querySelector('select').required = true;
-            });
-            manyMonthFields.forEach(field => {
-                field.querySelector('select').required = false;
-                field.querySelector('select').value = '';
-            });
-            totalMonthsField.value = 1;
-            totalMonthsField.required = false;
-        } else if (monthsOption === 'many') {
-            manyMonthFields.forEach(field => {
-                field.classList.remove('hidden');
-                field.querySelector('select').required = true;
-            });
-            oneMonthFields.forEach(field => {
-                field.querySelector('select').required = false;
-                field.querySelector('select').value = '';
-            });
-            totalMonthsField.value = '';
-            totalMonthsField.required = true;
-            calculateTotalMonths();
+$(document).ready(function() {
+    $('input[name="months_option"]').change(function() {
+        if ($(this).val() === 'one') {
+            $('#one_month_fields').show();
+            $('#many_months_fields').hide();
+            $('#month, #year').prop('required', true);
+            $('#from_month, #from_year, #to_month, #to_year, #total_months').prop('required', false);
         } else {
-            oneMonthFields.forEach(field => {
-                field.querySelector('select').required = false;
-                field.querySelector('select').value = '';
-            });
-            manyMonthFields.forEach(field => {
-                field.querySelector('select').required = false;
-                field.querySelector('select').value = '';
-            });
-            totalMonthsField.value = '';
-            totalMonthsField.required = false;
+            $('#one_month_fields').hide();
+            $('#many_months_fields').show();
+            $('#month, #year').prop('required', false);
+            $('#from_month, #from_year, #to_month, #to_year, #total_months').prop('required', true);
         }
-    }
+    });
 
-    function toggleStudentFields() {
-        const studentsOption = document.getElementById('students_option').value;
-        const studentField = document.querySelector('.student-field');
-
-        studentField.classList.add('hidden');
-
-        if (studentsOption === 'one') {
-            studentField.classList.remove('hidden');
-            studentField.querySelector('select').required = true;
-            updateStudents();
+    $('input[name="students_option"]').change(function() {
+        if ($(this).val() === 'one') {
+            $('#one_student_fields').show();
+            $('#student_id').prop('required', true);
         } else {
-            studentField.querySelector('select').required = false;
-            studentField.querySelector('select').value = '';
+            $('#one_student_fields').hide();
+            $('#student_id').prop('required', false);
         }
-    }
+    });
 
-    async function updateStudents() {
-        const classSelect = document.getElementById('class').value;
-        const sectionSelect = document.getElementById('section').value;
-        const studentSelect = document.getElementById('student_id');
-
-        if (classSelect && sectionSelect) {
-            try {
-                const url = `{{ route('api.students') }}?class=${encodeURIComponent(classSelect)}&section=${encodeURIComponent(sectionSelect)}`;
-                console.log('Fetching students from:', url);
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+    $('#class, #section').change(function() {
+        var classVal = $('#class').val();
+        var sectionVal = $('#section').val();
+        if (classVal && sectionVal) {
+            $.ajax({
+                url: '{{ route("api.students") }}',
+                type: 'GET',
+                data: { class: classVal, section: sectionVal },
+                success: function(data) {
+                    $('#student_id').empty().append('<option value="">Select Student</option>');
+                    $.each(data, function(index, student) {
+                        $('#student_id').append('<option value="' + student.id + '">' + student.name + ' (Roll: ' + student.roll_number + ')</option>');
+                    });
+                },
+                error: function(xhr) {
+                    console.log('Error fetching students:', xhr.responseText);
                 }
-                const students = await response.json();
-                console.log('Students fetched:', students);
-                studentSelect.innerHTML = '<option value="" disabled selected>Select Student</option>';
-                if (students.length === 0) {
-                    console.warn('No students found for class:', classSelect, 'section:', sectionSelect);
-                }
-                students.forEach(student => {
-                    const option = document.createElement('option');
-                    option.value = student.id;
-                    option.text = `${student.name} (Roll: ${student.roll_number})`;
-                    studentSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error fetching students:', error);
-            }
-        } else {
-            studentSelect.innerHTML = '<option value="" disabled selected>Select Student</option>';
+            });
         }
-    }
+    });
 
     function calculateTotalMonths() {
-        const fromMonth = document.getElementById('from_month').value;
-        const fromYear = parseInt(document.getElementById('from_year').value);
-        const toMonth = document.getElementById('to_month').value;
-        const toYear = parseInt(document.getElementById('to_year').value);
-        const totalMonthsField = document.getElementById('total_months');
+        var fromMonth = $('#from_month').val();
+        var fromYear = parseInt($('#from_year').val());
+        var toMonth = $('#to_month').val();
+        var toYear = parseInt($('#to_year').val());
 
         if (fromMonth && fromYear && toMonth && toYear) {
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const fromMonthIndex = months.indexOf(fromMonth);
-            const toMonthIndex = months.indexOf(toMonth);
-            const yearDiff = toYear - fromYear;
-            let totalMonths = yearDiff * 12 + (toMonthIndex - fromMonthIndex) + 1;
-            if (totalMonths < 1) totalMonths = 0;
-            totalMonthsField.value = totalMonths;
-        } else {
-            totalMonthsField.value = '';
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var fromIndex = months.indexOf(fromMonth);
+            var toIndex = months.indexOf(toMonth);
+            var totalMonths = (toYear - fromYear) * 12 + (toIndex - fromIndex) + 1;
+            $('#total_months').val(totalMonths > 0 ? totalMonths : '');
         }
     }
 
-    // Initialize form state
-    document.addEventListener('DOMContentLoaded', function() {
-        toggleMonthFields();
-        toggleStudentFields();
-    });
+    $('#from_month, #from_year, #to_month, #to_year').change(calculateTotalMonths);
+});
 </script>
 @endsection

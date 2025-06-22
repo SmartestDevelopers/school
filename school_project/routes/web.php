@@ -73,19 +73,20 @@ Route::get('/delete-class/{id}', 'ClassController@deleteClass')->name('deleteCla
 Route::get('/list-fee-type', 'FeeController@addFee')->name('addfeetype');
 Route::post('/list-fee-type', 'FeeController@store')->name('addfeetype.store');
 Route::get('/edit-fee-type/{id}', 'FeeController@edit')->name('addfeetype.edit');
-Route::post('/update-fee-type/{id}', 'FeeController@update')->name('addfeetype.update');
+Route::post('/update-fee-type', 'FeeController@update')->name('addfeetype.update');
 
 // Fee Management Routes
 Route::get('/fee-management', 'FeeController@manageFees')->name('fee-management');
 Route::post('/fee-management', 'FeeController@storeFee')->name('fee-management.store');
 Route::get('/edit-fee/{id}', 'FeeController@editFee')->name('fee-management.edit');
-Route::post('/update-fee/{id}', 'FeeController@updateFee')->name('fee-management.update');
+Route::post('/update-fee', 'FeeController@updateFee')->name('fee-management.update');
 
+// Challan Routes
 Route::get('/create-challan', 'ChallanController@create')->name('create-challan');
 Route::post('/create-challan', 'ChallanController@store')->name('create-challan.store');
 Route::get('/view-challan/{id}', 'ChallanController@view')->name('challan-view');
-Route::get('/api/students', 'ChallanController@getStudents')->name('api.students');
 Route::get('/download-challan/{id}', 'ChallanController@downloadPdf')->name('download-challan');
+Route::get('/api/students', 'ChallanController@getStudents')->name('api.students');
 
 
 Route::get('/list-total-students', 'ReportsController@totalStudents')->name('totalstudents');

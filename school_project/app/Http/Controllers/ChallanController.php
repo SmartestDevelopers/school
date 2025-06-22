@@ -153,7 +153,7 @@ class ChallanController extends Controller
             ->where(function ($query) use ($challan) {
                 if ($challan->to_month && $challan->to_year) {
                     $query->where('to_month', $challan->to_month)
-                          ->where('to_year', $challan->to_year);
+                        ->where('to_year', $challan->to_year);
                 }
             })
             ->get();
@@ -176,7 +176,6 @@ class ChallanController extends Controller
 
         return view('acconunt.view-challan', compact('challans', 'fees', 'total_fee_sum', 'total_fee_sum_words'));
     }
-
     public function getStudents(Request $request)
     {
         Log::info('getStudents called', ['class' => $request->class, 'section' => $request->section]);
@@ -208,7 +207,7 @@ class ChallanController extends Controller
                 ->where(function ($query) use ($challan) {
                     if ($challan->to_month && $challan->to_year) {
                         $query->where('to_month', $challan->to_month)
-                              ->where('to_year', $challan->to_year);
+                            ->where('to_year', $challan->to_year);
                     }
                 })
                 ->get();
@@ -243,8 +242,8 @@ class ChallanController extends Controller
         $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         $start = array_search($fromMonth, $months);
         $end = array_search($toMonth, $months);
-        $startYear = (int)$fromYear;
-        $endYear = (int)$toYear;
+        $startYear = (int) $fromYear;
+        $endYear = (int) $toYear;
         $monthRange = [];
 
         while ($startYear < $endYear || ($startYear == $endYear && $start <= $end)) {
@@ -274,14 +273,14 @@ class ChallanController extends Controller
         }
 
         $words = '';
-        $number = (int)$number;
+        $number = (int) $number;
         $groupIndex = 0;
 
         while ($number > 0) {
             $group = $number % 1000;
             if ($group > 0) {
                 $groupWords = '';
-                $hundreds = (int)($group / 100);
+                $hundreds = (int) ($group / 100);
                 $remainder = $group % 100;
 
                 if ($hundreds > 0) {
@@ -297,7 +296,7 @@ class ChallanController extends Controller
                     } elseif ($remainder < 20) {
                         $groupWords .= $teens[$remainder - 10];
                     } else {
-                        $tensDigit = (int)($remainder / 10);
+                        $tensDigit = (int) ($remainder / 10);
                         $unitsDigit = $remainder % 10;
                         $groupWords .= $tens[$tensDigit];
                         if ($unitsDigit > 0) {
@@ -310,7 +309,7 @@ class ChallanController extends Controller
                 $words = trim($groupWords) . ($words ? ' ' . $words : '');
             }
 
-            $number = (int)($number / 1000);
+            $number = (int) ($number / 1000);
             $groupIndex++;
         }
 
