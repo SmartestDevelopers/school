@@ -162,11 +162,16 @@
                                             to {{ $challan->to_month }}-{{ $challan->to_year }}
                                         @endif
                                     </td>
-                                    <td>{{ $challan->total_fee }}</td>
-                                    <td>{{ strtoupper($challan->status) }}</td>
+                                    <td>{{ number_format($challan->total_fee, 2) }}</td>
+                                    <td style="color: {{ $challan->status == 'paid' ? 'green' : 'red' }};">
+                                        {{ strtoupper($challan->status) }}
+                                    </td>
                                     <td>
                                         <a href="{{ route('challan-view', $challan->id) }}" class="btn btn-info btn-sm">View</a>
                                         <a href="{{ route('download-challan', $challan->id) }}" class="btn btn-success btn-sm">Download</a>
+                                        @if($challan->status != 'paid')
+                                            <a href="{{ route('challan.paid-form', $challan->id) }}" class="btn btn-primary btn-sm">Mark Paid</a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

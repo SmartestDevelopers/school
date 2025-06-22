@@ -6,10 +6,16 @@
         font-family: "sans-serif", sans-serif;
         font-size: 14px !important;
     }
+    .challan-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
     .card {
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
+        page-break-inside: avoid;
     }
     .card-header {
         background: linear-gradient(to right, #E4E5E6, #0072ff);
@@ -18,27 +24,28 @@
         font-weight: bold;
         text-align: left;
         padding: 10px;
-    }
-    .card-body {
-        padding: 15px;
+        position: relative;
     }
     .status {
-        float: right;
-        width: 200px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
         text-align: right;
     }
     .status h1 {
         font-size: 24px;
         margin: 0;
+        color: {{ $challan->status == 'paid' ? 'green' : 'red' }};
     }
-    .challan-container {
-        margin-bottom: 30px;
+    .card-body {
+        padding: 15px;
     }
     .inner-table {
         border-collapse: collapse;
         width: 100%;
         border: 1px solid #000;
         margin-bottom: 10px;
+        font-size: 12px;
     }
     td.center {
         text-align: center;
@@ -61,9 +68,6 @@
     td.border {
         border: 1px solid #000 !important;
     }
-    tr.lineBorders td {
-        border: 1px solid #000;
-    }
     .total-sum {
         font-size: 16px;
         font-weight: bold;
@@ -74,122 +78,117 @@
         font-size: 16px;
         font-weight: bold;
     }
+    .signature-box {
+        border: 1px solid #000;
+        width: 150px;
+        height: 40px;
+        display: inline-block;
+        text-align: center;
+        line-height: 40px;
+        margin-right: 20px;
+    }
+    @media print {
+        .challan-grid {
+            display: block;
+        }
+        .card {
+            page-break-after: always;
+        }
+    }
 </style>
 
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            @foreach($challans as $challan)
-                <div class="challan-container">
+            @foreach($challans as $ch)
+                <div class="challan-grid">
                     @foreach(['Bank Copy', 'School Copy', 'Student Copy', 'Teacher Copy'] as $copy)
                         <div class="card">
                             <div class="card-header">
                                 C H A L L A N
                                 <div class="status">
-                                    <h1><strong>{{ strtoupper($challan->status) }}</strong></h1>
+                                    <h1><strong>{{ strtoupper($ch->status) }}</strong></h1>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <table class="inner-table">
                                     <tbody>
                                         <tr>
-                                            <td colspan="6" class="center">FEE CHALLAN ( NON - REFUNDABLE )</td>
+                                            <td colspan="4" class="center">FEE CHALLAN ( NON - REFUNDABLE )</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="6" class="center">{{ strtoupper($copy) }}</td>
+                                            <td colspan="4" class="center">{{ strtoupper($copy) }}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="6" class="center">{{ $challan->school_name }}</td>
+                                            <td colspan="4" class="center">{{ $ch->school_name }}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="6" class="center">Bank Makramah Ltd</td>
+                                            <td colspan="4" class="center">Bank Makramah Ltd</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="6" class="center">STUDENT FUND</td>
+                                            <td colspan="4" class="center">STUDENT FUND</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="6" class="left">A/C No # 1-99-15-26201-714-114164</td>
+                                            <td colspan="4" class="left">A/C No # 1-99-15-26201-714-114164</td>
                                         </tr>
                                         <tr>
-                                            <td class="left" colspan="6">
-                                                Issued on: <strong>{{ \Carbon\Carbon::parse($challan->created_at)->format('d/m/Y') }}</strong>
-                                                Due Date: <strong>{{ $challan->due_date }}</strong>
+                                            <td class="left" colspan="4">
+                                                Issued on: <strong>{{ \Carbon\Carbon::parse($ch->created_at)->format('d/m/Y') }}</strong>
+                                                Due Date: <strong>{{ $ch->due_date }}</strong>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="left" colspan="6">
-                                                Period = From: <strong>{{ $challan->from_month }}-{{ $challan->from_year }}</strong>
-                                                @if($challan->to_month && $challan->to_year)
-                                                    To: <strong>{{ $challan->to_month }}-{{ $challan->to_year }}</strong>
+                                            <td class="left" colspan="4">
+                                                Period = From: <strong>{{ $ch->from_month }}-{{ $ch->from_year }}</strong>
+                                                @if($ch->to_month && $ch->to_year)
+                                                    To: <strong>{{ $ch->to_month }}-{{ $ch->to_year }}</strong>
                                                 @endif
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="left" colspan="6">
-                                                Student Name: <strong>{{ $challan->full_name }}</strong> S/O <strong>{{ $challan->father_name }}</strong>
+                                            <td class="left" colspan="4">
+                                                Student Name: <strong>{{ $ch->full_name }}</strong> S/O <strong>{{ $ch->father_name }}</strong>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="left" colspan="6">
-                                                G.R No: <strong>{{ $challan->gr_number }}</strong> Class / Sec: <strong>{{ $challan->class }}-{{ $challan->section }}</strong>
+                                            <td class="left" colspan="4">
+                                                G.R No: <strong>{{ $ch->gr_number }}</strong> Class / Sec: <strong>{{ $ch->class }}-{{ $ch->section }}</strong>
                                             </td>
                                         </tr>
                                         <tr class="allBorders">
-                                            <td style="background-color:#d3d3d3;" class="">Sr</td>
-                                            <td style="background-color:#d3d3d3;" class="">Govt Fee</td>
-                                            <td style="background-color:#d3d3d3;" class="">Rs</td>
-                                            <td style="background-color:#d3d3d3;" class="">Sr</td>
-                                            <td style="background-color:#d3d3d3;" class="">Fund</td>
-                                            <td style="background-color:#d3d3d3;" class="">Rs</td>
+                                            <td style="background-color:#d3d3d3;">Sr</td>
+                                            <td style="background-color:#d3d3d3;">Fee Type</td>
+                                            <td style="background-color:#d3d3d3;">Rs</td>
+                                            <td style="background-color:#d3d3d3;">Total</td>
                                         </tr>
                                         @php
-                                            $govtFees = ['Admission' => 0, 'Tuition' => 0, 'Breakage' => 0, 'Misc' => 0, 'SLC' => 0];
-                                            $fundFees = ['IDF' => 0, 'Exams' => 0, 'IT' => 0, 'CSF' => 0, 'RDF / CDF' => 0, 'Security' => 0];
-                                            $govtTotal = 0;
-                                            $fundTotal = 0;
-                                            if (isset($fees[$challan->id])) {
-                                                foreach ($fees[$challan->id] as $fee) {
-                                                    if (array_key_exists($fee->fee_type, $govtFees)) {
-                                                        $govtFees[$fee->fee_type] = $fee->fee_amount;
-                                                        $govtTotal += $fee->fee_amount;
-                                                    } elseif (array_key_exists($fee->fee_type, $fundFees)) {
-                                                        $fundFees[$fee->fee_type] = $fee->fee_amount;
-                                                        $fundTotal += $fee->fee_amount;
-                                                    }
-                                                }
-                                            }
+                                            $total = 0;
                                         @endphp
-                                        @foreach($govtFees as $type => $amount)
-                                            <tr>
-                                                <td class="border">{{ $loop->iteration }}</td>
-                                                <td class="border">{{ $type }}</td>
-                                                <td class="border"><strong>{{ $amount }}</strong></td>
-                                                <td class="border">{{ $loop->iteration }}</td>
-                                                <td class="border">{{ array_keys($fundFees)[$loop->index] }}</td>
-                                                <td class="border"><strong>{{ $fundFees[array_keys($fundFees)[$loop->index]] }}</strong></td>
-                                            </tr>
+                                        @foreach($fee_types as $index => $type)
+                                            @if(isset($fees[$ch->id][$type]) && $fees[$ch->id][$type] > 0)
+                                                <tr>
+                                                    <td class="border">{{ $index + 1 }}</td>
+                                                    <td class="border">{{ $type }}</td>
+                                                    <td class="border"><strong>{{ number_format($fees[$ch->id][$type], 2) }}</strong></td>
+                                                    <td class="border"><strong>{{ number_format($fees[$ch->id][$type], 2) }}</strong></td>
+                                                </tr>
+                                                @php
+                                                    $total += $fees[$ch->id][$type];
+                                                @endphp
+                                            @endif
                                         @endforeach
                                         <tr>
-                                            <td style="background-color:#d3d3d3;" class=""></td>
-                                            <td style="background-color:#d3d3d3;" class="">Total</td>
-                                            <td style="background-color:#d3d3d3;" class=""><strong>{{ $govtTotal }}</strong></td>
-                                            <td style="background-color:#d3d3d3;" class=""></td>
-                                            <td style="background-color:#d3d3d3;" class="">Total</td>
-                                            <td style="background-color:#d3d3d3;" class=""><strong>{{ $fundTotal }}</strong></td>
+                                            <td style="background-color:#d3d3d3;"></td>
+                                            <td style="background-color:#d3d3d3;">Grand Total</td>
+                                            <td style="background-color:#d3d3d3;"></td>
+                                            <td style="background-color:#d3d3d3;"><strong>{{ number_format($total, 2) }}</strong></td>
                                         </tr>
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td style="background-color:#d3d3d3;" class=""></td>
-                                            <td style="background-color:#d3d3d3;" class="">G.Total</td>
-                                            <td style="background-color:#d3d3d3;" class=""><strong>{{ $challan->total_fee }}</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6" class="left">
-                                                Rupees (In words): <strong class="large">{{ strtoupper($challan->amount_in_words) }}</strong>
-                                                <br><br><br><br><br><br><br><br>
-                                                Depositor's Sign        Bank Officer's Sign
+                                            <td colspan="4" class="left">
+                                                Rupees (In words): <strong class="large">{{ strtoupper($ch->amount_in_words) }}</strong>
+                                                <br><br>
+                                                <span class="signature-box">Depositor's Sign</span>
+                                                <span class="signature-box">Bank Officer's Sign</span>
                                             </td>
                                         </tr>
                                     </tbody>

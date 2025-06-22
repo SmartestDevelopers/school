@@ -87,7 +87,7 @@ Route::post('/create-challan', 'ChallanController@store')->name('create-challan.
 Route::get('/view-challan/{id}', 'ChallanController@view')->name('challan-view');
 Route::get('/download-challan/{id}', 'ChallanController@downloadPdf')->name('download-challan');
 Route::get('/api/students', 'ChallanController@getStudents')->name('api.students');
-
+Route::get('/challan/paid/{id}', 'ChallanController@showPaidForm')->name('challan.paid-form');
 
 Route::get('/list-total-students', 'ReportsController@totalStudents')->name('totalstudents');
 Route::get('/list-total-fees', 'ReportsController@totalFees')->name('totalfees');

@@ -37,7 +37,7 @@ class ChallanController extends Controller
 
             Log::info('Validated data', $data);
 
-            // Fetch students
+            // Fetch students from admission_forms
             $students = $data['students_option'] === 'one'
                 ? DB::table('admission_forms')
                     ->where('id', $data['student_id'])
@@ -48,8 +48,6 @@ class ChallanController extends Controller
                     ->where('section', $data['section'])
                     ->select('id', 'full_name as name', 'parent_name', 'roll as gr')
                     ->get();
-
-            Log::info('Students found', ['count' => $students->count(), 'data' => $students->toArray()]);
 
             if ($students->isEmpty()) {
                 Log::warning('No students found', ['class' => $data['class'], 'section' => $data['section']]);
@@ -66,7 +64,7 @@ class ChallanController extends Controller
             foreach ($students as $student) {
                 $totalFee = 0;
 
-                // Calculate fees for each month
+                // Calculate fees for each month from fees table
                 foreach ($months as $monthData) {
                     $monthFee = DB::table('fees')
                         ->where('class', $data['class'])
@@ -153,13 +151,16 @@ class ChallanController extends Controller
             ->where(function ($query) use ($challan) {
                 if ($challan->to_month && $challan->to_year) {
                     $query->where('to_month', $challan->to_month)
-                        ->where('to_year', $challan->to_year);
+                          ->where('to_year', $challan->to_year);
                 }
             })
             ->get();
 
         $total_fee_sum = $challans->sum('total_fee');
         $total_fee_sum_words = $this->numberToWords($total_fee_sum);
+
+        // Fetch fee types from add_fees
+        $fee_types = DB::table('add_fees')->pluck('fee_type')->toArray();
 
         // Fetch fee details for each challan
         $fees = [];
@@ -171,11 +172,19 @@ class ChallanController extends Controller
                 ->where('month', $ch->from_month)
                 ->where('year', $ch->from_year)
                 ->get(['fee_type', 'fee_amount']);
-            $fees[$ch->id] = $ch_fees;
+            
+            $fee_data = array_fill_keys($fee_types, 0);
+            foreach ($ch_fees as $fee) {
+                if (in_array($fee->fee_type, $fee_types)) {
+                    $fee_data[$fee->fee_type] = $fee->fee_amount;
+                }
+            }
+            $fees[$ch->id] = $fee_data;
         }
 
-        return view('acconunt.view-challan', compact('challans', 'fees', 'total_fee_sum', 'total_fee_sum_words'));
+        return view('acconunt.view-challan', compact('challan', 'challans', 'fees', 'total_fee_sum', 'total_fee_sum_words', 'fee_types'));
     }
+
     public function getStudents(Request $request)
     {
         Log::info('getStudents called', ['class' => $request->class, 'section' => $request->section]);
@@ -197,7 +206,6 @@ class ChallanController extends Controller
                 abort(404, 'Challan not found.');
             }
 
-            // Fetch all challans for the same class, section, academic_year, and period
             $challans = DB::table('challans')
                 ->where('class', $challan->class)
                 ->where('section', $challan->section)
@@ -207,7 +215,7 @@ class ChallanController extends Controller
                 ->where(function ($query) use ($challan) {
                     if ($challan->to_month && $challan->to_year) {
                         $query->where('to_month', $challan->to_month)
-                            ->where('to_year', $challan->to_year);
+                              ->where('to_year', $challan->to_year);
                     }
                 })
                 ->get();
@@ -215,7 +223,8 @@ class ChallanController extends Controller
             $total_fee_sum = $challans->sum('total_fee');
             $total_fee_sum_words = $this->numberToWords($total_fee_sum);
 
-            // Fetch fee details for each challan
+            $fee_types = DB::table('add_fees')->pluck('fee_type')->toArray();
+
             $fees = [];
             foreach ($challans as $ch) {
                 $ch_fees = DB::table('fees')
@@ -225,15 +234,74 @@ class ChallanController extends Controller
                     ->where('month', $ch->from_month)
                     ->where('year', $ch->from_year)
                     ->get(['fee_type', 'fee_amount']);
-                $fees[$ch->id] = $ch_fees;
+                
+                $fee_data = array_fill_keys($fee_types, 0);
+                foreach ($ch_fees as $fee) {
+                    if (in_array($fee->fee_type, $fee_types)) {
+                        $fee_data[$fee->fee_type] = $fee->fee_amount;
+                    }
+                }
+                $fees[$ch->id] = $fee_data;
             }
 
-            $pdf = Pdf::loadView('acconunt.challan-pdf', compact('challans', 'fees', 'total_fee_sum', 'total_fee_sum_words'))
+            $pdf = Pdf::loadView('acconunt.challan-pdf', compact('challan', 'challans', 'fees', 'total_fee_sum', 'total_fee_sum_words', 'fee_types'))
                 ->setPaper('legal', 'landscape');
             return $pdf->download('challan-' . $id . '.pdf');
         } catch (\Exception $e) {
             Log::error('PDF generation failed: ' . $e->getMessage(), ['exception' => $e]);
             return redirect()->route('create-challan')->with('error', 'Failed to generate PDF: ' . $e->getMessage());
+        }
+    }
+
+    public function showPaidForm($id)
+    {
+        $challan = DB::table('challans')->where('id', $id)->first();
+        if (!$challan) {
+            Log::warning('Challan not found for paid form', ['id' => $id]);
+            return redirect()->route('create-challan')->with('error', 'Challan not found.');
+        }
+        return view('acconunt.challanpaid', compact('challan'));
+    }
+
+    public function markPaid(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'school_name' => 'required|string|max:255',
+                'academic_year' => 'required|string',
+                'class' => 'required|string',
+                'section' => 'required|string',
+                'month' => 'required|string',
+                'year' => 'required|integer',
+                'student_id' => 'required|integer|exists:admission_forms,id',
+            ]);
+
+            $challan = DB::table('challans')
+                ->where('id', $id)
+                ->where('class', $request->class)
+                ->where('section', $request->section)
+                ->where('academic_year', $request->academic_year)
+                ->where('from_month', $request->month)
+                ->where('from_year', $request->year)
+                ->first();
+
+            if (!$challan) {
+                Log::warning('Challan not found for marking paid', ['id' => $id]);
+                return redirect()->route('create-challan')->with('error', 'Challan not found.');
+            }
+
+            DB::table('challans')
+                ->where('id', $id)
+                ->update([
+                    'status' => 'paid',
+                    'updated_at' => now(),
+                ]);
+
+            Log::info('Challan marked as paid', ['id' => $id]);
+            return redirect()->route('create-challan')->with('success', 'Challan marked as paid successfully.');
+        } catch (\Exception $e) {
+            Log::error('Failed to mark challan as paid: ' . $e->getMessage(), ['exception' => $e]);
+            return redirect()->route('create-challan')->with('error', 'Failed to mark challan as paid: ' . $e->getMessage());
         }
     }
 
@@ -297,7 +365,7 @@ class ChallanController extends Controller
                         $groupWords .= $teens[$remainder - 10];
                     } else {
                         $tensDigit = (int) ($remainder / 10);
-                        $unitsDigit = $remainder % 10;
+                        $unitsDigit = $group % 10;
                         $groupWords .= $tens[$tensDigit];
                         if ($unitsDigit > 0) {
                             $groupWords .= ' ' . $units[$unitsDigit];
