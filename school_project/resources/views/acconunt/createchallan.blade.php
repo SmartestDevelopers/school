@@ -109,6 +109,13 @@
                                     <option value="A" {{ old('section') == 'A' ? 'selected' : '' }}>A</option>
                                     <option value="B" {{ old('section') == 'B' ? 'selected' : '' }}>B</option>
                                     <option value="C" {{ old('section') == 'C' ? 'selected' : '' }}>C</option>
+                                    <option value="Pink" {{ old('section') == 'Pink' ? 'selected' : '' }}>Pink</option>
+                                    <option value="Green" {{ old('section') == 'Green' ? 'selected' : '' }}>Green</option>
+                                    <option value="Red" {{ old('section') == 'Red' ? 'selected' : '' }}>Red</option>
+                                    <option value="Orange" {{ old('section') == 'Orange' ? 'selected' : '' }}>Orange</option>
+                                    <option value="Blue" {{ old('section') == 'Blue' ? 'selected' : '' }}>Blue</option>
+                                    <option value="Silver" {{ old('section') == 'Silver' ? 'selected' : '' }}>Silver</option>
+                                    <option value="Yellow" {{ old('section') == 'Yellow' ? 'selected' : '' }}>Yellow</option>
                                 </select>
                             </div>
                             <div class="col-md-3 form-group">
@@ -123,7 +130,7 @@
                                 <select name="month" id="month" class="form-control">
                                     <option value="">Select Month</option>
                                     @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $m)
-                                        Botany($m) value="{{ $m }}" {{ old('month') == $m ? 'selected' : '' }}>{{ $m }}</option>
+                                        <option value="{{ $m }}" {{ old('month') == $m ? 'selected' : '' }}>{{ $m }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -140,11 +147,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3 form-group" id="many_months_from_year" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_from_year" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
                                 <label for="from_year" class="form-label">From Year</label>
                                 <input type="number" name="from_year" id="from_year" class="form-control" value="{{ old('from_year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="col-md-3 form-group" id="many_months_to" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_to" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
                                 <label for="to_month" class="form-label">To Month</label>
                                 <select name="to_month" id="to_month" class="form-control">
                                     <option value="">Select Month</option>
@@ -153,11 +160,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3 form-group" id="many_months_to_year" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_to_year" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
                                 <label for="to_year" class="form-label">To Year</label>
                                 <input type="number" name="to_year" id="to_year" class="form-control" value="{{ old('to_year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="col-md-3 form-group" id="many_months_total" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_total" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
                                 <label for="total_months" class="form-label">Total Months</label>
                                 <input type="number" name="total_months" id="total_months" class="form-control" value="{{ old('total_months') }}" readonly>
                             </div>
@@ -176,6 +183,18 @@
                                         <option value="{{ $student->roll_number }}" {{ old('roll') == $student->roll ? 'selected' : '' }} data-class="{{ $student->class }}" data-section="{{ $student->section }}">{{ $student->name }} (Roll: {{ $student->roll_number }})</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="issue_date" class="form-label">Issue Date</label>
+                                <input type="date" name="issue_date" id="issue_date" class="form-control" value="{{ old('issue_date', now()->format('Y-m-d')) }}" required>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="due_date" class="form-label">Due Date</label>
+                                <input type="date" name="due_date" id="due_date" class="form-control" value="{{ old('due_date', now()->addDays(30)->format('Y-m-d')) }}" required>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="account_number" class="form-label">Account Number</label>
+                                <input type="text" name="account_number" id="account_number" class="form-control" value="{{ old('account_number', '1234567890') }}" required>
                             </div>
                             <div class="col-md-3 form-group">
                                 <button type="submit" class="btn btn-primary">Create</button>
@@ -218,7 +237,7 @@
                                     <td>
                                         <a href="{{ route('challan-view', $challan->id) }}" class="btn btn-info btn-sm">View</a>
                                         <a href="{{ route('download-challan', $challan->id) }}" class="btn btn-success btn-sm">Download</a>
-                                        <a href="{{ route('challan.paid-form', $challan->id) }}" class="btn btn-warning btn-sm">Mark Paid</a>
+                                        <a href="{{ route('challan-paid', $challan->id) }}" class="btn btn-warning btn-sm">Mark Paid</a>
                                     </td>
                                 </tr>
                             @endforeach
