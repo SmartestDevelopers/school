@@ -82,12 +82,14 @@ Route::get('/edit-fee/{id}', 'FeeController@editFee')->name('fee-management.edit
 Route::post('/update-fee', 'FeeController@updateFee')->name('fee-management.update');
 
 // Challan Routes
+Route::get('/api/fees', 'ChallanController@getFees')->name('api.fees');
 Route::get('/create-challan', 'ChallanController@create')->name('create-challan');
 Route::post('/create-challan', 'ChallanController@store')->name('create-challan.store');
 Route::get('/view-challan/{id}', 'ChallanController@view')->name('challan-view');
 Route::get('/download-challan/{id}', 'ChallanController@downloadPdf')->name('download-challan');
 Route::get('/api/students', 'ChallanController@getStudents')->name('api.students');
-Route::get('/challan/paid/{id}', 'ChallanController@showPaidForm')->name('challan.paid-form');
+Route::get('/challan-paid/{id}', 'ChallanController@showPaidForm')->name('challan-paid');
+Route::post('/challan-paid/{id}', 'ChallanController@markPaid')->name('mark-paid');
 
 Route::get('/list-total-students', 'ReportsController@totalStudents')->name('totalstudents');
 Route::get('/list-total-fees', 'ReportsController@totalFees')->name('totalfees');

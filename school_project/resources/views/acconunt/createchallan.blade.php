@@ -73,11 +73,11 @@
                     <form action="{{ route('create-challan.store') }}" method="POST">
                         @csrf
                         <div class="row align-items-end">
-                            <div class="col-md-1 form-group">
+                            <div class="col-md-3 form-group">
                                 <label for="school_name" class="form-label">School Name</label>
                                 <input type="text" name="school_name" id="school_name" class="form-control" value="{{ old('school_name', 'FG FPS (2nd Shift) PAF BASE FAISAL KARACHI') }}" required>
                             </div>
-                            <div class="col-md-1 form-group">
+                            <div class="col-md-3 form-group">
                                 <label for="academic_year" class="form-label">Academic Year</label>
                                 <select name="academic_year" id="academic_year" class="form-control" required>
                                     <option value="">Select Year</option>
@@ -86,7 +86,7 @@
                                     @endfor
                                 </select>
                             </div>
-                            <div class="col-md-1 form-group">
+                            <div class="col-md-3 form-group">
                                 <label for="class" class="form-label">Class</label>
                                 <select name="class" id="class" class="form-control" required>
                                     <option value="">Select Class</option>
@@ -102,7 +102,7 @@
                                     <option value="Ten" {{ old('class') == 'Ten' ? 'selected' : '' }}>Ten</option>
                                 </select>
                             </div>
-                            <div class="col-md-1 form-group">
+                            <div class="col-md-3 form-group">
                                 <label for="section" class="form-label">Section</label>
                                 <select name="section" id="section" class="form-control" required>
                                     <option value="">Select Section</option>
@@ -111,14 +111,14 @@
                                     <option value="C" {{ old('section') == 'C' ? 'selected' : '' }}>C</option>
                                 </select>
                             </div>
-                            <div class="col-md-1 form-group">
+                            <div class="col-md-3 form-group">
                                 <label class="form-label">Months Option</label>
                                 <div class="radio-group">
                                     <label><input type="radio" name="months_option" value="one" {{ old('months_option', 'one') == 'one' ? 'checked' : '' }} required> One</label>
                                     <label><input type="radio" name="months_option" value="many" {{ old('months_option') == 'many' ? 'checked' : '' }}> Many</label>
                                 </div>
                             </div>
-                            <div class="col-md-1 form-group" id="one_month_fields" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="one_month_fields" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
                                 <label for="month" class="form-label">Month</label>
                                 <select name="month" id="month" class="form-control">
                                     <option value="">Select Month</option>
@@ -127,11 +127,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-1 form-group" id="one_month_year" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="one_month_year" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
                                 <label for="year" class="form-label">Year</label>
                                 <input type="number" name="year" id="year" class="form-control" value="{{ old('year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="col-md-1 form-group" id="many_months_from" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_from" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
                                 <label for="from_month" class="form-label">From Month</label>
                                 <select name="from_month" id="from_month" class="form-control">
                                     <option value="">Select Month</option>
@@ -140,11 +140,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-1 form-group" id="many_months_from_year" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_from_year" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
                                 <label for="from_year" class="form-label">From Year</label>
                                 <input type="number" name="from_year" id="from_year" class="form-control" value="{{ old('from_year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="col-md-1 form-group" id="many_months_to" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_to" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
                                 <label for="to_month" class="form-label">To Month</label>
                                 <select name="to_month" id="to_month" class="form-control">
                                     <option value="">Select Month</option>
@@ -153,15 +153,15 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-1 form-group" id="many_months_to_year" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_to_year" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
                                 <label for="to_year" class="form-label">To Year</label>
                                 <input type="number" name="to_year" id="to_year" class="form-control" value="{{ old('to_year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="col-md-1 form-group" id="many_months_total" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_total" style="display: {{ old('months_option') == 'many' ? 'block' : 'none' }};">
                                 <label for="total_months" class="form-label">Total Months</label>
                                 <input type="number" name="total_months" id="total_months" class="form-control" value="{{ old('total_months') }}" readonly>
                             </div>
-                            <div class="col-md-1 form-group">
+                            <div class="col-md-3 form-group">
                                 <label class="form-label">Students Option</label>
                                 <div class="radio-group">
                                     <label><input type="radio" name="students_option" value="one" {{ old('students_option', 'one') == 'one' ? 'checked' : '' }} required> One</label>
@@ -177,7 +177,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-1 form-group">
+                            <div class="col-md-3 form-group">
                                 <button type="submit" class="btn btn-primary">Create</button>
                             </div>
                         </div>
