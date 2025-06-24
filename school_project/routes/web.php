@@ -82,7 +82,6 @@ Route::get('/edit-fee/{id}', 'FeeController@editFee')->name('fee-management.edit
 Route::post('/update-fee', 'FeeController@updateFee')->name('fee-management.update');
 
 // Challan Routes
-Route::get('/api/fees', 'ChallanController@getFees')->name('api.fees');
 Route::get('/create-challan', 'ChallanController@create')->name('create-challan');
 Route::post('/create-challan', 'ChallanController@store')->name('create-challan.store');
 Route::get('/view-challan/{id}', 'ChallanController@view')->name('challan-view');
