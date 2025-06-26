@@ -28,18 +28,22 @@ class ChallanController extends Controller
                 'section' => 'required|string',
                 'months_option' => 'required|in:one,many',
                 'students_option' => 'required|in:one,all',
-                'month' => 'required_if:months_option,one|string',
-                'year' => 'required_if:months_option,one|integer',
-                'from_month' => 'required_if:months_option,many|string',
-                'from_year' => 'required_if:months_option,many|integer',
-                'to_month' => 'required_if:months_option,many|string',
-                'to_year' => 'required_if:months_option,many|integer',
-                'total_months' => 'required_if:months_option,many|integer|min:1',
-                'roll' => 'required_if:students_option,one|string|exists:admission_forms,roll',
+                'month' => 'nullable|string|required_if:months_option,one',
+                'year' => 'nullable|integer|required_if:months_option,one',
+                'from_month' => 'nullable|string|required_if:months_option,many',
+                'from_year' => 'nullable|integer|required_if:months_option,many',
+                'to_month' => 'nullable|string|required_if:months_option,many',
+                'to_year' => 'nullable|integer|required_if:months_option,many',
+                'total_months' => 'nullable|integer|min:1|required_if:months_option,many',
+                'roll' => 'nullable|string|required_if:students_option,one|exists:admission_forms,roll',
+                'issue_date' => 'required|date',
+                'due_date' => 'required|date|after_or_equal:issue_date',
+                'account_number' => 'required|string',
             ]);
 
-            Log::info('Validated data', $data);
+            Log::info('Validated data', ['data' => $data]);
 
+            // Fetch students based on students_option
             $students = $data['students_option'] === 'one'
                 ? DB::table('admission_forms')
                     ->where('roll', $data['roll'])
@@ -52,15 +56,34 @@ class ChallanController extends Controller
                     ->get();
 
             if ($students->isEmpty()) {
-                Log::warning('No students found', ['class' => $data['class'], 'section' => $data['section']]);
+                Log::warning('No students found', [
+                    'class' => $data['class'],
+                    'section' => $data['section'],
+                    'students_option' => $data['students_option']
+                ]);
                 return redirect()->back()->with('error', 'No students found for the selected class and section.')->withInput();
             }
 
             DB::beginTransaction();
 
+            // Generate months array
             $months = $data['months_option'] === 'one'
                 ? [['month' => $data['month'], 'year' => $data['year']]]
                 : $this->getMonthRange($data['from_month'], $data['from_year'], $data['to_month'], $data['to_year']);
+
+            if (empty($months)) {
+                Log::error('No months generated', [
+                    'months_option' => $data['months_option'],
+                    'month' => $data['month'] ?? null,
+                    'year' => $data['year'] ?? null,
+                    'from_month' => $data['from_month'] ?? null,
+                    'from_year' => $data['from_year'] ?? null,
+                    'to_month' => $data['to_month'] ?? null,
+                    'to_year' => $data['to_year'] ?? null
+                ]);
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Invalid month range provided.')->withInput();
+            }
 
             foreach ($students as $student) {
                 $totalFee = 0;
@@ -74,8 +97,19 @@ class ChallanController extends Controller
                         ->where('academic_year', $data['academic_year'])
                         ->sum('fee_amount');
 
+                    Log::info('Fee calculation for student', [
+                        'roll' => $student->roll,
+                        'month' => $monthData['month'],
+                        'year' => $monthData['year'],
+                        'class' => $data['class'],
+                        'section' => $data['section'],
+                        'academic_year' => $data['academic_year'],
+                        'monthFee' => $monthFee
+                    ]);
+
                     if ($monthFee == 0) {
-                        Log::warning('No fees found', [
+                        Log::warning('No fees found for student', [
+                            'roll' => $student->roll,
                             'class' => $data['class'],
                             'section' => $data['section'],
                             'month' => $monthData['month'],
@@ -83,13 +117,13 @@ class ChallanController extends Controller
                             'academic_year' => $data['academic_year']
                         ]);
                         DB::rollBack();
-                        return redirect()->back()->with('error', "No fees found for {$monthData['month']} {$monthData['year']}.")->withInput();
+                        return redirect()->back()->with('error', "No fees found for {$monthData['month']} {$monthData['year']} for student {$student->roll}. Please ensure fee records exist.")->withInput();
                     }
 
                     $totalFee += $monthFee;
                 }
 
-                Log::info('Total fee calculated', [
+                Log::info('Total fee calculated for student', [
                     'roll' => $student->roll,
                     'total_fee' => $totalFee
                 ]);
@@ -107,28 +141,33 @@ class ChallanController extends Controller
                     'gr_number' => $student->roll,
                     'academic_year' => $data['academic_year'],
                     'year' => $data['months_option'] === 'one' ? $data['year'] : $data['to_year'],
-                    'from_month' => $data['month'] ?? $data['from_month'],
-                    'from_year' => $data['year'] ?? $data['from_year'],
-                    'to_month' => $data['to_month'] ?? null,
-                    'to_year' => $data['to_year'] ?? null,
+                    'from_month' => $data['months_option'] === 'one' ? $data['month'] : $data['from_month'],
+                    'from_year' => $data['months_option'] === 'one' ? $data['year'] : $data['from_year'],
+                    'to_month' => $data['months_option'] === 'many' ? $data['to_month'] : null,
+                    'to_year' => $data['months_option'] === 'many' ? $data['to_year'] : null,
                     'total_fee' => $totalFee,
                     'status' => 'unpaid',
-                    'due_date' => now()->addDays(30)->format('d/m/Y'),
+                    'due_date' => \Carbon\Carbon::parse($data['due_date'])->format('d/m/Y'),
                     'amount_in_words' => $this->numberToWords($totalFee),
-                    'created_at' => now(),
+                    'created_at' => \Carbon\Carbon::parse($data['issue_date']),
                     'updated_at' => now(),
                 ]);
             }
 
             DB::commit();
-            Log::info('Challan(s) created successfully');
-            return redirect()->route('create-challan')->with('success', 'Challan(s) created successfully.');
+            Log::info('Challan(s) created successfully', [
+                'student_count' => $students->count(),
+                'class' => $data['class'],
+                'section' => $data['section'],
+                'months_option' => $data['months_option']
+            ]);
+            return redirect()->route('create-challan')->with('success', 'Challan(s) created successfully for ' . $students->count() . ' student(s).');
         } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::error('Validation failed: ' . json_encode($e->errors()));
+            Log::error('Validation failed', ['errors' => $e->errors(), 'input' => $request->all()]);
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Challan creation failed: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('Challan creation failed', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return redirect()->back()->with('error', 'Failed to create challan: ' . $e->getMessage())->withInput();
         }
     }
@@ -245,7 +284,7 @@ class ChallanController extends Controller
                 ->setPaper('legal', 'landscape');
             return $pdf->download('challan-' . $id . '.pdf');
         } catch (\Exception $e) {
-            Log::error('PDF generation failed: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PDF generation failed', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return redirect()->route('create-challan')->with('error', 'Failed to generate PDF: ' . $e->getMessage());
         }
     }
@@ -300,7 +339,7 @@ class ChallanController extends Controller
             Log::info('Challan marked as paid', ['id' => $id]);
             return redirect()->route('create-challan')->with('success', 'Challan marked as paid successfully.');
         } catch (\Exception $e) {
-            Log::error('Failed to mark challan as paid: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('Failed to mark challan as paid', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
             return redirect()->route('create-challan')->with('error', 'Failed to mark challan as paid: ' . $e->getMessage());
         }
     }
@@ -313,6 +352,16 @@ class ChallanController extends Controller
         $startYear = (int) $fromYear;
         $endYear = (int) $toYear;
         $monthRange = [];
+
+        if ($start === false || $end === false || $startYear > $endYear || ($startYear === $endYear && $start > $end)) {
+            Log::error('Invalid month range', [
+                'fromMonth' => $fromMonth,
+                'fromYear' => $fromYear,
+                'toMonth' => $toMonth,
+                'toYear' => $toYear
+            ]);
+            return [];
+        }
 
         while ($startYear < $endYear || ($startYear == $endYear && $start <= $end)) {
             $monthRange[] = [
