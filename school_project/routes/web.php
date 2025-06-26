@@ -90,12 +90,12 @@ Route::get('/api/students', 'ChallanController@getStudents')->name('api.students
 Route::get('/challan-paid/{id}', 'ChallanController@showPaidForm')->name('challan-paid');
 Route::post('/challan-paid/{id}', 'ChallanController@markPaid')->name('mark-paid');
 
-Route::get('/list-total-students', 'ReportsController@totalStudents')->name('totalstudents');
-Route::get('/list-total-fees', 'ReportsController@totalFees')->name('totalfees');
-Route::get('/collective-fees', 'ReportsController@collectiveFees')->name('collectivefees');
-Route::get('/reports/total-students', 'ReportsController@totalStudents')->name('reports.total-students');
-Route::delete('/reports/delete-student/{id}', 'ReportsController@deleteStudent')->name('reports.delete-student');
-
+Route::get('/list-total-students', [\App\Http\Controllers\ReportsController::class, 'totalStudents'])->name('totalstudents');
+Route::get('/list-total-fees', [\App\Http\Controllers\ReportsController::class, 'totalFees'])->name('totalfees');
+Route::get('/collective-fees', [\App\Http\Controllers\ReportsController::class, 'collectiveFees'])->name('collectivefees');
+Route::get('/reports/total-students', [\App\Http\Controllers\ReportsController::class, 'totalStudents'])->name('reports.total-students');
+Route::delete('/reports/delete-student/{id}', [\App\Http\Controllers\ReportsController::class, 'deleteStudent'])->name('reports.delete-student');
+Route::get('/reports/fee-reports', [\App\Http\Controllers\ReportsController::class, 'feeReports'])->name('reports.fee-reports');
 
 Route::get('/add-book', 'LibraryController@addBook')->name('add-book');
 Route::post('/store-book', 'LibraryController@storeBook')->name('store-book');

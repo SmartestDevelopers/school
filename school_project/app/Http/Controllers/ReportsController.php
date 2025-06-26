@@ -78,6 +78,81 @@ class ReportsController extends Controller
         return view("reports.collectivefees");
     }
 
+    public function feeReports(Request $request)
+    {
+        try {
+            // Class-wise fee report (total fee amount, paid, unpaid per class)
+            $classWiseFeeReport = DB::table('fee_challans')
+                ->select(
+                    'class',
+                    DB::raw('SUM(fee_amount) as total_fee'),
+                    DB::raw('SUM(paid_amount) as total_paid'),
+                    DB::raw('SUM(fee_amount - paid_amount) as total_unpaid')
+                )
+                ->groupBy('class')
+                ->orderBy('class')
+                ->get();
+
+            // Class-wise student fee history (last 12 months)
+            $classWiseFeeHistory = DB::table('fee_challans as fc')
+                ->join('admission_forms as af', 'fc.student_id', '=', 'af.id')
+                ->select(
+                    'fc.class',
+                    'fc.student_id',
+                    'af.full_name as student_name',
+                    'fc.roll',
+                    'fc.month',
+                    'fc.year',
+                    'fc.fee_amount',
+                    'fc.paid_amount',
+                    'fc.status',
+                    DB::raw('fc.fee_amount - fc.paid_amount as unpaid_amount')
+                )
+                ->where('fc.created_at', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 12 MONTH)'))
+                ->orderBy('fc.class')
+                ->orderBy('fc.roll')
+                ->orderBy('fc.year')
+                ->orderBy('fc.month')
+                ->get();
+
+            // Class-wise number of months fee paid/unpaid
+            $classWiseMonthsStatus = DB::table('fee_challans')
+                ->select(
+                    'class',
+                    DB::raw('SUM(CASE WHEN status = "paid" THEN 1 ELSE 0 END) as months_paid'),
+                    DB::raw('SUM(CASE WHEN status = "unpaid" THEN 1 ELSE 0 END) as months_unpaid')
+                )
+                ->where('created_at', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 12 MONTH)'))
+                ->groupBy('class')
+                ->orderBy('class')
+                ->get();
+
+            // Student-specific fee payment status for last 12 months
+            $studentFeeStatus = DB::table('fee_challans as fc')
+                ->join('admission_forms as af', 'fc.student_id', '=', 'af.id')
+                ->select(
+                    'fc.class',
+                    'fc.student_id',
+                    'af.full_name as student_name',
+                    'fc.roll',
+                    DB::raw('GROUP_CONCAT(CASE WHEN fc.status = "paid" THEN CONCAT(fc.month, "-", fc.year) END) as paid_months'),
+                    DB::raw('GROUP_CONCAT(CASE WHEN fc.status = "unpaid" THEN CONCAT(fc.month, "-", fc.year) END) as unpaid_months'),
+                    DB::raw('SUM(fc.paid_amount) as total_paid'),
+                    DB::raw('SUM(fc.fee_amount - fc.paid_amount) as total_unpaid')
+                )
+                ->where('fc.created_at', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 12 MONTH)'))
+                ->groupBy('fc.class', 'fc.student_id', 'af.full_name', 'fc.roll')
+                ->orderBy('fc.class')
+                ->orderBy('fc.roll')
+                ->get();
+
+            return view('reports.feereports', compact('classWiseFeeReport', 'classWiseFeeHistory', 'classWiseMonthsStatus', 'studentFeeStatus'));
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch fee reports: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to load fee reports: ' . $e->getMessage());
+        }
+    }
+
     public function index()
     {
         //
