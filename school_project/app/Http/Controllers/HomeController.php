@@ -28,10 +28,10 @@ class HomeController extends Controller
         $studentCount = DB::table('admission_forms')->count();
 
         // Count total teachers
-        $teacherCount = DB::table('add_teachers')->count();
+        $teacherCount = DB::table('teachers')->count();
 
         // Count total parents
-        $parentCount = DB::table('add_parents')->count();
+        $parentCount = DB::table('parents')->count();
 
         // Sum total earnings from paid challans
         $earnings = DB::table('challans')
