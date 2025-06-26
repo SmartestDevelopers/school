@@ -85,8 +85,10 @@ class ChallanController extends Controller
                 return redirect()->back()->with('error', 'Invalid month range provided.')->withInput();
             }
 
-            foreach ($students as $student) {
+            if ($data['students_option'] === 'all') {
+                // Single challan for all students
                 $totalFee = 0;
+                $studentCount = $students->count();
 
                 foreach ($months as $monthData) {
                     $monthFee = DB::table('fees')
@@ -97,19 +99,17 @@ class ChallanController extends Controller
                         ->where('academic_year', $data['academic_year'])
                         ->sum('fee_amount');
 
-                    Log::info('Fee calculation for student', [
-                        'roll' => $student->roll,
-                        'month' => $monthData['month'],
-                        'year' => $monthData['year'],
+                    Log::info('Fee calculation for class', [
                         'class' => $data['class'],
                         'section' => $data['section'],
+                        'month' => $monthData['month'],
+                        'year' => $monthData['year'],
                         'academic_year' => $data['academic_year'],
                         'monthFee' => $monthFee
                     ]);
 
                     if ($monthFee == 0) {
-                        Log::warning('No fees found for student', [
-                            'roll' => $student->roll,
+                        Log::warning('No fees found for class', [
                             'class' => $data['class'],
                             'section' => $data['section'],
                             'month' => $monthData['month'],
@@ -117,15 +117,18 @@ class ChallanController extends Controller
                             'academic_year' => $data['academic_year']
                         ]);
                         DB::rollBack();
-                        return redirect()->back()->with('error', "No fees found for {$monthData['month']} {$monthData['year']} for student {$student->roll}. Please ensure fee records exist.")->withInput();
+                        return redirect()->back()->with('error', "No fees found for {$monthData['month']} {$monthData['year']}. Please ensure fee records exist.")->withInput();
                     }
 
-                    $totalFee += $monthFee;
+                    // Multiply by student count to get total fee for the month
+                    $totalFee += $monthFee * $studentCount;
                 }
 
-                Log::info('Total fee calculated for student', [
-                    'roll' => $student->roll,
-                    'total_fee' => $totalFee
+                Log::info('Total fee calculated for class', [
+                    'class' => $data['class'],
+                    'section' => $data['section'],
+                    'total_fee' => $totalFee,
+                    'student_count' => $studentCount
                 ]);
 
                 $monthsString = $data['months_option'] === 'one'
@@ -136,9 +139,10 @@ class ChallanController extends Controller
                     'school_name' => $data['school_name'],
                     'class' => $data['class'],
                     'section' => $data['section'],
-                    'full_name' => $student->name,
-                    'father_name' => $student->father_name ?? 'N/A',
-                    'gr_number' => $student->roll,
+                    'full_name' => 'All Students',
+                    'father_name' => 'N/A',
+                    'gr_number' => 'Class-Wide',
+                    'student_count' => $studentCount,
                     'academic_year' => $data['academic_year'],
                     'year' => $data['months_option'] === 'one' ? $data['year'] : $data['to_year'],
                     'from_month' => $data['months_option'] === 'one' ? $data['month'] : $data['from_month'],
@@ -152,6 +156,77 @@ class ChallanController extends Controller
                     'created_at' => \Carbon\Carbon::parse($data['issue_date']),
                     'updated_at' => now(),
                 ]);
+            } else {
+                // Individual challans for one student
+                foreach ($students as $student) {
+                    $totalFee = 0;
+
+                    foreach ($months as $monthData) {
+                        $monthFee = DB::table('fees')
+                            ->where('class', $data['class'])
+                            ->where('section', $data['section'])
+                            ->where('month', $monthData['month'])
+                            ->where('year', $monthData['year'])
+                            ->where('academic_year', $data['academic_year'])
+                            ->sum('fee_amount');
+
+                        Log::info('Fee calculation for student', [
+                            'roll' => $student->roll,
+                            'month' => $monthData['month'],
+                            'year' => $monthData['year'],
+                            'class' => $data['class'],
+                            'section' => $data['section'],
+                            'academic_year' => $data['academic_year'],
+                            'monthFee' => $monthFee
+                        ]);
+
+                        if ($monthFee == 0) {
+                            Log::warning('No fees found for student', [
+                                'roll' => $student->roll,
+                                'class' => $data['class'],
+                                'section' => $data['section'],
+                                'month' => $monthData['month'],
+                                'year' => $monthData['year'],
+                                'academic_year' => $data['academic_year']
+                            ]);
+                            DB::rollBack();
+                            return redirect()->back()->with('error', "No fees found for {$monthData['month']} {$monthData['year']} for student {$student->roll}. Please ensure fee records exist.")->withInput();
+                        }
+
+                        $totalFee += $monthFee;
+                    }
+
+                    Log::info('Total fee calculated for student', [
+                        'roll' => $student->roll,
+                        'total_fee' => $totalFee
+                    ]);
+
+                    $monthsString = $data['months_option'] === 'one'
+                        ? $data['month']
+                        : "{$data['from_month']} {$data['from_year']} - {$data['to_month']} {$data['to_year']}";
+
+                    DB::table('challans')->insert([
+                        'school_name' => $data['school_name'],
+                        'class' => $data['class'],
+                        'section' => $data['section'],
+                        'full_name' => $student->name,
+                        'father_name' => $student->father_name ?? 'N/A',
+                        'gr_number' => $student->roll,
+                        'student_count' => 1,
+                        'academic_year' => $data['academic_year'],
+                        'year' => $data['months_option'] === 'one' ? $data['year'] : $data['to_year'],
+                        'from_month' => $data['months_option'] === 'one' ? $data['month'] : $data['from_month'],
+                        'from_year' => $data['months_option'] === 'one' ? $data['year'] : $data['from_year'],
+                        'to_month' => $data['months_option'] === 'many' ? $data['to_month'] : null,
+                        'to_year' => $data['months_option'] === 'many' ? $data['to_year'] : null,
+                        'total_fee' => $totalFee,
+                        'status' => 'unpaid',
+                        'due_date' => \Carbon\Carbon::parse($data['due_date'])->format('d/m/Y'),
+                        'amount_in_words' => $this->numberToWords($totalFee),
+                        'created_at' => \Carbon\Carbon::parse($data['issue_date']),
+                        'updated_at' => now(),
+                    ]);
+                }
             }
 
             DB::commit();
