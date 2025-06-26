@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -17,13 +18,26 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the admin dashboard with dynamic data.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        return view('home');
-    }
+        // Count total students
+        $studentCount = DB::table('admission_forms')->count();
 
+        // Count total teachers
+        $teacherCount = DB::table('add_teachers')->count();
+
+        // Count total parents
+        $parentCount = DB::table('add_parents')->count();
+
+        // Sum total earnings from paid challans
+        $earnings = DB::table('challans')
+            ->where('status', 'paid')
+            ->sum('total_fee');
+
+        return view('home', compact('studentCount', 'teacherCount', 'parentCount', 'earnings'));
+    }
 }

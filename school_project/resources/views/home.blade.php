@@ -1,34 +1,32 @@
 @extends('layouts.front')
 
 @section('content')
-
 <div class="dashboard-content-one">
-    <!-- Breadcubs Area Start Here -->
+    <!-- Breadcrumbs Area Start Here -->
     <div class="breadcrumbs-area">
         <h3>Admin Dashboard</h3>
         <ul>
             <li>
-                <a href="index.html">Home</a>
+                <a href="{{ url('/') }}">Home</a>
             </li>
             <li>Admin</li>
         </ul>
     </div>
-    <!-- Breadcubs Area End Here -->
-    <!-- Dashboard summery Start Here -->
+    <!-- Breadcrumbs Area End Here -->
+    <!-- Dashboard Summary Start Here -->
     <div class="row gutters-20">
         <div class="col-xl-3 col-sm-6 col-12">
             <div class="dashboard-summery-one mg-b-20">
                 <div class="row align-items-center">
                     <div class="col-6">
-                        <div class="item-icon bg-light-green ">
+                        <div class="item-icon bg-light-green">
                             <i class="flaticon-classmates text-green"></i>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="item-content">
                             <div class="item-title">Students</div>
-                            <div class="item-number"><span class="counter" data-num="150000">1,50,000</span>
-                            </div>
+                            <div class="item-number"><span class="counter" data-num="{{ $studentCount }}">{{ number_format($studentCount) }}</span></div>
                         </div>
                     </div>
                 </div>
@@ -45,8 +43,7 @@
                     <div class="col-6">
                         <div class="item-content">
                             <div class="item-title">Teachers</div>
-                            <div class="item-number"><span class="counter" data-num="2250">2,250</span>
-                            </div>
+                            <div class="item-number"><span class="counter" data-num="{{ $teacherCount }}">{{ number_format($teacherCount) }}</span></div>
                         </div>
                     </div>
                 </div>
@@ -63,8 +60,7 @@
                     <div class="col-6">
                         <div class="item-content">
                             <div class="item-title">Parents</div>
-                            <div class="item-number"><span class="counter" data-num="5690">5,690</span>
-                            </div>
+                            <div class="item-number"><span class="counter" data-num="{{ $parentCount }}">{{ number_format($parentCount) }}</span></div>
                         </div>
                     </div>
                 </div>
@@ -81,15 +77,14 @@
                     <div class="col-6">
                         <div class="item-content">
                             <div class="item-title">Earnings</div>
-                            <div class="item-number"><span>$</span><span class="counter"
-                                    data-num="193000">1,93,000</span></div>
+                            <div class="item-number"><span>$</span><span class="counter" data-num="{{ $earnings }}">{{ number_format($earnings, 2) }}</span></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Dashboard summery End Here -->
+    <!-- Dashboard Summary End Here -->
     <!-- Dashboard Content Start Here -->
     <div class="row gutters-20">
         <div class="col-12 col-xl-8 col-6-xxxl">
@@ -100,15 +95,11 @@
                             <h3>Earnings</h3>
                         </div>
                         <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                aria-expanded="false">...</a>
-
+                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                             </div>
                         </div>
                     </div>
@@ -116,20 +107,19 @@
                         <div class="item-content">
                             <div class="single-item pseudo-bg-blue">
                                 <h4>Total Collections</h4>
-                                <span>75,000</span>
+                                <span>{{ number_format($earnings, 2) }}</span>
                             </div>
                             <div class="single-item pseudo-bg-red">
                                 <h4>Fees Collection</h4>
-                                <span>15,000</span>
+                                <span>{{ number_format($earnings * 0.2, 2) }}</span> <!-- Placeholder: 20% of total earnings -->
                             </div>
                         </div>
                         <div class="dropdown">
-                            <a class="date-dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                aria-expanded="false">Jan 20, 2019</a>
+                            <a class="date-dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">Jan 20, 2025</a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">Jan 20, 2019</a>
-                                <a class="dropdown-item" href="#">Jan 20, 2021</a>
-                                <a class="dropdown-item" href="#">Jan 20, 2020</a>
+                                <a class="dropdown-item" href="#">Jan 20, 2025</a>
+                                <a class="dropdown-item" href="#">Jan 20, 2024</a>
+                                <a class="dropdown-item" href="#">Jan 20, 2023</a>
                             </div>
                         </div>
                     </div>
@@ -147,29 +137,25 @@
                             <h3>Expenses</h3>
                         </div>
                         <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                aria-expanded="false">...</a>
-
+                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                             </div>
                         </div>
                     </div>
                     <div class="expense-report">
                         <div class="monthly-expense pseudo-bg-Aquamarine">
-                            <div class="expense-date">Jan 2019</div>
+                            <div class="expense-date">Jan 2025</div>
                             <div class="expense-amount"><span>$</span> 15,000</div>
                         </div>
                         <div class="monthly-expense pseudo-bg-blue">
-                            <div class="expense-date">Feb 2019</div>
+                            <div class="expense-date">Feb 2025</div>
                             <div class="expense-amount"><span>$</span> 10,000</div>
                         </div>
                         <div class="monthly-expense pseudo-bg-yellow">
-                            <div class="expense-date">Mar 2019</div>
+                            <div class="expense-date">Mar 2025</div>
                             <div class="expense-amount"><span>$</span> 8,000</div>
                         </div>
                     </div>
@@ -187,15 +173,11 @@
                             <h3>Students</h3>
                         </div>
                         <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                aria-expanded="false">...</a>
-
+                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                             </div>
                         </div>
                     </div>
@@ -205,11 +187,11 @@
                     <div class="student-report">
                         <div class="student-count pseudo-bg-blue">
                             <h4 class="item-title">Female Students</h4>
-                            <div class="item-number">45,000</div>
+                            <div class="item-number">{{ number_format($studentCount * 0.45) }}</div> <!-- Placeholder: 45% female -->
                         </div>
                         <div class="student-count pseudo-bg-yellow">
                             <h4 class="item-title">Male Students</h4>
-                            <div class="item-number">1,05,000</div>
+                            <div class="item-number">{{ number_format($studentCount * 0.55) }}</div> <!-- Placeholder: 55% male -->
                         </div>
                     </div>
                 </div>
@@ -220,18 +202,14 @@
                 <div class="card-body">
                     <div class="heading-layout1">
                         <div class="item-title">
-                            <h3>Event Calender</h3>
+                            <h3>Event Calendar</h3>
                         </div>
                         <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                aria-expanded="false">...</a>
-
+                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                             </div>
                         </div>
                     </div>
@@ -249,29 +227,21 @@
                             <h3>Website Traffic</h3>
                         </div>
                         <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                aria-expanded="false">...</a>
-
+                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                             </div>
                         </div>
                     </div>
                     <h6 class="traffic-title">Unique Visitors</h6>
                     <div class="traffic-number">2,590</div>
                     <div class="traffic-bar">
-                        <div class="direct" data-toggle="tooltip" data-placement="top" title="Direct">
-                        </div>
-                        <div class="search" data-toggle="tooltip" data-placement="top" title="Search">
-                        </div>
-                        <div class="referrals" data-toggle="tooltip" data-placement="top" title="Referrals">
-                        </div>
-                        <div class="social" data-toggle="tooltip" data-placement="top" title="Social">
-                        </div>
+                        <div class="direct" data-toggle="tooltip" data-placement="top" title="Direct"></div>
+                        <div class="search" data-toggle="tooltip" data-placement="top" title="Search"></div>
+                        <div class="referrals" data-toggle="tooltip" data-placement="top" title="Referrals"></div>
+                        <div class="social" data-toggle="tooltip" data-placement="top" title="Social"></div>
                     </div>
                     <div class="traffic-table table-responsive">
                         <table class="table">
@@ -310,50 +280,44 @@
                             <h3>Notice Board</h3>
                         </div>
                         <div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                aria-expanded="false">...</a>
-
+                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#"><i class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                             </div>
                         </div>
                     </div>
                     <div class="notice-box-wrap">
                         <div class="notice-list">
                             <div class="post-date bg-skyblue">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag mene esom text of the
-                                    printing.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
+                            <h6 class="notice-title"><a href="#">Great School management system.</a></h6>
+                            <div class="entry-meta">Jennyfar Lopez / <span>5 min ago</span></div>
                         </div>
                         <div class="notice-list">
                             <div class="post-date bg-yellow">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
+                            <h6 class="notice-title"><a href="#">School management updates.</a></h6>
+                            <div class="entry-meta">Jennyfar Lopez / <span>5 min ago</span></div>
                         </div>
                         <div class="notice-list">
                             <div class="post-date bg-pink">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag meneesom.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
+                            <h6 class="notice-title"><a href="#">New features added.</a></h6>
+                            <div class="entry-meta">Jennyfar Lopez / <span>5 min ago</span></div>
                         </div>
                         <div class="notice-list">
                             <div class="post-date bg-skyblue">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag mene esom text of the
-                                    printing.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
+                            <h6 class="notice-title"><a href="#">School event announcement.</a></h6>
+                            <div class="entry-meta">Jennyfar Lopez / <span>5 min ago</span></div>
                         </div>
                         <div class="notice-list">
                             <div class="post-date bg-yellow">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
+                            <h6 class="notice-title"><a href="#">Holiday notice.</a></h6>
+                            <div class="entry-meta">Jennyfar Lopez / <span>5 min ago</span></div>
                         </div>
                         <div class="notice-list">
                             <div class="post-date bg-pink">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag meneesom.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
+                            <h6 class="notice-title"><a href="#">Exam schedule released.</a></h6>
+                            <div class="entry-meta">Jennyfar Lopez / <span>5 min ago</span></div>
                         </div>
                     </div>
                 </div>
@@ -410,13 +374,13 @@
         </div>
         <div class="col-lg-3 col-sm-6 col-12">
             <div class="card dashboard-card-seven">
-                <div class="social-media bg-linkedin hover-linked">
+                <div class="social-media bg-linkedin hover-linkedin">
                     <div class="media media-none--lg">
                         <div class="social-icon">
                             <i class="fab fa-linkedin-in"></i>
                         </div>
                         <div class="media-body space-sm">
-                            <h6 class="item-title">Follow us on linked</h6>
+                            <h6 class="item-title">Follow us on linkedin</h6>
                         </div>
                     </div>
                     <div class="social-like">45,000</div>
@@ -425,12 +389,10 @@
         </div>
     </div>
     <!-- Social Media End Here -->
-
-             <!-- Footer Area Start Here -->
-                <footer class="footer-wrap-layout1">
-                    <div class="copyright">© Copyrights <a href="#">akkhor</a> 2019. All rights reserved. Designed by <a
-                            href="#">PsdBosS</a></div>
-                </footer>
-                <!-- Footer Area End Here -->
-            </div>
-    @endsection
+    <!-- Footer Area Start Here -->
+    <footer class="footer-wrap-layout1">
+        <div class="copyright">© Copyrights <a href="#">akkhor</a> 2025. All rights reserved. Designed by <a href="#">PsdBosS</a></div>
+    </footer>
+    <!-- Footer Area End Here -->
+</div>
+@endsection
