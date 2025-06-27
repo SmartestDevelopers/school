@@ -43,9 +43,8 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">REPORTS CLASSWISE FEES</div>
+                <div class="card-header">Class-Wise Fee Report</div>
                 <div class="card-body">
-                    <h4>Classwise Fees List</h4>
                     @if (session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
@@ -58,42 +57,43 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Serial#</th>
                                     <th>Class</th>
                                     <th>Section</th>
                                     <th>Total Students</th>
-                                    <th>Students' Fee (Expected)</th>
-                                    <th>Students' Fee (Debit)(Unpaid)</th>
-                                    <th>Students' Fee (Credit)(Paid)</th>
+                                    <th>Expected Fee</th>
+                                    <th>Paid Fee</th>
+                                    <th>Unpaid Fee</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php
+                                    $totalStudents = 0;
                                     $totalExpected = 0;
-                                    $totalUnpaid = 0;
                                     $totalPaid = 0;
+                                    $totalUnpaid = 0;
                                 @endphp
-                                @foreach ($classWiseFees as $index => $feeData)
+                                @foreach ($classWiseFees as $fee)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $feeData->class }}</td>
-                                        <td>{{ $feeData->section }}</td>
-                                        <td>{{ $feeData->total_students }}</td>
-                                        <td>{{ number_format($feeData->expected_fee, 2) }}</td>
-                                        <td>{{ number_format($feeData->unpaid_fee, 2) }}</td>
-                                        <td>{{ number_format($feeData->paid_fee, 2) }}</td>
+                                        <td>{{ $fee->class }}</td>
+                                        <td>{{ $fee->section }}</td>
+                                        <td>{{ $fee->total_students }}</td>
+                                        <td>{{ number_format($fee->expected_fee, 2) }}</td>
+                                        <td>{{ number_format($fee->paid_fee, 2) }}</td>
+                                        <td>{{ number_format($fee->unpaid_fee, 2) }}</td>
                                     </tr>
                                     @php
-                                        $totalExpected += $feeData->expected_fee;
-                                        $totalUnpaid += $feeData->unpaid_fee;
-                                        $totalPaid += $feeData->paid_fee;
+                                        $totalStudents += $fee->total_students;
+                                        $totalExpected += $fee->expected_fee;
+                                        $totalPaid += $fee->paid_fee;
+                                        $totalUnpaid += $fee->unpaid_fee;
                                     @endphp
                                 @endforeach
                                 <tr class="total-row">
-                                    <td colspan="4" class="text-right">Total</td>
+                                    <td colspan="2" class="text-right">Total</td>
+                                    <td>{{ $totalStudents }}</td>
                                     <td>{{ number_format($totalExpected, 2) }}</td>
-                                    <td>{{ number_format($totalUnpaid, 2) }}</td>
                                     <td>{{ number_format($totalPaid, 2) }}</td>
+                                    <td>{{ number_format($totalUnpaid, 2) }}</td>
                                 </tr>
                             </tbody>
                         </table>

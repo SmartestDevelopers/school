@@ -25,17 +25,13 @@
         vertical-align: middle;
         text-align: center;
     }
-    .btn-sm {
-        font-size: 12px;
-        padding: 4px 8px;
+    .total-row {
+        font-weight: bold;
+        background-color: #f8f9fa;
     }
     @media (max-width: 768px) {
         .table {
             font-size: 12px;
-        }
-        .btn-sm {
-            font-size: 10px;
-            padding: 3px 6px;
         }
         .card-header {
             font-size: 1.2rem;
@@ -47,9 +43,8 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">REPORTS CLASSWISE STUDENTS</div>
+                <div class="card-header">Class-Wise Student Report</div>
                 <div class="card-body">
-                    <h4>Classwise Students List</h4>
                     @if (session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
@@ -62,29 +57,44 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Serial#</th>
                                     <th>Class</th>
                                     <th>Section</th>
-                                    <th>Girls</th>
                                     <th>Boys</th>
+                                    <th>Girls</th>
                                     <th>Total Students</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($classWiseStudents as $index => $classData)
+                                @php
+                                    $totalBoys = 0;
+                                    $totalGirls = 0;
+                                    $totalStudents = 0;
+                                @endphp
+                                @foreach ($classWiseStudents as $class)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $classData->class }}</td>
-                                        <td>{{ $classData->section }}</td>
-                                        <td>{{ $classData->girls }}</td>
-                                        <td>{{ $classData->boys }}</td>
-                                        <td>{{ $classData->total_students }}</td>
+                                        <td>{{ $class->class }}</td>
+                                        <td>{{ $class->section }}</td>
+                                        <td>{{ $class->boys }}</td>
+                                        <td>{{ $class->girls }}</td>
+                                        <td>{{ $class->total_students }}</td>
                                         <td>
-                                            <a href="{{ route('class-details', ['class' => $classData->class, 'section' => $classData->section]) }}" class="btn btn-info btn-sm">View</a>
+                                            <a href="{{ route('class-details', [$class->class, $class->section]) }}" class="btn btn-sm btn-info">View</a>
                                         </td>
                                     </tr>
+                                    @php
+                                        $totalBoys += $class->boys;
+                                        $totalGirls += $class->girls;
+                                        $totalStudents += $class->total_students;
+                                    @endphp
                                 @endforeach
+                                <tr class="total-row">
+                                    <td colspan="2" class="text-right">Total</td>
+                                    <td>{{ $totalBoys }}</td>
+                                    <td>{{ $totalGirls }}</td>
+                                    <td>{{ $totalStudents }}</td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </table>
                     @endif
