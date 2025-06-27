@@ -23,7 +23,7 @@ class ReportsController extends Controller
                 DB::raw('COUNT(*) as total_students')
             )
             ->groupBy('class', 'section')
-            ->get();
+            ->paginate(10);
 
         return view('reports.listtotalstudents', compact('classWiseStudents'));
     }
@@ -40,7 +40,7 @@ class ReportsController extends Controller
         $students = DB::table('admission_forms')
             ->where('class', $class)
             ->where('section', $section)
-            ->select('id', 'academic_session', 'class', 'section', 'student_name', 'gender', 'roll_number')
+            ->select('id', 'class', 'section', 'full_name', 'gender', 'roll')
             ->get();
 
         return view('reports.classdetails', compact('students', 'class', 'section'));
