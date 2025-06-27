@@ -99,23 +99,34 @@ class ReportsController extends Controller
         $toMonth = $request->input('to_month');
         $toYear = $request->input('to_year');
 
-        // Get distinct fee types from fees (fallback to add_fees if exists)
+        // Get distinct fee types
         $feeTypes = DB::table('fees')->distinct()->pluck('fee_type')->toArray();
         if (DB::table('information_schema.tables')->where('table_name', 'add_fees')->exists()) {
             $feeTypes = array_unique(array_merge($feeTypes, DB::table('add_fees')->distinct()->pluck('fee_type')->toArray()));
         }
 
+        // Get student counts per class and section
+        $studentCounts = DB::table('admission_forms')
+            ->select('class', 'section', DB::raw('COUNT(*) as student_count'))
+            ->groupBy('class', 'section')
+            ->pluck('student_count', 'class', 'section')
+            ->toArray();
+
         // Build query for collective fees
-        $query = DB::table('challans')
-            ->join('admission_forms', function ($join) {
-                $join->on('challans.class', '=', 'admission_forms.class')
-                     ->on('challans.section', '=', 'admission_forms.section')
-                     ->whereRaw('challans.gr_number = admission_forms.roll OR challans.gr_number = "Class-Wide"');
-            })
-            ->join('fees', function ($join) {
-                $join->on('challans.class', '=', 'fees.class')
-                     ->on('challans.section', '=', 'fees.section')
-                     ->whereRaw('fees.month = challans.from_month OR fees.month = challans.to_month');
+        $query = DB::table('fees')
+            ->leftJoin('challans', function ($join) use ($fromMonth, $fromYear) {
+                $join->on('fees.class', '=', 'challans.class')
+                     ->on('fees.section', '=', 'challans.section')
+                     ->where(function ($query) use ($fromMonth, $fromYear) {
+                         $query->where('challans.from_month', '=', $fromMonth)
+                               ->where('challans.from_year', '=', $fromYear)
+                               ->whereNull('challans.to_month')
+                               ->orWhere(function ($query) use ($fromMonth, $fromYear) {
+                                   $query->where('challans.gr_number', '=', 'Class-Wide')
+                                         ->whereRaw('? BETWEEN challans.from_month AND COALESCE(challans.to_month, challans.from_month)', [$fromMonth])
+                                         ->where('challans.from_year', '=', $fromYear);
+                               });
+                     });
             })
             ->select(
                 'fees.class',
@@ -126,11 +137,11 @@ class ReportsController extends Controller
 
         // Add dynamic fee type columns
         foreach ($feeTypes as $feeType) {
-            $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN fees.fee_amount ELSE 0 END) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
+            $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN fees.fee_amount ELSE 0 END) * (SELECT COUNT(*) FROM admission_forms WHERE admission_forms.class = fees.class AND admission_forms.section = fees.section) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
         }
 
         // Add total fees
-        $query->selectRaw('SUM(challans.total_fee) as total_fees');
+        $query->selectRaw('COALESCE(SUM(challans.total_fee), 0) as total_fees');
 
         // Apply date filters if provided
         if ($fromMonth && $fromYear && $toMonth && $toYear) {
@@ -148,12 +159,33 @@ class ReportsController extends Controller
 
         $collectiveFees = $query->groupBy('fees.class', 'fees.section', 'fees.month', 'fees.year')
                                ->get()
-                               ->map(function ($item) use ($feeTypes) {
+                               ->map(function ($item) use ($feeTypes, $studentCounts) {
                                    $item->fee_types = [];
                                    foreach ($feeTypes as $feeType) {
                                        $key = 'fee_type_' . str_replace(' ', '_', $feeType);
                                        $item->fee_types[$feeType] = $item->$key;
                                        unset($item->$key);
+                                   }
+                                   // Adjust total_fees for class-wide challans
+                                   $studentCount = $studentCounts[$item->class . '-' . $item->section] ?? 1;
+                                   $classWideChallan = DB::table('challans')
+                                       ->where('class', $item->class)
+                                       ->where('section', $item->section)
+                                       ->where('gr_number', 'Class-Wide')
+                                       ->whereRaw('? BETWEEN challans.from_month AND COALESCE(challans.to_month, challans.from_month)', [$item->month])
+                                       ->where('from_year', $item->year)
+                                       ->first();
+                                   if ($classWideChallan) {
+                                       $months = 1; // Default for single month
+                                       if ($classWideChallan->to_month) {
+                                           $monthMap = ['Jan' => 1, 'Feb' => 2, 'Mar' => 3, 'Apr' => 4, 'May' => 5, 'Jun' => 6, 'Jul' => 7, 'Aug' => 8, 'Sep' => 9, 'Oct' => 10, 'Nov' => 11, 'Dec' => 12];
+                                           $fromNum = $monthMap[$classWideChallan->from_month] ?? 1;
+                                           $toNum = $monthMap[$classWideChallan->to_month] ?? $fromNum;
+                                           $months = $toNum - $fromNum + 1;
+                                       }
+                                       $item->total_fees = ($classWideChallan->total_fee / $months) * $studentCount;
+                                   } else {
+                                       $item->total_fees = array_sum($item->fee_types);
                                    }
                                    return $item;
                                });
