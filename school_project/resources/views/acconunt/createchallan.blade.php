@@ -118,14 +118,14 @@
                                     <option value="Yellow" {{ old('section') == 'Yellow' ? 'selected' : '' }}>Yellow</option>
                                 </select>
                             </div>
-                            <div class="col-md-3 form-group">
-                                <label class="form-label">Months Option</label>
+                            <div class="col-md-3 form-group" id="months_option_group" style="display: none;">
+                                <label class="form-label">How many months?</label>
                                 <div class="radio-group">
-                                    <label><input type="radio" name="months_option" value="one" {{ old('months_option', 'one') == 'one' ? 'checked' : '' }} required> One</label>
+                                    <label><input type="radio" name="months_option" value="one" {{ old('months_option') == 'one' ? 'checked' : '' }} required> One</label>
                                     <label><input type="radio" name="months_option" value="many" {{ old('months_option') == 'many' ? 'checked' : '' }}> Many</label>
                                 </div>
                             </div>
-                            <div class="col-md-3 form-group" id="one_month_fields" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="one_month_fields" style="display: none;">
                                 <label for="month" class="form-label">Month</label>
                                 <select name="month" id="month" class="form-control">
                                     <option value="">Select Month</option>
@@ -134,11 +134,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3 form-group" id="one_month_year" style="display: {{ old('months_option', 'one') == 'one' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="one_month_year" style="display: none;">
                                 <label for="year" class="form-label">Year</label>
                                 <input type="number" name="year" id="year" class="form-control" value="{{ old('year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="col-md-3 form-group" id="many_months_from" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_from" style="display: none;">
                                 <label for="from_month" class="form-label">From Month</label>
                                 <select name="from_month" id="from_month" class="form-control">
                                     <option value="">Select Month</option>
@@ -147,11 +147,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3 form-group" id="many_months_from_year" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_from_year" style="display: none;">
                                 <label for="from_year" class="form-label">From Year</label>
                                 <input type="number" name="from_year" id="from_year" class="form-control" value="{{ old('from_year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="col-md-3 form-group" id="many_months_to" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_to" style="display: none;">
                                 <label for="to_month" class="form-label">To Month</label>
                                 <select name="to_month" id="to_month" class="form-control">
                                     <option value="">Select Month</option>
@@ -160,11 +160,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3 form-group" id="many_months_to_year" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_to_year" style="display: none;">
                                 <label for="to_year" class="form-label">To Year</label>
                                 <input type="number" name="to_year" id="to_year" class="form-control" value="{{ old('to_year', date('Y')) }}" min="2023" max="2030">
                             </div>
-                            <div class="col-md-3 form-group" id="many_months_total" style="display: {{ old('months_option', 'many') == 'many' ? 'block' : 'none' }};">
+                            <div class="col-md-3 form-group" id="many_months_total" style="display: none;">
                                 <label for="total_months" class="form-label">Total Months</label>
                                 <input type="number" name="total_months" id="total_months" class="form-control" value="{{ old('total_months') }}" readonly>
                             </div>
@@ -252,7 +252,33 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
+    // Hide months option and related fields by default
+    $('#months_option_group, #one_month_fields, #one_month_year, #many_months_from, #many_months_from_year, #many_months_to, #many_months_to_year, #many_months_total').hide();
+
+    // Function to check if class and section are selected
+    function checkClassAndSection() {
+        var classVal = $('#class').val();
+        var sectionVal = $('#section').val();
+        return classVal && sectionVal && classVal !== '' && sectionVal !== '';
+    }
+
+    // Show/hide months option based on class and section
+    $('#class, #section').change(function() {
+        if (checkClassAndSection()) {
+            $('#months_option_group').show();
+        } else {
+            $('#months_option_group, #one_month_fields, #one_month_year, #many_months_from, #many_months_from_year, #many_months_to, #many_months_to_year, #many_months_total').hide();
+            $('input[name="months_option"]').prop('checked', false);
+        }
+    });
+
+    // Handle months option change
     $('input[name="months_option"]').change(function() {
+        if (!checkClassAndSection()) {
+            $('#one_month_fields, #one_month_year, #many_months_from, #many_months_from_year, #many_months_to, #many_months_to_year, #many_months_total').hide();
+            return;
+        }
+
         if ($(this).val() === 'one') {
             $('#one_month_fields, #one_month_year').show();
             $('#many_months_from, #many_months_from_year, #many_months_to, #many_months_to_year, #many_months_total').hide();
@@ -266,6 +292,7 @@ $(document).ready(function() {
         }
     });
 
+    // Existing student roll filtering logic
     $('input[name="students_option"]').change(function() {
         if ($(this).val() === 'one') {
             $('#one_student_fields').show();
@@ -299,6 +326,7 @@ $(document).ready(function() {
         }
     });
 
+    // Existing total months calculation
     function calculateTotalMonths() {
         var fromMonth = $('#from_month').val();
         var fromYear = parseInt($('#from_year').val());
