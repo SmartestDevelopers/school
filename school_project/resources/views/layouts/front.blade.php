@@ -388,10 +388,6 @@
                             <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Reports</span></a>
                             <ul class="nav sub-group-menu">
                                 <li class="nav-item">
-                                    <a href="{{ route('reports.fee-reports')}}" class="nav-link"><i
-                                            class="fas fa-angle-right"></i>Fee Reports</a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="{{ url('list-total-students')}}" class="nav-link"><i
                                             class="fas fa-angle-right"></i>List Total Students</a>
                                 </li>
