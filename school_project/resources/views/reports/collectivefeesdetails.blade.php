@@ -52,7 +52,7 @@
                         <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
                     @if ($details->isEmpty())
-                        <div class="alert alert-info">No fee details available.</div>
+                        <div class="alert alert-info">No fee details available for {{ $class }} - {{ $section }} - {{ $month }} {{ $year }}.</div>
                     @else
                         <table class="table table-bordered">
                             <thead>
@@ -70,6 +70,7 @@
                             <tbody>
                                 @php
                                     $totalFees = 0;
+                                    $feeTypeTotals = array_fill_keys($feeTypes, 0);
                                 @endphp
                                 @foreach ($details as $index => $detail)
                                     <tr>
@@ -78,6 +79,9 @@
                                         <td>{{ $detail->roll }}</td>
                                         @foreach ($feeTypes as $feeType)
                                             <td>{{ number_format($detail->fee_types[$feeType] ?? 0, 2) }}</td>
+                                            @php
+                                                $feeTypeTotals[$feeType] += ($detail->fee_types[$feeType] ?? 0);
+                                            @endphp
                                         @endforeach
                                         <td>{{ number_format($detail->total_fees, 2) }}</td>
                                         <td>{{ $detail->status }}</td>
@@ -87,7 +91,10 @@
                                     @endphp
                                 @endforeach
                                 <tr class="total-row">
-                                    <td colspan="{{ 3 + count($feeTypes) }}" class="text-right">Total</td>
+                                    <td colspan="3" class="text-right">Total</td>
+                                    @foreach ($feeTypes as $feeType)
+                                        <td>{{ number_format($feeTypeTotals[$feeType], 2) }}</td>
+                                    @endforeach
                                     <td>{{ number_format($totalFees, 2) }}</td>
                                     <td></td>
                                 </tr>

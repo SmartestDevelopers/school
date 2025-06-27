@@ -178,25 +178,41 @@ class ReportsController extends Controller
             $feeTypes = array_unique(array_merge($feeTypes, DB::table('add_fees')->distinct()->pluck('fee_type')->toArray()));
         }
 
+        // Get student count for apportioning class-wide challans
+        $studentCount = DB::table('admission_forms')
+            ->where('class', $class)
+            ->where('section', $section)
+            ->count();
+
         $query = DB::table('admission_forms')
-            ->leftJoin('challans', function ($join) use ($month) {
+            ->leftJoin('challans', function ($join) use ($month, $year) {
                 $join->on('challans.class', '=', 'admission_forms.class')
                      ->on('challans.section', '=', 'admission_forms.section')
-                     ->on('challans.gr_number', '=', 'admission_forms.roll')
-                     ->where('challans.from_month', '=', $month)
-                     ->whereNull('challans.to_month'); // Only single-month individual challans
+                     ->whereRaw('challans.gr_number = admission_forms.roll OR challans.gr_number = "Class-Wide"')
+                     ->where(function ($query) use ($month, $year) {
+                         $query->where('challans.from_month', $month)
+                               ->where('challans.from_year', $year)
+                               ->whereNull('challans.to_month')
+                               ->orWhere(function ($query) use ($month, $year) {
+                                   $query->where('challans.gr_number', 'Class-Wide')
+                                         ->whereRaw('? BETWEEN challans.from_month AND COALESCE(challans.to_month, challans.from_month)', [$month])
+                                         ->where('challans.from_year', $year);
+                               });
+                     });
             })
-            ->leftJoin('fees', function ($join) use ($month) {
+            ->leftJoin('fees', function ($join) use ($month, $year) {
                 $join->on('fees.class', '=', 'admission_forms.class')
                      ->on('fees.section', '=', 'admission_forms.section')
-                     ->where('fees.month', '=', $month);
+                     ->where('fees.month', $month)
+                     ->where('fees.year', $year);
             })
             ->select(
                 'admission_forms.full_name',
                 'admission_forms.roll',
                 DB::raw('COALESCE(challans.status, "No Challan") as status'),
-                DB::raw('COALESCE(SUM(fees.fee_amount), 0) as total_fees')
-            );
+                DB::raw('COALESCE(challans.total_fee / NULLIF(CASE WHEN challans.gr_number = "Class-Wide" THEN ? ELSE 1 END, 0), 0) as total_fees')
+            )
+            ->addBinding($studentCount, 'select');
 
         foreach ($feeTypes as $feeType) {
             $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN fees.fee_amount ELSE 0 END) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
@@ -204,8 +220,7 @@ class ReportsController extends Controller
 
         $details = $query->where('admission_forms.class', $class)
                          ->where('admission_forms.section', $section)
-                         ->where('fees.year', $year)
-                         ->groupBy('admission_forms.full_name', 'admission_forms.roll', 'challans.status')
+                         ->groupBy('admission_forms.full_name', 'admission_forms.roll', 'challans.status', 'challans.total_fee', 'challans.gr_number')
                          ->get()
                          ->map(function ($item) use ($feeTypes) {
                              $item->fee_types = [];
