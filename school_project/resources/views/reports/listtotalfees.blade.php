@@ -25,10 +25,6 @@
         vertical-align: middle;
         text-align: center;
     }
-    .pagination {
-        margin-top: 20px;
-        justify-content: center;
-    }
     .total-row {
         font-weight: bold;
         background-color: #f8f9fa;
@@ -39,9 +35,6 @@
         }
         .card-header {
             font-size: 1.2rem;
-        }
-        .pagination {
-            font-size: 12px;
         }
     }
 </style>
@@ -82,7 +75,7 @@
                                 @endphp
                                 @foreach ($classWiseFees as $index => $feeData)
                                     <tr>
-                                        <td>{{ $classWiseFees->firstItem() + $index }}</td>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $feeData->class }}</td>
                                         <td>{{ $feeData->section }}</td>
                                         <td>{{ $feeData->total_students }}</td>
@@ -104,9 +97,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="pagination">
-                            {{ $classWiseFees->links() }}
-                        </div>
                     @endif
                 </div>
             </div>

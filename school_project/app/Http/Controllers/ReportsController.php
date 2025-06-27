@@ -80,7 +80,7 @@ class ReportsController extends Controller
                 DB::raw('COALESCE(SUM(CASE WHEN challans.status = "Paid" THEN challans.total_fee ELSE 0 END), 0) as paid_fee')
             )
             ->groupBy('admission_forms.class', 'admission_forms.section')
-            ->paginate(10);
+            ->get();
 
         return view('reports.listtotalfees', compact('classWiseFees'));
     }
