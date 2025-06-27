@@ -91,9 +91,12 @@ Route::get('/challan-paid/{id}', 'ChallanController@showPaidForm')->name('challa
 Route::post('/challan-paid/{id}', 'ChallanController@markPaid')->name('mark-paid');
 Route::get('/show-paid-form/{id}', 'ChallanController@showPaidForm')->name('show-paid-form');
 
+// Report Routes
 Route::get('/list-total-students', 'ReportsController@totalStudents')->name('totalstudents');
 Route::get('/list-total-fees', 'ReportsController@totalFees')->name('totalfees');
 Route::get('/collective-fees', 'ReportsController@collectiveFees')->name('collectivefees');
+Route::get('/class-details/{class}/{section}', 'ReportsController@classDetails')->name('class-details');
+Route::post('/delete-student/{id}', 'ReportsController@deleteStudent')->name('delete-student');
 
 
 Route::get('/add-book', 'LibraryController@addBook')->name('add-book');
