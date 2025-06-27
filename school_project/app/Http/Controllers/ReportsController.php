@@ -178,38 +178,38 @@ class ReportsController extends Controller
             $feeTypes = array_unique(array_merge($feeTypes, DB::table('add_fees')->distinct()->pluck('fee_type')->toArray()));
         }
 
-        $query = DB::table('challans')
-            ->join('admission_forms', function ($join) {
+        $query = DB::table('admission_forms')
+            ->leftJoin('challans', function ($join) use ($month) {
                 $join->on('challans.class', '=', 'admission_forms.class')
                      ->on('challans.section', '=', 'admission_forms.section')
-                     ->whereRaw('challans.gr_number = admission_forms.roll OR challans.gr_number = "Class-Wide"');
+                     ->on('challans.gr_number', '=', 'admission_forms.roll')
+                     ->where('challans.from_month', '=', $month)
+                     ->whereNull('challans.to_month'); // Only single-month individual challans
             })
-            ->join('fees', function ($join) {
-                $join->on('challans.class', '=', 'fees.class')
-                     ->on('challans.section', '=', 'fees.section')
-                     ->whereRaw('fees.month = challans.from_month OR fees.month = challans.to_month');
+            ->leftJoin('fees', function ($join) use ($month) {
+                $join->on('fees.class', '=', 'admission_forms.class')
+                     ->on('fees.section', '=', 'admission_forms.section')
+                     ->where('fees.month', '=', $month);
             })
             ->select(
                 'admission_forms.full_name',
                 'admission_forms.roll',
-                'challans.status'
+                DB::raw('COALESCE(challans.status, "No Challan") as status'),
+                DB::raw('COALESCE(SUM(fees.fee_amount), 0) as total_fees')
             );
 
         foreach ($feeTypes as $feeType) {
             $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN fees.fee_amount ELSE 0 END) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
         }
 
-        $query->selectRaw('SUM(challans.total_fee) as total_fees');
-
-        $details = $query->where('challans.class', $class)
-                         ->where('challans.section', $section)
-                         ->where('fees.month', $month)
+        $details = $query->where('admission_forms.class', $class)
+                         ->where('admission_forms.section', $section)
                          ->where('fees.year', $year)
                          ->groupBy('admission_forms.full_name', 'admission_forms.roll', 'challans.status')
                          ->get()
                          ->map(function ($item) use ($feeTypes) {
                              $item->fee_types = [];
-                             foreach ($feeType as $feeType) {
+                             foreach ($feeTypes as $feeType) {
                                  $key = 'fee_type_' . str_replace(' ', '_', $feeType);
                                  $item->fee_types[$feeType] = $item->$key;
                                  unset($item->$key);

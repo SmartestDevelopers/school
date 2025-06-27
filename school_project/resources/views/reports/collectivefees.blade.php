@@ -25,24 +25,9 @@
         vertical-align: middle;
         text-align: center;
     }
-    .form-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 20px;
-        flex-wrap: nowrap;
-    }
-    .form-row select, .form-row button {
-        height: 38px;
-        flex: 1;
-        max-width: 150px;
-    }
-    .btn-sm {
-        font-size: 12px;
-        padding: 4px 8px;
-    }
-    .total-column {
+    .total-row {
         font-weight: bold;
+        background-color: #f8f9fa;
     }
     @media (max-width: 768px) {
         .table {
@@ -58,34 +43,38 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">REPORTS OVERALL COLLECTIVE FEES CLASSWISE</div>
+                <div class="card-header">Collective Fees Report</div>
                 <div class="card-body">
-                    <form action="{{ route('collective-fees') }}" method="GET" class="form-row">
-                        <select name="from_month" class="form-control">
-                            <option value="">Select From Month</option>
-                            @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $month)
-                                <option value="{{ $month }}" {{ request('from_month') == $month ? 'selected' : '' }}>{{ $month }}</option>
-                            @endforeach
-                        </select>
-                        <select name="from_year" class="form-control">
-                            <option value="">Select From Year</option>
-                            @for ($year = 2020; $year <= 2025; $year++)
-                                <option value="{{ $year }}" {{ request('from_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                            @endfor
-                        </select>
-                        <select name="to_month" class="form-control">
-                            <option value="">Select To Month</option>
-                            @foreach (['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] as $month)
-                                <option value="{{ $month }}" {{ request('to_month') == $month ? 'selected' : '' }}>{{ $month }}</option>
-                            @endforeach
-                        </select>
-                        <select name="to_year" class="form-control">
-                            <option value="">Select To Year</option>
-                            @for ($year = 2020; $year <= 2025; $year++)
-                                <option value="{{ $year }}" {{ request('to_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                            @endfor
-                        </select>
-                        <button type="submit" class="btn btn-primary">Search</button>
+                    <form method="GET" action="{{ route('collective-fees') }}">
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="from_month">From Month</label>
+                                <select name="from_month" id="from_month" class="form-control">
+                                    <option value="">Select Month</option>
+                                    @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $month)
+                                        <option value="{{ $month }}" {{ request('from_month') == $month ? 'selected' : '' }}>{{ $month }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="from_year">From Year</label>
+                                <input type="number" name="from_year" id="from_year" class="form-control" value="{{ request('from_year') ?: 2025 }}">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="to_month">To Month</label>
+                                <select name="to_month" id="to_month" class="form-control">
+                                    <option value="">Select Month</option>
+                                    @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $month)
+                                        <option value="{{ $month }}" {{ request('to_month') == $month ? 'selected' : '' }}>{{ $month }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="to_year">To Year</label>
+                                <input type="number" name="to_year" id="to_year" class="form-control" value="{{ request('to_year') ?: 2025 }}">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Filter</button>
                     </form>
 
                     @if (session('success'))
@@ -94,8 +83,8 @@
                     @if (session('error'))
                         <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
-                    @if (empty($feeTypes) || empty($collectiveFees))
-                        <div class="alert alert-info">No fee data available for the selected period.</div>
+                    @if ($collectiveFees->isEmpty())
+                        <div class="alert alert-info">No fee details available.</div>
                     @else
                         <table class="table table-bordered">
                             <thead>
@@ -108,25 +97,36 @@
                                         <th>{{ $feeType }}</th>
                                     @endforeach
                                     <th>Total Fees</th>
-                                    <th>View</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($collectiveFees as $feeData)
+                                @php
+                                    $totalFees = 0;
+                                @endphp
+                                @foreach ($collectiveFees as $item)
                                     <tr>
-                                        <td>{{ $feeData->class }}</td>
-                                        <td>{{ $feeData->section }}</td>
-                                        <td>{{ $feeData->month }}</td>
-                                        <td>{{ $feeData->year }}</td>
+                                        <td>{{ $item->class }}</td>
+                                        <td>{{ $item->section }}</td>
+                                        <td>{{ $item->month }}</td>
+                                        <td>{{ $item->year }}</td>
                                         @foreach ($feeTypes as $feeType)
-                                            <td>{{ number_format($feeData->fee_types[$feeType] ?? 0, 2) }}</td>
+                                            <td>{{ number_format($item->fee_types[$feeType] ?? 0, 2) }}</td>
                                         @endforeach
-                                        <td class="total-column">{{ number_format($feeData->total_fees, 2) }}</td>
+                                        <td>{{ number_format($item->total_fees, 2) }}</td>
                                         <td>
-                                            <a href="{{ route('collective-fees-details', ['class' => $feeData->class, 'section' => $feeData->section, 'month' => $feeData->month, 'year' => $feeData->year]) }}" class="btn btn-primary btn-sm">View</a>
+                                            <a href="{{ route('collective-fees-details', [$item->class, $item->section, $item->month, $item->year]) }}" class="btn btn-sm btn-info">View</a>
                                         </td>
                                     </tr>
+                                    @php
+                                        $totalFees += $item->total_fees;
+                                    @endphp
                                 @endforeach
+                                <tr class="total-row">
+                                    <td colspan="{{ 4 + count($feeTypes) }}" class="text-right">Total</td>
+                                    <td>{{ number_format($totalFees, 2) }}</td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </table>
                     @endif
