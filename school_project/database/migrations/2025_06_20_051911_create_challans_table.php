@@ -21,7 +21,6 @@ class CreateChallansTable extends Migration
             $table->string('full_name');
             $table->string('father_name')->nullable();
             $table->string('gr_number')->nullable();
-            $table->integer('student_count')->nullable();
             $table->string('academic_year');
             $table->integer('year');
             $table->string('from_month');

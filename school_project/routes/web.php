@@ -91,6 +91,7 @@ Route::get('/challan-paid/{id}', 'ChallanController@showPaidForm')->name('challa
 Route::post('/challan-paid/{id}', 'ChallanController@markPaid')->name('mark-paid');
 Route::get('/show-paid-form/{id}', 'ChallanController@showPaidForm')->name('show-paid-form');
 
+
 Route::get('/list-total-students', 'ReportsController@totalStudents')->name('totalstudents');
 Route::get('/class-details/{class}/{section}', 'ReportsController@classDetails')->name('class-details');
 Route::post('/delete-student/{id}', 'ReportsController@deleteStudent')->name('delete-student');

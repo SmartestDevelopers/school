@@ -235,7 +235,7 @@
                                     <td>{{ $challan->total_fee }}</td>
                                     <td>{{ strtoupper($challan->status) }}</td>
                                     <td>
-                                        <a href="{{ route('challan-view', $challan->id) }}" class="btn btn-info btn-sm">View</a>
+                                        <a href="{{ route('view-challan', $challan->id) }}" class="btn btn-info btn-sm">View</a>
                                         <a href="{{ route('download-challan', $challan->id) }}" class="btn btn-success btn-sm">Download</a>
                                         <a href="{{ route('challan-paid', $challan->id) }}" class="btn btn-warning btn-sm">Mark Paid</a>
                                     </td>
