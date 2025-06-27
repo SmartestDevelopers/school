@@ -69,19 +69,20 @@ class ReportsController extends Controller
             ->leftJoin('challans', function ($join) {
                 $join->on('admission_forms.class', '=', 'challans.class')
                      ->on('admission_forms.section', '=', 'challans.section')
-                     ->on('admission_forms.roll', '=', 'challans.gr_number');
+                     ->whereRaw('challans.gr_number = admission_forms.roll OR challans.gr_number = "Class-Wide"');
             })
             ->select(
                 'admission_forms.class',
                 'admission_forms.section',
                 DB::raw('COUNT(DISTINCT admission_forms.id) as total_students'),
                 DB::raw('COALESCE(SUM(challans.total_fee), 0) as expected_fee'),
-                DB::raw('COALESCE(SUM(CASE WHEN challans.status = "Unpaid" THEN challans.total_fee ELSE 0 END), 0) as unpaid_fee'),
-                DB::raw('COALESCE(SUM(CASE WHEN challans.status = "Paid" THEN challans.total_fee ELSE 0 END), 0) as paid_fee')
+                DB::raw('COALESCE(SUM(CASE WHEN challans.status = "unpaid" THEN challans.total_fee ELSE 0 END), 0) as unpaid_fee'),
+                DB::raw('COALESCE(SUM(CASE WHEN challans.status = "paid" THEN challans.total_fee ELSE 0 END), 0) as paid_fee')
             )
             ->groupBy('admission_forms.class', 'admission_forms.section')
             ->get();
 
+        \Log::info('ClassWiseFees:', $classWiseFees->toArray());
         return view('reports.listtotalfees', compact('classWiseFees'));
     }
 
@@ -98,19 +99,23 @@ class ReportsController extends Controller
         $toMonth = $request->input('to_month');
         $toYear = $request->input('to_year');
 
-        // Get distinct fee types from add_fees
-        $feeTypes = DB::table('add_fees')->distinct()->pluck('fee_type')->toArray();
+        // Get distinct fee types from fees (fallback to add_fees if exists)
+        $feeTypes = DB::table('fees')->distinct()->pluck('fee_type')->toArray();
+        if (DB::table('information_schema.tables')->where('table_name', 'add_fees')->exists()) {
+            $feeTypes = array_unique(array_merge($feeTypes, DB::table('add_fees')->distinct()->pluck('fee_type')->toArray()));
+        }
 
         // Build query for collective fees
         $query = DB::table('challans')
             ->join('admission_forms', function ($join) {
                 $join->on('challans.class', '=', 'admission_forms.class')
                      ->on('challans.section', '=', 'admission_forms.section')
-                     ->on('challans.gr_number', '=', 'admission_forms.roll');
+                     ->whereRaw('challans.gr_number = admission_forms.roll OR challans.gr_number = "Class-Wide"');
             })
             ->join('fees', function ($join) {
                 $join->on('challans.class', '=', 'fees.class')
-                     ->on('challans.section', '=', 'fees.section');
+                     ->on('challans.section', '=', 'fees.section')
+                     ->whereRaw('fees.month = challans.from_month OR fees.month = challans.to_month');
             })
             ->select(
                 'fees.class',
@@ -119,9 +124,9 @@ class ReportsController extends Controller
                 'fees.year'
             );
 
-        // Add dynamic fee type columns using challans.total_fee
+        // Add dynamic fee type columns
         foreach ($feeTypes as $feeType) {
-            $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN challans.total_fee ELSE 0 END) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
+            $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN fees.fee_amount ELSE 0 END) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
         }
 
         // Add total fees
@@ -129,10 +134,16 @@ class ReportsController extends Controller
 
         // Apply date filters if provided
         if ($fromMonth && $fromYear && $toMonth && $toYear) {
-            $fromDate = \Carbon\Carbon::createFromDate($fromYear, array_search($fromMonth, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']) + 1, 1);
-            $toDate = \Carbon\Carbon::createFromDate($toYear, array_search($toMonth, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']) + 1, 1)->endOfMonth();
+            $monthMap = [
+                'Jan' => 1, 'Feb' => 2, 'Mar' => 3, 'Apr' => 4, 'May' => 5, 'Jun' => 6,
+                'Jul' => 7, 'Aug' => 8, 'Sep' => 9, 'Oct' => 10, 'Nov' => 11, 'Dec' => 12
+            ];
+            $fromMonthNum = $monthMap[$fromMonth] ?? array_search($fromMonth, array_keys($monthMap)) + 1;
+            $toMonthNum = $monthMap[$toMonth] ?? array_search($toMonth, array_keys($monthMap)) + 1;
+            $fromDate = \Carbon\Carbon::createFromDate($fromYear, $fromMonthNum, 1);
+            $toDate = \Carbon\Carbon::createFromDate($toYear, $toMonthNum, 1)->endOfMonth();
             $query->whereBetween('fees.year', [$fromYear, $toYear])
-                  ->whereRaw("STR_TO_DATE(CONCAT(fees.month, ' 1, ', fees.year), '%M %d, %Y') BETWEEN ? AND ?", [$fromDate, $toDate]);
+                  ->whereRaw("STR_TO_DATE(CONCAT(fees.month, ' 1, ', fees.year), '%b %d, %Y') BETWEEN ? AND ?", [$fromDate, $toDate]);
         }
 
         $collectiveFees = $query->groupBy('fees.class', 'fees.section', 'fees.month', 'fees.year')
@@ -147,6 +158,7 @@ class ReportsController extends Controller
                                    return $item;
                                });
 
+        \Log::info('CollectiveFees:', $collectiveFees->toArray());
         return view('reports.collectivefees', compact('collectiveFees', 'feeTypes'));
     }
 
@@ -161,17 +173,21 @@ class ReportsController extends Controller
      */
     public function collectiveFeesDetails($class, $section, $month, $year)
     {
-        $feeTypes = DB::table('add_fees')->distinct()->pluck('fee_type')->toArray();
+        $feeTypes = DB::table('fees')->distinct()->pluck('fee_type')->toArray();
+        if (DB::table('information_schema.tables')->where('table_name', 'add_fees')->exists()) {
+            $feeTypes = array_unique(array_merge($feeTypes, DB::table('add_fees')->distinct()->pluck('fee_type')->toArray()));
+        }
 
         $query = DB::table('challans')
             ->join('admission_forms', function ($join) {
                 $join->on('challans.class', '=', 'admission_forms.class')
                      ->on('challans.section', '=', 'admission_forms.section')
-                     ->on('challans.gr_number', '=', 'admission_forms.roll');
+                     ->whereRaw('challans.gr_number = admission_forms.roll OR challans.gr_number = "Class-Wide"');
             })
             ->join('fees', function ($join) {
                 $join->on('challans.class', '=', 'fees.class')
-                     ->on('challans.section', '=', 'fees.section');
+                     ->on('challans.section', '=', 'fees.section')
+                     ->whereRaw('fees.month = challans.from_month OR fees.month = challans.to_month');
             })
             ->select(
                 'admission_forms.full_name',
@@ -180,7 +196,7 @@ class ReportsController extends Controller
             );
 
         foreach ($feeTypes as $feeType) {
-            $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN challans.total_fee ELSE 0 END) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
+            $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN fees.fee_amount ELSE 0 END) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
         }
 
         $query->selectRaw('SUM(challans.total_fee) as total_fees');
@@ -193,7 +209,7 @@ class ReportsController extends Controller
                          ->get()
                          ->map(function ($item) use ($feeTypes) {
                              $item->fee_types = [];
-                             foreach ($feeTypes as $feeType) {
+                             foreach ($feeType as $feeType) {
                                  $key = 'fee_type_' . str_replace(' ', '_', $feeType);
                                  $item->fee_types[$feeType] = $item->$key;
                                  unset($item->$key);
@@ -201,6 +217,7 @@ class ReportsController extends Controller
                              return $item;
                          });
 
+        \Log::info('CollectiveFeesDetails:', ['class' => $class, 'section' => $section, 'month' => $month, 'year' => $year, 'details' => $details->toArray()]);
         return view('reports.collectivefeesdetails', compact('details', 'feeTypes', 'class', 'section', 'month', 'year'));
     }
 }
