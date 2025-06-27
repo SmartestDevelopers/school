@@ -57,4 +57,31 @@ class ReportsController extends Controller
         DB::table('admission_forms')->where('id', $id)->delete();
         return redirect()->back()->with('success', 'Student deleted successfully.');
     }
+
+    /**
+     * Display a listing of class-wise fees.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function totalFees()
+    {
+        $classWiseFees = DB::table('admission_forms')
+            ->leftJoin('challans', function ($join) {
+                $join->on('admission_forms.class', '=', 'challans.class')
+                     ->on('admission_forms.section', '=', 'challans.section')
+                     ->on('admission_forms.roll', '=', 'challans.gr_number');
+            })
+            ->select(
+                'admission_forms.class',
+                'admission_forms.section',
+                DB::raw('COUNT(DISTINCT admission_forms.id) as total_students'),
+                DB::raw('COALESCE(SUM(challans.total_fee), 0) as expected_fee'),
+                DB::raw('COALESCE(SUM(CASE WHEN challans.status = "Unpaid" THEN challans.total_fee ELSE 0 END), 0) as unpaid_fee'),
+                DB::raw('COALESCE(SUM(CASE WHEN challans.status = "Paid" THEN challans.total_fee ELSE 0 END), 0) as paid_fee')
+            )
+            ->groupBy('admission_forms.class', 'admission_forms.section')
+            ->paginate(10);
+
+        return view('reports.listtotalfees', compact('classWiseFees'));
+    }
 }
