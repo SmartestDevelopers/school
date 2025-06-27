@@ -84,4 +84,123 @@ class ReportsController extends Controller
 
         return view('reports.listtotalfees', compact('classWiseFees'));
     }
+
+    /**
+     * Display a listing of class-wise collective fees.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function collectiveFees(Request $request)
+    {
+        $fromMonth = $request->input('from_month');
+        $fromYear = $request->input('from_year');
+        $toMonth = $request->input('to_month');
+        $toYear = $request->input('to_year');
+
+        // Get distinct fee types from add_fees
+        $feeTypes = DB::table('add_fees')->distinct()->pluck('fee_type')->toArray();
+
+        // Build query for collective fees
+        $query = DB::table('challans')
+            ->join('admission_forms', function ($join) {
+                $join->on('challans.class', '=', 'admission_forms.class')
+                     ->on('challans.section', '=', 'admission_forms.section')
+                     ->on('challans.gr_number', '=', 'admission_forms.roll');
+            })
+            ->join('fees', function ($join) {
+                $join->on('challans.class', '=', 'fees.class')
+                     ->on('challans.section', '=', 'fees.section');
+            })
+            ->select(
+                'fees.class',
+                'fees.section',
+                'fees.month',
+                'fees.year'
+            );
+
+        // Add dynamic fee type columns using challans.total_fee
+        foreach ($feeTypes as $feeType) {
+            $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN challans.total_fee ELSE 0 END) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
+        }
+
+        // Add total fees
+        $query->selectRaw('SUM(challans.total_fee) as total_fees');
+
+        // Apply date filters if provided
+        if ($fromMonth && $fromYear && $toMonth && $toYear) {
+            $fromDate = \Carbon\Carbon::createFromDate($fromYear, array_search($fromMonth, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']) + 1, 1);
+            $toDate = \Carbon\Carbon::createFromDate($toYear, array_search($toMonth, ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']) + 1, 1)->endOfMonth();
+            $query->whereBetween('fees.year', [$fromYear, $toYear])
+                  ->whereRaw("STR_TO_DATE(CONCAT(fees.month, ' 1, ', fees.year), '%M %d, %Y') BETWEEN ? AND ?", [$fromDate, $toDate]);
+        }
+
+        $collectiveFees = $query->groupBy('fees.class', 'fees.section', 'fees.month', 'fees.year')
+                               ->get()
+                               ->map(function ($item) use ($feeTypes) {
+                                   $item->fee_types = [];
+                                   foreach ($feeTypes as $feeType) {
+                                       $key = 'fee_type_' . str_replace(' ', '_', $feeType);
+                                       $item->fee_types[$feeType] = $item->$key;
+                                       unset($item->$key);
+                                   }
+                                   return $item;
+                               });
+
+        return view('reports.collectivefees', compact('collectiveFees', 'feeTypes'));
+    }
+
+    /**
+     * Display detailed fees for a specific class, section, month, and year.
+     *
+     * @param string $class
+     * @param string $section
+     * @param string $month
+     * @param string $year
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function collectiveFeesDetails($class, $section, $month, $year)
+    {
+        $feeTypes = DB::table('add_fees')->distinct()->pluck('fee_type')->toArray();
+
+        $query = DB::table('challans')
+            ->join('admission_forms', function ($join) {
+                $join->on('challans.class', '=', 'admission_forms.class')
+                     ->on('challans.section', '=', 'admission_forms.section')
+                     ->on('challans.gr_number', '=', 'admission_forms.roll');
+            })
+            ->join('fees', function ($join) {
+                $join->on('challans.class', '=', 'fees.class')
+                     ->on('challans.section', '=', 'fees.section');
+            })
+            ->select(
+                'admission_forms.full_name',
+                'admission_forms.roll',
+                'challans.status'
+            );
+
+        foreach ($feeTypes as $feeType) {
+            $query->selectRaw("SUM(CASE WHEN fees.fee_type = ? THEN challans.total_fee ELSE 0 END) as fee_type_".str_replace(' ', '_', $feeType), [$feeType]);
+        }
+
+        $query->selectRaw('SUM(challans.total_fee) as total_fees');
+
+        $details = $query->where('challans.class', $class)
+                         ->where('challans.section', $section)
+                         ->where('fees.month', $month)
+                         ->where('fees.year', $year)
+                         ->groupBy('admission_forms.full_name', 'admission_forms.roll', 'challans.status')
+                         ->get()
+                         ->map(function ($item) use ($feeTypes) {
+                             $item->fee_types = [];
+                             foreach ($feeTypes as $feeType) {
+                                 $key = 'fee_type_' . str_replace(' ', '_', $feeType);
+                                 $item->fee_types[$feeType] = $item->$key;
+                                 unset($item->$key);
+                             }
+                             return $item;
+                         });
+
+        return view('reports.collectivefeesdetails', compact('details', 'feeTypes', 'class', 'section', 'month', 'year'));
+    }
 }
