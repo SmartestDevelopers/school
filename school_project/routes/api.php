@@ -25,8 +25,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // API Routes for Mobile Application
 Route::prefix('v1')->group(function () {
     Route::apiResource('students', 'Api\StudentController');
-
     Route::apiResource('teachers', 'Api\TeacherController');
+    Route::apiResource('parents', 'Api\ParentController');
 
     // Authentication Routes
     Route::post('login', 'Api\AuthController@login');
@@ -38,18 +38,18 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         
         // Student Management API
-        
+        //Route::apiResource('students', 'Api\StudentController');
         Route::get('students/{id}/details', 'Api\StudentController@details');
         Route::post('students/{id}/promote', 'Api\StudentController@promote');
         
         // Teacher Management API
-        
+        //Route::apiResource('teachers', 'Api\TeacherController');
         Route::get('teachers/{id}/details', 'Api\TeacherController@details');
         Route::get('teachers/{id}/payments', 'Api\TeacherController@payments');
         Route::post('teachers/{id}/payment', 'Api\TeacherController@addPayment');
         
         // Parent Management API
-        Route::apiResource('parents', 'Api\ParentController');
+        //Route::apiResource('parents', 'Api\ParentController');
         Route::get('parents/{id}/children', 'Api\ParentController@children');
         Route::get('parents/{id}/details', 'Api\ParentController@details');
         
