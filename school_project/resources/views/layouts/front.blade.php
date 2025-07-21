@@ -33,7 +33,34 @@
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    
+    <style>
+    #parentList {
+        position: absolute;
+        background: white;
+        border: 1px solid #ccc;
+        padding: 0;
+        margin: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #parentList ul.dropdown-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    #parentList li {
+        padding: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    #parentList li:hover {
+        background: #f0f0f0;
+    }
+</style>
 </head>
 
 <body>
