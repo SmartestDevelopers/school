@@ -151,16 +151,6 @@
                             </div>
                             @csrf
                         </div>
-                        <hr>
-
-                             <select class="form-control" name="teacher_name">
-                                <option value="">Please Select Teacher *</option>
-                                
-                            @foreach($teachers_array as $teacher)
-                                <option value="{{ $teacher->first_name }}">{{ $teacher->first_name }}</option>
-                            @endforeach
-
-                            </select>
 
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
@@ -301,7 +291,7 @@
         console.log('CSRF token value:', $('input[name="_token"]').val() || 'Not found');
         console.log('AJAX URL:', '{{ route('autocomplete.fetch_teacher_name') }}');
 
-        // Autocomplete keyup handler
+        // Autocomplete keyup handler (unchanged)
         $('#teacher_name_autocomplete').on('keyup', function(){
             var query = $(this).val().trim();
             console.log('Keyup triggered, Query:', query);
@@ -344,7 +334,7 @@
         });
 
         // Click handler for <a> within <li>
-        $('#teacherList').on('click', 'li a', function(e) {
+        $('#teacherList').on('click', 'li a.teacher-link', function(e) {
             e.preventDefault();
             e.stopPropagation(); // Prevent bubbling to <li>
             var selectedText = $(this).text().trim();
@@ -354,7 +344,7 @@
             console.log('teacher_name_autocomplete exists:', $('#teacher_name_autocomplete').length);
             console.log('teacher_name exists:', $('#teacher_name').length);
             if ($('#teacher_name_autocomplete').length && $('#teacher_name').length) {
-                $('#teacher_name_autocomplete').val(selectedText);
+                $('#teacher_name_autocomplete').val(selectedText).trigger('change'); // Trigger change event
                 $('#teacher_name').val(selectedText);
                 console.log('Set teacher_name_autocomplete to:', $('#teacher_name_autocomplete').val());
                 console.log('Set teacher_name to:', $('#teacher_name').val());
@@ -367,7 +357,7 @@
             $('#teacherList').fadeOut();
         });
 
-        // Fallback click handler for plain <li>
+        // Fallback click handler for plain <li> (unchanged)
         $('#teacherList').on('click', 'li:not(:has(a))', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -377,7 +367,7 @@
             console.log('teacher_name_autocomplete exists:', $('#teacher_name_autocomplete').length);
             console.log('teacher_name exists:', $('#teacher_name').length);
             if ($('#teacher_name_autocomplete').length && $('#teacher_name').length) {
-                $('#teacher_name_autocomplete').val(selectedText);
+                $('#teacher_name_autocomplete').val(selectedText).trigger('change');
                 $('#teacher_name').val(selectedText);
                 console.log('Set teacher_name_autocomplete to:', $('#teacher_name_autocomplete').val());
                 console.log('Set teacher_name to:', $('#teacher_name').val());
@@ -390,7 +380,7 @@
             $('#teacherList').fadeOut();
         });
 
-        // Debug all clicks within #teacherList
+        // Debug all clicks within #teacherList (unchanged)
         $('#teacherList').on('click', function(e) {
             console.log('Clicked in teacherList, target:', e.target, 'tagName:', e.target.tagName, 'HTML:', $(e.target).prop('outerHTML'));
         });
