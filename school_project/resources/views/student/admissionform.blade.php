@@ -1,6 +1,7 @@
 @extends('layouts.front')
 
 @section('content')
+
     <div class="dashboard-content-one">
         <!-- Breadcubs Area Start Here -->
         <div class="breadcrumbs-area">
@@ -52,6 +53,14 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Parent Name *</label>
+
+                            <div class="form-group">
+                            <input type="text" name="parent_name_autocomplete" id="parent_name_autocomplete" class="form-control input-lg" placeholder="Enter Parent Name" />
+                            <div id="parentList">
+                            </div>
+                            @csrf
+                        </div>
+                            <hr/>
                             
                             <select class="form-control" name="parent_name">
                                 <option value="">Please Select Parent *</option>
@@ -186,4 +195,41 @@
     </div>
     <!-- Page Area End Here -->
     </div>
+
+
+
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+// jQuery(document).ready(function(){
+//     jQuery('#parent_name_autocomplete').keyup(function(){ 
+//         alert('line 207');
+//     });
+//ok now it is ok
+
+ $('#parent_name_autocomplete').keyup(function(){ 
+        var query = $(this).val();
+        if(query != '')
+        {
+         var _token = $('input[name="_token"]').val();
+         $.ajax({
+          url:"{{ route('autocomplete.fetch_parent_name') }}",
+          method:"POST",
+          data:{query:query, _token:_token},
+          success:function(data){
+           $('#parentList').fadeIn();  
+                    $('#parentList').html(data);
+          }
+         });
+        }
+    });
+
+    $(document).on('click', 'li', function(){  
+        $('#full_name').val($(this).text());  
+        $('#parentList').fadeOut();  
+    });  
+
+</script>
+
+
 @endsection

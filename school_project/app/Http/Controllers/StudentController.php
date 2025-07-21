@@ -31,6 +31,26 @@ class StudentController extends Controller
         return view('student.admissionform', compact('parents_array', 'teachers_array'));
     }
 
+    function fetch_parent_name(Request $request)
+    {
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = DB::table('parents')
+        ->where('full_name', 'LIKE', "%{$query}%")
+        ->get();
+      $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
+      foreach($data as $row)
+      {
+       $output .= '
+       <li><a href="#">'.$row->full_name.'</a></li>
+       ';
+      }
+      $output .= '</ul>';
+      echo $output;
+     }
+    }
+
     public function store(Request $request)
     {
         // Validate input
