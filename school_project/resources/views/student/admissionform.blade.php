@@ -60,16 +60,7 @@
                             </div>
                             @csrf
                         </div>
-                            <hr/>
                             
-                            <select class="form-control" name="parent_name">
-                                <option value="">Please Select Parent *</option>
-                                
-                            @foreach($parents_array as $parrent)
-                                <option value="{{ $parrent->full_name }}">{{ $parrent->full_name }}</option>
-                            @endforeach
-
-                            </select>
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Gender *</label>
