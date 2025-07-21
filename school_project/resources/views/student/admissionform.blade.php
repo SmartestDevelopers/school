@@ -207,27 +207,88 @@
 //     });
 //ok now it is ok
 
- $('#parent_name_autocomplete').keyup(function(){ 
-        var query = $(this).val();
-        if(query != '')
-        {
-         var _token = $('input[name="_token"]').val();
-         $.ajax({
-          url:"{{ route('autocomplete.fetch_parent_name') }}",
-          method:"POST",
-          data:{query:query, _token:_token},
-          success:function(data){
-           $('#parentList').fadeIn();  
-                    $('#parentList').html(data);
-          }
-         });
-        }
-    });
+ (function($) {
+    $(document).ready(function(){
+        // Log element existence
+        console.log('=== Page Load Debug ===');
+        console.log('jQuery version:', $.fn.jquery);
+        console.log('parent_name_autocomplete exists:', $('#parent_name_autocomplete').length);
+        console.log('parentList exists:', $('#parentList').length);
+        console.log('CSRF token exists:', $('input[name="_token"]').length);
 
-    $(document).on('click', 'li', function(){  
-        $('#full_name').val($(this).text());  
-        $('#parentList').fadeOut();  
-    });  
+        // Keyup handler
+        $('#parent_name_autocomplete').on('keyup', function(){
+            var query = $(this).val().trim();
+            console.log('Keyup triggered, Query:', query);
+            if (query !== '') {
+                var _token = $('input[name="_token"]').val();
+                if (!_token) {
+                    console.error('CSRF token missing');
+                    $('#parentList').fadeIn().html('<ul class="dropdown-menu"><li>CSRF token error</li></ul>');
+                    return;
+                }
+                console.log('Sending AJAX with token:', _token);
+                $.ajax({
+                    url: "{{ route('autocomplete.fetch_parent_name') }}",
+                    method: "POST",
+                    data: { query: query, _token: _token },
+                    dataType: 'html',
+                    success: function(data) {
+                        console.log('AJAX Success, Response:', data);
+                        if (data.trim() === '') {
+                            console.warn('Empty response received');
+                            $('#parentList').fadeIn().html('<ul class="dropdown-menu"><li>No results found</li></ul>');
+                        } else {
+                            $('#parentList').fadeIn().html(data);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', status, error, xhr.responseText);
+                        $('#parentList').fadeIn().html('<ul class="dropdown-menu"><li>Error loading data: ' + status + '</li></ul>');
+                    }
+                });
+            } else {
+                console.log('Query empty, hiding parentList');
+                $('#parentList').fadeOut();
+            }
+        });
+
+        // Click handler for <li>
+        $('#parentList').on('click', 'li', function(e){
+            e.preventDefault();
+            var selectedText = $(this).text().trim();
+            console.log('Clicked li:', selectedText);
+            console.log('parent_name_autocomplete exists at click:', $('#parent_name_autocomplete').length);
+            if ($('#parent_name_autocomplete').length) {
+                $('#parent_name_autocomplete').val(selectedText);
+                console.log('Set parent_name_autocomplete to:', selectedText);
+            } else {
+                console.error('parent_name_autocomplete input not found');
+            }
+            $('#parentList').fadeOut();
+        });
+
+        // Fallback click handler for <li><a>
+        $('#parentList').on('click', 'li a', function(e){
+            e.preventDefault();
+            var selectedText = $(this).text().trim();
+            console.log('Clicked a:', selectedText);
+            console.log('parent_name_autocomplete exists at click:', $('#parent_name_autocomplete').length);
+            if ($('#parent_name_autocomplete').length) {
+                $('#parent_name_autocomplete').val(selectedText);
+                console.log('Set parent_name_autocomplete to:', selectedText);
+            } else {
+                console.error('parent_name_autocomplete input not found');
+            }
+            $('#parentList').fadeOut();
+        });
+
+        // Debug all clicks
+        $('#parentList').on('click', function(e){
+            console.log('Clicked in parentList, target:', e.target);
+        });
+    });
+})(jQuery);
 
 </script>
 
