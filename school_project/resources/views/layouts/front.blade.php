@@ -91,6 +91,10 @@
 
 /* Style dropdown items */
 #teacherList .dropdown-menu li {
+   padding: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1.5;
     list-style: none;
 }
 
