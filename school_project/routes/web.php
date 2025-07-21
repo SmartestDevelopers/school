@@ -148,3 +148,4 @@ Route::post('/exam-schedule', 'ExamController@store')->name('examschedule.store'
 
 
 Route::post('/autocomplete/fetch', 'StudentController@fetch_parent_name')->name('autocomplete.fetch_parent_name');
+Route::post('/autocomplete/fetch/teacher', 'TeachersController@fetch_teacher_name')->name('autocomplete.fetch_teacher_name');

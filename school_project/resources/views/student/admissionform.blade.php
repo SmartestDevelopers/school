@@ -144,7 +144,14 @@
                         </div>
                         <div class="col-xl-3 col-lg-6 col-12 form-group">
                             <label>Teacher Name *</label>
-                            
+
+                            <div class="form-group">
+                            <input type="text" name="teacher_name_autocomplete" id="teacher_name_autocomplete" class="form-control input-lg" placeholder="Enter Teacher Name" />
+                            <div id="teacherList">
+                            </div>
+                            @csrf
+                        </div>
+                        <hr>
 
                              <select class="form-control" name="teacher_name">
                                 <option value="">Please Select Teacher *</option>
@@ -281,7 +288,113 @@
     });
 })(jQuery);
 
+
+ (function($) {
+    $(document).ready(function(){
+        // Log element existence and environment
+        console.log('=== Page Load Debug ===');
+        console.log('jQuery version:', $.fn.jquery ? $.fn.jquery : 'jQuery not loaded');
+        console.log('teacher_name_autocomplete exists:', $('#teacher_name_autocomplete').length);
+        console.log('teacher_name exists:', $('#teacher_name').length);
+        console.log('teacherList exists:', $('#teacherList').length);
+        console.log('CSRF token exists:', $('input[name="_token"]').length);
+        console.log('CSRF token value:', $('input[name="_token"]').val() || 'Not found');
+        console.log('AJAX URL:', '{{ route('autocomplete.fetch_teacher_name') }}');
+
+        // Autocomplete keyup handler
+        $('#teacher_name_autocomplete').on('keyup', function(){
+            var query = $(this).val().trim();
+            console.log('Keyup triggered, Query:', query);
+            if (query.length >= 2) { // Require 2+ characters
+                var $tokenInput = $('input[name="_token"]');
+                var _token = $tokenInput.length ? $tokenInput.val() : null;
+                if (!_token) {
+                    console.error('CSRF token missing');
+                    $('#teacherList').fadeIn().html('<ul class="dropdown-menu"><li>CSRF token error. Please refresh the page.</li></ul>');
+                    return;
+                }
+                console.log('Sending AJAX with token:', _token);
+                $.ajax({
+                    url: "{{ route('autocomplete.fetch_teacher_name') }}",
+                    method: "POST",
+                    data: { query: query, _token: _token },
+                    dataType: 'html',
+                    beforeSend: function() {
+                        console.log('AJAX request initiated for query:', query);
+                    },
+                    success: function(data) {
+                        console.log('AJAX Success, Response:', data);
+                        if (data.trim() === '') {
+                            console.warn('Empty response received');
+                            $('#teacherList').fadeIn().html('<ul class="dropdown-menu"><li>No results found</li></ul>');
+                        } else {
+                            $('#teacherList').fadeIn().html(data);
+                            console.log('teacherList contents:', $('#teacherList').html());
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', status, error, 'Response:', xhr.responseText);
+                        $('#teacherList').fadeIn().html('<ul class="dropdown-menu"><li>Error loading data: ' + status + '</li></ul>');
+                    }
+                });
+            } else {
+                console.log('Query too short or empty, hiding teacherList');
+                $('#teacherList').fadeOut();
+            }
+        });
+
+        // Click handler for <a> within <li>
+        $('#teacherList').on('click', 'li a', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Prevent bubbling to <li>
+            var selectedText = $(this).text().trim();
+            console.log('Clicked <a>:', selectedText);
+            console.log('Clicked element HTML:', $(this).prop('outerHTML'));
+            console.log('Parent element HTML:', $(this).parent().prop('outerHTML'));
+            console.log('teacher_name_autocomplete exists:', $('#teacher_name_autocomplete').length);
+            console.log('teacher_name exists:', $('#teacher_name').length);
+            if ($('#teacher_name_autocomplete').length && $('#teacher_name').length) {
+                $('#teacher_name_autocomplete').val(selectedText);
+                $('#teacher_name').val(selectedText);
+                console.log('Set teacher_name_autocomplete to:', $('#teacher_name_autocomplete').val());
+                console.log('Set teacher_name to:', $('#teacher_name').val());
+            } else {
+                console.error('Input not found:', {
+                    teacher_name_autocomplete: $('#teacher_name_autocomplete').length,
+                    teacher_name: $('#teacher_name').length
+                });
+            }
+            $('#teacherList').fadeOut();
+        });
+
+        // Fallback click handler for plain <li>
+        $('#teacherList').on('click', 'li:not(:has(a))', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var selectedText = $(this).text().trim();
+            console.log('Clicked <li> (no <a>):', selectedText);
+            console.log('Clicked element HTML:', $(this).prop('outerHTML'));
+            console.log('teacher_name_autocomplete exists:', $('#teacher_name_autocomplete').length);
+            console.log('teacher_name exists:', $('#teacher_name').length);
+            if ($('#teacher_name_autocomplete').length && $('#teacher_name').length) {
+                $('#teacher_name_autocomplete').val(selectedText);
+                $('#teacher_name').val(selectedText);
+                console.log('Set teacher_name_autocomplete to:', $('#teacher_name_autocomplete').val());
+                console.log('Set teacher_name to:', $('#teacher_name').val());
+            } else {
+                console.error('Input not found:', {
+                    teacher_name_autocomplete: $('#teacher_name_autocomplete').length,
+                    teacher_name: $('#teacher_name').length
+                });
+            }
+            $('#teacherList').fadeOut();
+        });
+
+        // Debug all clicks within #teacherList
+        $('#teacherList').on('click', function(e) {
+            console.log('Clicked in teacherList, target:', e.target, 'tagName:', e.target.tagName, 'HTML:', $(e.target).prop('outerHTML'));
+        });
+    });
+})(jQuery);
 </script>
-
-
 @endsection

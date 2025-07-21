@@ -60,6 +60,61 @@
     #parentList li:hover {
         background: #f0f0f0;
     }
+    /* Style the input field */
+#teacher_name_autocomplete {
+    width: 100%; /* Match Bootstrap form-control */
+    box-sizing: border-box; /* Ensure padding doesn’t affect width */
+}
+
+/* Style the dropdown container */
+#teacherList {
+    position: absolute;
+    top: 100%; /* Position directly below the input */
+    left: 0;
+    width: 100%; /* Match input width */
+    z-index: 1000; /* Ensure dropdown appears above other elements */
+    display: none; /* Hidden by default, controlled by JavaScript */
+}
+
+/* Style the dropdown menu */
+#teacherList .dropdown-menu {
+    width: 100%; /* Match input width */
+    margin: 0; /* Remove default Bootstrap margin */
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 200px; /* Limit height for scrollable dropdown */
+    overflow-y: auto; /* Enable scrolling for long lists */
+}
+
+/* Style dropdown items */
+#teacherList .dropdown-menu li {
+    list-style: none;
+}
+
+/* Style links in dropdown */
+#teacherList .dropdown-menu li a.teacher-link {
+    display: block;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Hover effect for dropdown items */
+#teacherList .dropdown-menu li a.teacher-link:hover {
+    background-color: #f8f9fa; /* Light gray hover effect */
+    color: #000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    #teacherList {
+        width: 100%; /* Ensure full width on small screens */
+    }
+}
 </style>
 </head>
 

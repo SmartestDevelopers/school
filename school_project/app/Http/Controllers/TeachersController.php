@@ -39,6 +39,27 @@ class TeachersController extends Controller
         return view('teacher.teacherpayment');
     }
 
+    function fetch_teacher_name(Request $request)
+    {
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = DB::table('teachers')
+        ->where('first_name', 'LIKE', "%{$query}%")
+        ->orWhere('last_name', 'LIKE', "%{$query}%")
+        ->get();
+      $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
+      foreach($data as $row)
+      {
+                $output .= '
+                <li><a href="#" class="teacher-link">' . htmlspecialchars($row->first_name . ' ' . $row->last_name) . '</a></li>
+                ';
+            }
+      $output .= '</ul>';
+      echo $output;
+     }
+    }
+
     public function store(Request $request)
     {
         // Validate request
