@@ -51,6 +51,7 @@ Route::post('/admit-form', 'StudentController@store')->name('admitform.store');
 Route::get('/add-parent', 'ParentsController@create')->name('addparent');
 Route::post('/add-parent', 'ParentsController@store')->name('addparent.store');
 Route::get('/all-student', 'StudentController@allStudent')->name('allstudent');
+Route::post('/search-student', 'StudentController@searchStudent')->name('searchStudent');
 // this all-student is showing blank page, 
 Route::get('/all-teacher', 'TeachersController@allTeacher')->name('allteacher');
 Route::get('/all-parents', 'ParentsController@allParent')->name('allparent');

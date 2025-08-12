@@ -248,4 +248,44 @@ class StudentController extends Controller
             return redirect()->back()->with('error', 'Failed to update student data: ' . $e->getMessage());
         }
     }
+
+    public function searchStudent(Request $request)
+{
+    try {
+        // Get the search inputs
+        $roll = $request->input('roll');
+        $full_name = $request->input('full_name');
+        $class = $request->input('class');
+
+        // Build the query
+        $query = DB::table('admission_forms');
+
+        // Apply filters if provided
+        if ($roll) {
+            $query->where('roll', 'LIKE', "%{$roll}%");
+        }
+
+        if ($full_name) {
+            $query->where('full_name', 'LIKE', "%{$full_name}%");
+        }
+
+        if ($class) {
+            $query->where('class', 'LIKE', "%{$class}%");
+        }
+
+        // Execute the query and get the results
+        $admission_forms_array = $query->get();
+
+        // Return the view with the filtered results
+        return view('student.allstudents', compact('admission_forms_array'));
+    } catch (\Exception $e) {
+        // Log the error for debugging
+        Log::error('Failed to search students: ' . $e->getMessage(), [
+            'request' => $request->all(),
+        ]);
+
+        // Redirect back with an error message
+        return redirect()->back()->with('error', 'Failed to search students: ' . $e->getMessage());
+    }
+}
 }
