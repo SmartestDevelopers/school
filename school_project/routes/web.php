@@ -26,7 +26,6 @@ Route::post('/add-teacher', 'TeachersController@store')->name('addteacher.store'
 Route::get('/admit-form', 'StudentController@create')->name('admitform');
 
 
-
 Route::get('/view-student/{id}', 'StudentController@viewStudent');
 Route::get('/edit-student/{id}', 'StudentController@editStudent');
 Route::post('/update-student', 'StudentController@updateStudent');
@@ -52,6 +51,7 @@ Route::post('/admit-form', 'StudentController@store')->name('admitform.store');
 Route::get('/add-parent', 'ParentsController@create')->name('addparent');
 Route::post('/add-parent', 'ParentsController@store')->name('addparent.store');
 Route::get('/all-student', 'StudentController@allStudent')->name('allstudent');
+Route::post('/search-student', 'StudentController@searchStudent')->name('searchStudent');
 // this all-student is showing blank page, 
 Route::get('/all-teacher', 'TeachersController@allTeacher')->name('allteacher');
 Route::get('/all-parents', 'ParentsController@allParent')->name('allparent');
@@ -146,3 +146,7 @@ Route::get('/exam-grade', 'ExamController@examGrade')->name('examgrade');
 Route::post('/exam-grade', 'ExamController@store')->name('examgrade.store');
 Route::get('/exam-schedule', 'ExamController@examSchedule')->name('examschedule');
 Route::post('/exam-schedule', 'ExamController@store')->name('examschedule.store');
+
+
+Route::post('/autocomplete/fetch', 'StudentController@fetch_parent_name')->name('autocomplete.fetch_parent_name');
+Route::post('/autocomplete/fetch/teacher', 'TeachersController@fetch_teacher_name')->name('autocomplete.fetch_teacher_name');

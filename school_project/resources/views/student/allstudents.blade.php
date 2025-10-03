@@ -34,16 +34,17 @@
                                 </div>
                             </div>
                         </div>
-                        <form class="mg-b-20">
+                        <form action="{{ url('search-student') }}" method="POST" class="mg-b-20">
+                            @csrf
                             <div class="row gutters-8">
                                 <div class="col-3-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                    <input type="text" placeholder="Search by Roll ..." class="form-control">
+                                    <input type="text" name="roll" placeholder="Search by Roll ..." class="form-control">
                                 </div>
                                 <div class="col-4-xxxl col-xl-4 col-lg-3 col-12 form-group">
-                                    <input type="text" placeholder="Search by Name ..." class="form-control">
+                                    <input type="text" name="full_name" placeholder="Search by Name ..." class="form-control">
                                 </div>
                                 <div class="col-4-xxxl col-xl-3 col-lg-3 col-12 form-group">
-                                    <input type="text" placeholder="Search by Class ..." class="form-control">
+                                    <input type="text" name="class" placeholder="Search by Class ..." class="form-control"> 
                                 </div>
                                 <div class="col-1-xxxl col-xl-2 col-lg-3 col-12 form-group">
                                     <button type="submit" class="fw-btn-fill btn-gradient-yellow">SEARCH</button>
